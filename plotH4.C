@@ -15,7 +15,7 @@ const TString oFilename = "outputsorted4.pdf";
 // Function to sort detector type using histogram name
 
 TString GetDetectorType(const TString& histName) {
-  if (histName.Contains("ecal", TString::kIgnoreCase)) {
+  if (histName.Contains("ecal",  TString::kIgnoreCase)) {
     return "ECAL";
   } else if (histName.Contains("hcal", TString::kIgnoreCase)) {
     return "HCAL";
@@ -37,9 +37,11 @@ TString GetDetectorType(const TString& histName) {
 }
 
 void plotH4(const char* filename = inputFilename, const char* outputFilename = oFilename) {
+  
+  gStyle->SetPalette(kRainBow); 
   TApplication* app = new TApplication("app", NULL, NULL);
 
-  // open root file
+  // Open root file
   TFile* file = new TFile(filename, "READ");
   if (file->IsZombie()) {
     printf("Error opening ROOT file\n");
@@ -132,9 +134,9 @@ void plotH4(const char* filename = inputFilename, const char* outputFilename = o
 
         // Draw histogram
         if (TH1* hist1D = dynamic_cast<TH1*>(histograms[i])) {
-          hist1D->Draw();
+          hist1D->Draw("colz");
         } else if (TH2* hist2D = dynamic_cast<TH2*>(histograms[i])) {
-          hist2D->Draw("colz"); // NOT WORKING
+          hist2D->Draw("COLZ");
         }
       }
 
