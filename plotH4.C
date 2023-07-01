@@ -15,7 +15,7 @@ const TString oFilename = "outputsorted4.pdf";
 // Function to sort detector type using histogram name
 
 TString GetDetectorType(const TString& histName) {
-  if (histName.Contains("ecal")) {
+  if (histName.Contains("ecal", TString::kIgnoreCase)) {
     return "ECAL";
   } else if (histName.Contains("hcal", TString::kIgnoreCase)) {
     return "HCAL";
