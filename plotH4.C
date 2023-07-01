@@ -11,6 +11,31 @@
 const TString inputFilename = "/home/rocio/Desktop/dimu2/example.root"; // read file
 const TString oFilename = "outputsorted4.pdf";
 
+
+// Function to sort detector type using histogram name
+
+TString GetDetectorType(const TString& histName) {
+  if (histName.Contains("ecal")) {
+    return "ECAL";
+  } else if (histName.Contains("hcal", TString::kIgnoreCase)) {
+    return "HCAL";
+  } else if (histName.Contains("srd", TString::kIgnoreCase)) {
+    return "SRD";
+  } else if (histName.Contains("wcal", TString::kIgnoreCase)) {
+    return "WCAL";
+  } else if (histName.Contains("gem", TString::kIgnoreCase)) {
+    return "GEM";
+  } else if (histName.Contains("momentum", TString::kIgnoreCase)) {
+    return "momentum";
+  } else if (histName.Contains("mm", TString::kIgnoreCase)) {
+    return "micromega";
+  } else if (histName.Contains("veto", TString::kIgnoreCase)) {
+    return "veto";
+  } else {
+    return "Other";
+  }
+}
+
 void plotH4(const char* filename = inputFilename, const char* outputFilename = oFilename) {
   TApplication* app = new TApplication("app", NULL, NULL);
 
@@ -42,28 +67,7 @@ void plotH4(const char* filename = inputFilename, const char* outputFilename = o
         // Handle 1D histograms
         // Extract detector type from histogram name
         TString histName = hist1D->GetName();
-        TString detectorType;
-
-        if (histName.Contains("ecal")) {
-          detectorType = "ECAL";
-        } else if (histName.Contains("hcal", TString::kIgnoreCase)) {
-          detectorType = "HCAL";
-        } else if (histName.Contains("srd", TString::kIgnoreCase)) {
-          detectorType = "SRD";
-        } else if (histName.Contains("wcal", TString::kIgnoreCase)) {
-          detectorType = "WCAL";
-        } else if (histName.Contains("gem", TString::kIgnoreCase)) {
-          detectorType = "GEM";
-        } else if (histName.Contains("momentum", TString::kIgnoreCase)) {
-          detectorType = "momentum";
-        } else if (histName.Contains("mm", TString::kIgnoreCase)) {
-          detectorType = "micromega";
-        } else if (histName.Contains("veto", TString::kIgnoreCase)) {
-          detectorType = "veto";
-        } else {
-          detectorType = "Other";
-	  histogramMap[detectorType].push_back(hist1D); // add to "Other" category
-        }
+        TString detectorType = GetDetectorType(histName); //call GetDetectorType function
 
         // Convert detectorType to lowercase for consistent sorting
         detectorType.ToLower();
@@ -75,28 +79,7 @@ void plotH4(const char* filename = inputFilename, const char* outputFilename = o
         // Handle 2D histograms
         // Extract detector type from histogram name
         TString histName = hist2D->GetName();
-        TString detectorType;
-
-        if (histName.Contains("ecal")) {
-          detectorType = "ECAL";
-        } else if (histName.Contains("hcal", TString::kIgnoreCase)) {
-          detectorType = "HCAL";
-        } else if (histName.Contains("srd", TString::kIgnoreCase)) {
-          detectorType = "SRD";
-        } else if (histName.Contains("wcal", TString::kIgnoreCase)) {
-          detectorType = "WCAL";
-        } else if (histName.Contains("gem", TString::kIgnoreCase)) {
-          detectorType = "GEM";
-        } else if (histName.Contains("momentum", TString::kIgnoreCase)) {
-          detectorType = "momentum";
-        } else if (histName.Contains("mm", TString::kIgnoreCase)) {
-          detectorType = "micromega";
-        } else if (histName.Contains("veto", TString::kIgnoreCase)) {
-          detectorType = "veto";
-        } else {
-          detectorType = "Other";
-	  histogramMap[detectorType].push_back(hist1D); // Add to "Other" category
-        }
+        TString detectorType = GetDetectorType(histName);
 
         // Convert detectorType to lowercase for sorting
         detectorType.ToLower();
