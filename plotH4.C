@@ -39,7 +39,7 @@ TString GetDetectorType(const TString& histName) {
 void plotH4(const char* filename = inputFilename, const char* outputFilename = oFilename) {
   TApplication* app = new TApplication("app", NULL, NULL);
 
-  // Open root file
+  // open root file
   TFile* file = new TFile(filename, "READ");
   if (file->IsZombie()) {
     printf("Error opening ROOT file\n");
