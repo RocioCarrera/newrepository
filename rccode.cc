@@ -61,11 +61,11 @@ TH1I* srdplot1;
 TH1I* srdplot2;
 TH1I* mcecalentries;
 
-
 //new histos
 TH2F* cellEnergyHist; //2d array
 TH1D*** cellEnergyHistograms;
  
+
 TH1D* ecalratio;
 TH1D* ecalcm;
 TH1D* mcecaly;
@@ -321,7 +321,7 @@ int procev(RecoEvent &e0)
     mcecaly = new TH1D("MC_ecalY", "MC ECAL entry Y coordinates in mm;X, mm;#nevents", 39, -19.5, 19.5);
     mcecaly->Sumw2();
 
-    //new histos
+   //new histos
     cellEnergyHist = new TH2F("cellEnergyHist", "Cell Energy Distribution", 7, -1, 6, 7, -1, 6);
 
     cellEnergyHistograms = new TH1D**[6];
@@ -330,13 +330,12 @@ int procev(RecoEvent &e0)
       cellEnergyHistograms[x] = new TH1D*[6];
 
       for (int y = 0; y < 6; ++y) {
-	std::string histName = "CellEnergyHist_" + std::to_string(x) + "_" + std::to_string(y);
+	std::string histName = "CellEnergyHisto_" + std::to_string(x) + "_" + std::to_string(y);
 	cellEnergyHistograms[x][y] = new TH1D(histName.c_str(), histName.c_str(), 100, 0, 100);
       }
     }
 
-
-
+    
 
     ecalrad = new TH1D("ecalrad", "Shower radius", 50, 0., 100.);
     ecalrad1 = new TH1D("ecalrad1", "Shower radius 1", 50, 0., 100.);
@@ -440,8 +439,6 @@ int procev(RecoEvent &e0)
 
   }  // end of initialization
 
-  //crear histogramas aqui 
-
   int NCellsHCALX = 0;
   if(e0.mc) {
     NCellsHCALX = mcrunoption<int>("HCAL:NCellsHCALX", 3);
@@ -449,13 +446,14 @@ int procev(RecoEvent &e0)
     NCellsHCALX = HCAL_pos.Nx;
   }
 
-#include "mkvars.inc"
+#include "rcvars.inc"
+  //#include "mkvars.inc"
 
 //#include "mkcuts_hcontamination1.inc"
 //#include "mkcuts_hcontamination_control.inc"
 //#include "mkcuts2021_calib_e.inc"
 //#include "mkcuts2021_invis.inc"
-#include "mkcuts_calib_e.inc"
+//#include "mkcuts_calib_e.inc"
 //#include "mkcuts_calib_e_sign.inc"
 //#include "mkcuts_calib_pi.inc"
 //#include "mkcuts_calib_pi_50.inc"
@@ -474,7 +472,8 @@ int procev(RecoEvent &e0)
 //#include "mkcuts_invis_avis.inc"
 //#include "mkcuts_invis_avis_1.inc"
 //#include "mkcuts_dimu_100.inc"
-#include "mkcuts_dimu_100_2022.inc"
+#include "rccuts_dimu_100_2022_ECAL23MIN.inc"
+//#include "mkcuts_dimu_100_2022.inc"
 //#include "mkcuts_dimu_100_sign.inc"
 //#include "mkcuts_dimu_100_singlemu.inc"
 //#include "mkcuts_W_2021.inc"
@@ -628,32 +627,21 @@ int procev(RecoEvent &e0)
   }
   int imaxcellx=-1, imaxcelly=-1;
   double emaxcell=0.;
- 
- 
 
-
+  
   for (int x = 0; x < NCellsECALX; ++x) {
- 
-   for (int y = 0; y < 6; ++y) {
-
+    for (int y = 0; y < 6; ++y) {
       if((e.ECAL[0][x][y].energy+e.ECAL[1][x][y].energy) > emaxcell) {
         emaxcell = e.ECAL[0][x][y].energy+e.ECAL[1][x][y].energy;
         imaxcellx = x;
         imaxcelly = y;
       }
-
-      if ((e.ECAL[0][x][y].energy + e.ECAL[1][x][y].energy) > 0.0) { // fill if energy > 0
-	cellEnergyHist->Fill(x, y, e.ECAL[0][x][y].energy + e.ECAL[1][x][y].energy); //cell 6x6 matrix
-	cellEnergyHistograms[x][y]->Fill(e.ECAL[0][x][y].energy + e.ECAL[1][x][y].energy);  
-
-   }
-      
     }
   }
 
- 
-
-
+  //if (emaxcell<ECALMaxCellLowerCut){ ipass = 0;} //new cut for energy in cells see rcvars.inc
+  
+  
   if(ECALMaxCell > -1) { // check max cell
     if(e.mc || ECALMaxCell <= 29) { // set needed cell numbers from cuts
       if(e.mc && ECALMaxCell > 29) {
@@ -1415,7 +1403,23 @@ int procev(RecoEvent &e0)
   ecalr /= eecalcut;
   ecalr1 /= eecalcut;
 
+  // FILLING NEW HISTOGRAMS RCCODE
 
+  for (int x = 0; x < NCellsECALX; ++x) {
+     
+    for (int y = 0; y < 6; ++y) {
+
+      if ((e.ECAL[0][x][y].energy + e.ECAL[1][x][y].energy) > 0.0) { // fill if energy > 0
+	cellEnergyHist->Fill(x, y, e.ECAL[0][x][y].energy + e.ECAL[1][x][y].energy); //cell 6x6 matrix
+	cellEnergyHistograms[x][y]->Fill(e.ECAL[0][x][y].energy + e.ECAL[1][x][y].energy);  
+	
+      } 
+    }
+  }
+
+
+
+  
   eveto->Fill(veto);
   evhcal->Fill(vhcalsum);
 
