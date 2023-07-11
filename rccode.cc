@@ -11,6 +11,7 @@ using namespace CS;
 #include "TProfile.h"
 #include "TRandom.h"
 #include "TCanvas.h"
+#include "TTree.h"
 
 // c++
 #include <cstdlib>
@@ -164,6 +165,21 @@ TH1D* hMC;
 TFile* myfile_data;
 TFile* myfile_MC;
 
+TTree* data_tree;
+
+///////TREE VARIABLES
+
+double ecalR;
+double ecalcellE[6][6]; //array of doubles
+double ecalE; //associate with eecal
+double hcalE; //associate with ehcal
+
+
+////////
+
+
+
+
 
 
 // time histos
@@ -303,7 +319,6 @@ int procev(RecoEvent &e0)
 {
   ievproc++;
   if(ievproc == 0) { // initialization
-
     momentum = new TH1D("momentum", "momentum from MM", 400, 0., 200.);
 
     ehplot = new TH2I("ehplot", "ECAL vs HCAL;ECAL, GeV;HCAL, GeV;#nevents", 120, 0, 120, 120, 0, 120);
@@ -334,7 +349,31 @@ int procev(RecoEvent &e0)
 	cellEnergyHistograms[x][y] = new TH1D(histName.c_str(), histName.c_str(), 100, 0, 100);
       }
     }
+    ////////// Tree
 
+    //double ecalR;
+    //double ecalcellE[6][6]; //array of doubles
+    //  double ecalE; //associate with eecal
+    //    double hcalE; //associate with ehcal
+    
+    
+    data_tree = new TTree("data","data after di-muon cuts");
+    data_tree-> Branch("ecalR",&ecalR,"ecalR/D");
+    // data_tree-> Branch("ecalcellE",ecalcellE,"ecalcellE[6][6]/D"); //this is not working so a double for loop was added
+    
+
+    // Create a separate branch for each element of the array
+    for (int x = 0; x < 6; ++x) {
+      for (int y = 0; y < 6; ++y) {
+	TString branchName = Form("ecalcellE_%d_%d", x, y);
+	data_tree->Branch(branchName, &ecalcellE[x][y], Form("ecalcellE[%d][%d]/D", x, y));
+      }
+    }
+    data_tree-> Branch("ecalE",&ecalE,"ecalE/D");
+    data_tree-> Branch("hcalE",&hcalE,"hcalE/D");
+   
+
+    /////////////
     
 
     ecalrad = new TH1D("ecalrad", "Shower radius", 50, 0., 100.);
@@ -1400,6 +1439,7 @@ int procev(RecoEvent &e0)
       }
     }
   }
+
   ecalr /= eecalcut;
   ecalr1 /= eecalcut;
 
@@ -1411,7 +1451,8 @@ int procev(RecoEvent &e0)
 
       if ((e.ECAL[0][x][y].energy + e.ECAL[1][x][y].energy) > 0.0) { // fill if energy > 0
 	cellEnergyHist->Fill(x, y, e.ECAL[0][x][y].energy + e.ECAL[1][x][y].energy); //cell 6x6 matrix
-	cellEnergyHistograms[x][y]->Fill(e.ECAL[0][x][y].energy + e.ECAL[1][x][y].energy);  
+	cellEnergyHistograms[x][y]->Fill(e.ECAL[0][x][y].energy + e.ECAL[1][x][y].energy);
+	ecalcellE[x][y] = e.ECAL[0][x][y].energy + e.ECAL[1][x][y].energy; // association for TBranch 
 	
       } 
     }
@@ -1454,6 +1495,7 @@ int procev(RecoEvent &e0)
       chi2profile->Fill(mychi2, e.mc->Weight);
     } else {
       ecalrad->Fill(ecalr);
+      ecalR=ecalr; // mod r. carrera
       chi2profile->Fill(mychi2);
     }
   }
@@ -1481,6 +1523,7 @@ int procev(RecoEvent &e0)
   }
 
   eecal->Fill(ecal);
+  ecalE=ecal; //mod r.Carrera
   etotecal->Fill(ecaltot);
   epileup->Fill(epileupall);
   epileup33->Fill(epileupcentral); //(ecaltailcentral);
@@ -1564,6 +1607,7 @@ int procev(RecoEvent &e0)
     ehcal->Fill(hcal, e.mc->Weight);
   } else {
     ehcal->Fill(hcal);
+    hcalE=hcal; //mod by R. Carrera
   }
 
   ehcal0->Fill(hcal0);
@@ -1611,6 +1655,8 @@ int procev(RecoEvent &e0)
     if(e.mc->ECALEntryY > 9.5 && e.mc->ECALEntryY < 10.5) cm10->Fill(ecalcmvaly);
     if(e.mc->ECALEntryY > 14.5 && e.mc->ECALEntryY < 15.5) cm15->Fill(ecalcmvaly);
   }
+
+  data_tree->Fill();
 
   return 1;
 }
