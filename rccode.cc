@@ -168,12 +168,107 @@ TFile* myfile_MC;
 TTree* data_tree;
 
 ///////TREE VARIABLES
+double momentumE;
+int ehplotE;
+int srdplotE;
+int srdplot0E;
+int srdplot1E;
+int srdplot2E;
+
+int mcecalentriesE;
+double ecalratioE;
+double ecalcmE;
+double mcecalyE;
+
+float cellEnergyHistE;
 
 double ecalR;
+double ecalR1;
 double ecalcellE[6][6]; //array of doubles
 double ecalE; //associate with eecal
-double hcalE; //associate with ehcal
+double ecalnoedgeE; //associate with eecalnoedge
+double ecalcentralE; //a.w. eecalcentral
+double ecalcentraltotE; //a.w. eecalcentraltot
+double ecalweightedE; 
 
+double etotecalE;
+double epileupE;
+double epileup33E;
+double eprsE;
+double prstoecalE;
+double evetoE;
+double evhcalE;
+double eecalbadE;
+
+double etotwcalE;
+double wpileupE;
+double wpileup0E;
+double wpileup1E;
+double wpileup2E;
+
+double ewecalE;
+double ewprsE;
+double ewecalmainE;
+double ecatcherE;
+double ewecalecalE;
+double eweplotE;
+double eweplot1E;
+double eweplot2E;
+double eweplot3E;
+double evtwcE;
+double evtecE;
+double es2E;
+double ew2E;
+double ew22E;
+double ew23E;
+double ew2allE;
+double ev2E;
+double es4E;
+double edmE;
+double ev2w2E; 
+
+double flowE;
+double ts0E;
+double tsrdE;
+double tdiffsrdE;
+double tecalE;
+double tdiffecalE;
+double thcalE;
+double tdiffhcalE;
+double tdetE;
+double tdiffdetE;
+
+double ehcalE;
+double ehcal0E;
+double ehcal1E;
+double ehcal2E;
+double ehcal3E;
+double ehcalcatcherE;
+double ehcal0vetoE;
+double RhcalE;
+double Rhcal12E;
+double Rhcal1E;
+double etotE;
+
+double ehcell0E;
+double ehcell1E;
+double ehcell2E;
+double ehcell3E;
+double ehcell4E;
+double ehcell5E;
+double ehcell6E;
+double ehcell7E;
+double ehcell8E;
+
+float cm0E;
+float cm5E;
+float cm10E;
+float cm15E;
+
+double ebgo0E;
+double ebgo3E;
+double ebgo4E;
+double ebgo7E;
 
 ////////
 
@@ -319,47 +414,113 @@ int procev(RecoEvent &e0)
 {
   ievproc++;
   if(ievproc == 0) { // initialization
-    momentum = new TH1D("momentum", "momentum from MM", 400, 0., 200.);
 
-    ehplot = new TH2I("ehplot", "ECAL vs HCAL;ECAL, GeV;HCAL, GeV;#nevents", 120, 0, 120, 120, 0, 120);
-    srdplot = new TH1I("srdplot", "SRD;Energy, MeV;#nevents", 250, 0, 250);
-    srdplot0 = new TH1I("srdplot0", "SRD;Energy, MeV;#nevents", 250, 0, 250);
-    srdplot1 = new TH1I("srdplot1", "SRD;Energy, MeV;#nevents", 250, 0, 250);
-    srdplot2 = new TH1I("srdplot2", "SRD;Energy, MeV;#nevents", 250, 0, 250);
+    ////////// Tree/////////////
 
-    mcecalentries = new TH1I("MC_ecalentries", "MC ECAL entry X coordinates in mm;X, mm;#nevents", 100, -200., 200.);
-
-    ecalratio = new TH1D("ecalratio", "E1/E2-1 vs coord", 39, -19.5, 19.5);
-    ecalratio->Sumw2();
-    ecalcm = new TH1D("ecalcm", "ECAL CM vs coord", 39, -19.5, 19.5);
-    ecalcm->Sumw2();
-    mcecaly = new TH1D("MC_ecalY", "MC ECAL entry Y coordinates in mm;X, mm;#nevents", 39, -19.5, 19.5);
-    mcecaly->Sumw2();
-
-   //new histos
-    cellEnergyHist = new TH2F("cellEnergyHist", "Cell Energy Distribution", 7, -1, 6, 7, -1, 6);
-
-    cellEnergyHistograms = new TH1D**[6];
-
-    for (int x = 0; x < 6; ++x) {
-      cellEnergyHistograms[x] = new TH1D*[6];
-
-      for (int y = 0; y < 6; ++y) {
-	std::string histName = "CellEnergyHisto_" + std::to_string(x) + "_" + std::to_string(y);
-	cellEnergyHistograms[x][y] = new TH1D(histName.c_str(), histName.c_str(), 100, 0, 100);
-      }
-    }
-    ////////// Tree
-
-    //double ecalR;
-    //double ecalcellE[6][6]; //array of doubles
-    //  double ecalE; //associate with eecal
-    //    double hcalE; //associate with ehcal
-    
-    
     data_tree = new TTree("data","data after di-muon cuts");
+    data_tree-> Branch("ecalE",&ecalE,"ecalE/D");
+    
+    data_tree->Branch("momentumE", &momentumE, "momentumE/D");
+    data_tree->Branch("ehplotE", &ehplotE, "ehplotE/I");
+    data_tree->Branch("srdplotE", &srdplotE, "srdplotE/I");
+    data_tree->Branch("srdplot0E", &srdplot0E, "srdplot0E/I");
+    data_tree->Branch("srdplot1E", &srdplot1E, "srdplot1E/I");
+    data_tree->Branch("srdplot2E", &srdplot2E, "srdplot2E/I");
+
+    data_tree->Branch("mcecalentriesE", &mcecalentriesE, "mcecalentriesE/I");
+    data_tree->Branch("ecalratioE", &ecalratioE, "ecalratioE/D");
+    data_tree->Branch("ecalcmE", &ecalcmE, "ecalcmE/D");
+    data_tree->Branch("mcecalyE", &mcecalyE, "mcecalyE/D");
+
+    data_tree->Branch("cellEnergyHistE", &cellEnergyHistE, "cellEnergyHistE/F");
+
+    // these branches dont follow same pattern of adding E at the end of name as others
     data_tree-> Branch("ecalR",&ecalR,"ecalR/D");
-    // data_tree-> Branch("ecalcellE",ecalcellE,"ecalcellE[6][6]/D"); //this is not working so a double for loop was added
+    data_tree-> Branch("ecalR1",&ecalR1,"ecalR1/D");
+    data_tree-> Branch("ecalnoedgeE",&ecalnoedgeE,"ecalnoedgeE/D");
+    data_tree-> Branch("ecalcentralE",&ecalcentralE,"ecalcentralE/D");
+    data_tree-> Branch("ecalcentraltotE",&ecalcentraltotE,"ecalcentraltotE/D");
+    data_tree-> Branch("ecalweightedE",&ecalweightedE,"ecalweightedE/D");
+    //
+
+    data_tree->Branch("etotecalE", &etotecalE, "etotecalE/D");
+    data_tree->Branch("epileupE", &epileupE, "epileupE/D");
+    data_tree->Branch("epileup33E", &epileup33E, "epileup33E/D");
+    data_tree->Branch("eprsE", &eprsE, "eprsE/D");
+    data_tree->Branch("prstoecalE", &prstoecalE, "prstoecalE/D");
+    data_tree->Branch("evetoE", &evetoE, "evetoE/D");
+    data_tree->Branch("evhcalE", &evhcalE, "evhcalE/D");
+    data_tree->Branch("eecalbadE", &eecalbadE, "eecalbadE/D");
+
+    data_tree->Branch("etotwcalE", &etotwcalE, "etotwcalE/D");
+    data_tree->Branch("wpileupE", &wpileupE, "wpileupE/D");
+    data_tree->Branch("wpileup0E", &wpileup0E, "wpileup0E/D");
+    data_tree->Branch("wpileup1E", &wpileup1E, "wpileup1E/D");
+    data_tree->Branch("wpileup2E", &wpileup2E, "wpileup2E/D");
+
+    data_tree->Branch("ewecalE", &ewecalE, "ewecalE/D");
+    data_tree->Branch("ewprsE", &ewprsE, "ewprsE/D");
+    data_tree->Branch("ewecalmainE", &ewecalmainE, "ewecalmainE/D");
+    data_tree->Branch("ecatcherE", &ecatcherE, "ecatcherE/D");
+    data_tree->Branch("ewecalecalE", &ewecalecalE, "ewecalecalE/D");
+    data_tree->Branch("eweplotE", &eweplotE, "eweplotE/D");
+    data_tree->Branch("eweplot1E", &eweplot1E, "eweplot1E/D");
+    data_tree->Branch("eweplot2E", &eweplot2E, "eweplot2E/D");
+    data_tree->Branch("eweplot3E", &eweplot3E, "eweplot3E/D");
+    data_tree->Branch("evtwcE", &evtwcE, "evtwcE/D");
+    data_tree->Branch("evtecE", &evtecE, "evtecE/D");
+    data_tree->Branch("es2E", &es2E, "es2E/D");
+    data_tree->Branch("ew2E", &ew2E, "ew2E/D");
+    data_tree->Branch("ew22E", &ew22E, "ew22E/D");
+    data_tree->Branch("ew23E", &ew23E, "ew23E/D");
+    data_tree->Branch("ew2allE", &ew2allE, "ew2allE/D");
+    data_tree->Branch("ev2E", &ev2E, "ev2E/D");
+    data_tree->Branch("es4E", &es4E, "es4E/D");
+    data_tree->Branch("edmE", &edmE, "edmE/D");
+    data_tree->Branch("ev2w2E", &ev2w2E, "ev2w2E/D");
+
+    data_tree->Branch("flowE", &flowE, "flowE/D");
+    data_tree->Branch("ts0E", &ts0E, "ts0E/D");
+    data_tree->Branch("tsrdE", &tsrdE, "tsrdE/D");
+    data_tree->Branch("tdiffsrdE", &tdiffsrdE, "tdiffsrdE/D");
+    data_tree->Branch("tecalE", &tecalE, "tecalE/D");
+    data_tree->Branch("tdiffecalE", &tdiffecalE, "tdiffecalE/D");
+    data_tree->Branch("thcalE", &thcalE, "thcalE/D");
+    data_tree->Branch("tdiffhcalE", &tdiffhcalE, "tdiffhcalE/D");
+    data_tree->Branch("tdetE", &tdetE, "tdetE/D");
+    data_tree->Branch("tdiffdetE", &tdiffdetE, "tdiffdetE/D");
+
+    data_tree->Branch("ehcalE", &ehcalE, "ehcalE/D");
+    data_tree->Branch("ehcal0E", &ehcal0E, "ehcal0E/D");
+    data_tree->Branch("ehcal1E", &ehcal1E, "ehcal1E/D");
+    data_tree->Branch("ehcal2E", &ehcal2E, "ehcal2E/D");
+    data_tree->Branch("ehcal3E", &ehcal3E, "ehcal3E/D");
+    data_tree->Branch("ehcalcatcherE", &ehcalcatcherE, "ehcalcatcherE/D");
+    data_tree->Branch("ehcal0vetoE", &ehcal0vetoE, "ehcal0vetoE/D");
+    data_tree->Branch("RhcalE", &RhcalE, "RhcalE/D");
+    data_tree->Branch("Rhcal12E", &Rhcal12E, "Rhcal12E/D");
+    data_tree->Branch("Rhcal1E", &Rhcal1E, "Rhcal1E/D");
+    data_tree->Branch("etotE", &etotE, "etotE/D");
+
+    data_tree->Branch("ehcell0E", &ehcell0E, "ehcell0E/D");
+    data_tree->Branch("ehcell1E", &ehcell1E, "ehcell1E/D");
+    data_tree->Branch("ehcell2E", &ehcell2E, "ehcell2E/D");
+    data_tree->Branch("ehcell3E", &ehcell3E, "ehcell3E/D");
+    data_tree->Branch("ehcell4E", &ehcell4E, "ehcell4E/D");
+    data_tree->Branch("ehcell5E", &ehcell5E, "ehcell5E/D");
+    data_tree->Branch("ehcell6E", &ehcell6E, "ehcell6E/D");
+    data_tree->Branch("ehcell7E", &ehcell7E, "ehcell7E/D");
+    data_tree->Branch("ehcell8E", &ehcell8E, "ehcell8E/D");
+
+    data_tree->Branch("cm0E", &cm0E, "cm0E/F");
+    data_tree->Branch("cm5E", &cm5E, "cm5E/F");
+    data_tree->Branch("cm10E", &cm10E, "cm10E/F");
+    data_tree->Branch("cm15E", &cm15E, "cm15E/F");
+    
+    data_tree->Branch("ebgo0E", &ebgo0E, "ebgo0E/D");
+    data_tree->Branch("ebgo3E", &ebgo3E, "ebgo3E/D");
+    data_tree->Branch("ebgo4E", &ebgo4E, "ebgo4E/D");
+    data_tree->Branch("ebgo7E", &ebgo7E, "ebgo7E/D");
     
 
     // Create a separate branch for each element of the array
@@ -369,102 +530,133 @@ int procev(RecoEvent &e0)
 	data_tree->Branch(branchName, &ecalcellE[x][y], Form("ecalcellE[%d][%d]/D", x, y));
       }
     }
-    data_tree-> Branch("ecalE",&ecalE,"ecalE/D");
-    data_tree-> Branch("hcalE",&hcalE,"hcalE/D");
+    
    
 
-    /////////////
-    
+    //////////////////////////////////////////////
 
-    ecalrad = new TH1D("ecalrad", "Shower radius", 50, 0., 100.);
-    ecalrad1 = new TH1D("ecalrad1", "Shower radius 1", 50, 0., 100.);
+
+    momentum = new TH1D("momentum", "momentum from MM", 400, 0., 200.); // ✓ 
+
+    ehplot = new TH2I("ehplot", "ECAL vs HCAL;ECAL, GeV;HCAL, GeV;#nevents", 120, 0, 120, 120, 0, 120); // ✓ 
+    srdplot = new TH1I("srdplot", "SRD;Energy, MeV;#nevents", 250, 0, 250);  // ✓ 
+    srdplot0 = new TH1I("srdplot0", "SRD;Energy, MeV;#nevents", 250, 0, 250);  // ✓  
+    srdplot1 = new TH1I("srdplot1", "SRD;Energy, MeV;#nevents", 250, 0, 250);  // ✓ 
+    srdplot2 = new TH1I("srdplot2", "SRD;Energy, MeV;#nevents", 250, 0, 250);  // ✓ 
+
+    mcecalentries = new TH1I("MC_ecalentries", "MC ECAL entry X coordinates in mm;X, mm;#nevents", 100, -200., 200.);  // ✓ 
+
+    ecalratio = new TH1D("ecalratio", "E1/E2-1 vs coord", 39, -19.5, 19.5);  // ✓ 
+    ecalratio->Sumw2();
+    ecalcm = new TH1D("ecalcm", "ECAL CM vs coord", 39, -19.5, 19.5); // ✓ 
+    ecalcm->Sumw2();
+    mcecaly = new TH1D("MC_ecalY", "MC ECAL entry Y coordinates in mm;X, mm;#nevents", 39, -19.5, 19.5);  // ✓ 
+    mcecaly->Sumw2();
+
+   //new histos
+    cellEnergyHist = new TH2F("cellEnergyHist", "Cell Energy Distribution", 7, -1, 7, 7, -1, 7); // ✓ 
+
+    cellEnergyHistograms = new TH1D**[6]; // ✓  
+
+    for (int x = 0; x < 6; ++x) {
+      cellEnergyHistograms[x] = new TH1D*[6];
+
+      for (int y = 0; y < 6; ++y) {
+	std::string histName = "CellEnergyHisto_" + std::to_string(x) + "_" + std::to_string(y);
+	cellEnergyHistograms[x][y] = new TH1D(histName.c_str(), histName.c_str(), 100, 0, 100);
+      }
+    }
+
+
+    ecalrad = new TH1D("ecalrad", "Shower radius", 50, 0., 100.); // ✓ 
+    ecalrad1 = new TH1D("ecalrad1", "Shower radius 1", 50, 0., 100.); // ✓
     chi2profile = new TH1D("chi2profile", "ECAL profile chi2", 100, 0, 10.);
 
-    eecal = new TH1D("eecal", "ECAL energy", 1000, 0., 200.);
-    eecalnoedge = new TH1D("eecalnoedge", "ECAL 5*5 energy", 1000, 0., 200.);
-    eecalcentral = new TH1D("eecalcentral", "ECAL 3*3 energy", 1000, 0., 200.);
-    eecalcentraltot = new TH1D("eecalcentraltot", "ECAL 3*3 total energy", 1000, 0., 200.);
-    eecalweighted = new TH1D("eecalweighted", "ECAL energy, weight used", 200, 0., 200.);
-	etotecal = new TH1D("etotecal", "ECAL total energy", 1000, 0., 200.);
-    epileup = new TH1D("epileup", "ECAL energy pileup", 200, 0., 40.);
-	epileup33 = new TH1D("epileupcentral", "ECAL energy pileup 3*3", 200, 0., 40.);
-    eprs = new TH1D("eprs", "PRS energy", 800, 0., 20.);
-    prstoecal = new TH1D("prstoecal", "PRS/ECAL", 100, 0., 0.5);
-    eveto = new TH1D("eveto", "VETO energy", 100, 0., 0.1);
-    evhcal = new TH1D("evhcal", "VHCAL energy", 100, 0., 10.);
-    eecalbad = new TH1D("eecalbad", "ECAL bad energy", 100, 0., 100.);
+    eecal = new TH1D("eecal", "ECAL energy", 1000, 0., 200.); // ✓
+    eecalnoedge = new TH1D("eecalnoedge", "ECAL 5*5 energy", 1000, 0., 200.); // ✓ 
+    eecalcentral = new TH1D("eecalcentral", "ECAL 3*3 energy", 1000, 0., 200.); // ✓
+    eecalcentraltot = new TH1D("eecalcentraltot", "ECAL 3*3 total energy", 1000, 0., 200.); // ✓
+    eecalweighted = new TH1D("eecalweighted", "ECAL energy, weight used", 200, 0., 200.); // hacer sola
+    etotecal = new TH1D("etotecal", "ECAL total energy", 1000, 0., 200.); // ✓
+    epileup = new TH1D("epileup", "ECAL energy pileup", 200, 0., 40.); //✓
+    epileup33 = new TH1D("epileupcentral", "ECAL energy pileup 3*3", 200, 0., 40.);// ✓
+    eprs = new TH1D("eprs", "PRS energy", 800, 0., 20.); // ✓
+    prstoecal = new TH1D("prstoecal", "PRS/ECAL", 100, 0., 0.5); // ✓
+    eveto = new TH1D("eveto", "VETO energy", 100, 0., 0.1); // ✓
+    evhcal = new TH1D("evhcal", "VHCAL energy", 100, 0., 10.); // ✓
+    eecalbad = new TH1D("eecalbad", "ECAL bad energy", 100, 0., 100.); // ✓
 
-    etotwcal = new TH1D("etotwcal", "WCAL total energy", 1000, 0., 200.);
-    wpileup = new TH1D("wpileup", "WCAL energy pileup", 200, 0., 40.);
-    wpileup0 = new TH1D("wpileup0", "WCAL0 energy pileup", 200, 0., 40.);
-    wpileup1 = new TH1D("wpileup1", "WCAL1 energy pileup", 200, 0., 40.);
-    wpileup2 = new TH1D("wpileup2", "WCAL2 energy pileup", 200, 0., 40.);
+    etotwcal = new TH1D("etotwcal", "WCAL total energy", 1000, 0., 200.);  // ✓
+    wpileup = new TH1D("wpileup", "WCAL energy pileup", 200, 0., 40.);  // ✓  
+    wpileup0 = new TH1D("wpileup0", "WCAL0 energy pileup", 200, 0., 40.);  // ✓
+    wpileup1 = new TH1D("wpileup1", "WCAL1 energy pileup", 200, 0., 40.);  // ✓ 
+    wpileup2 = new TH1D("wpileup2", "WCAL2 energy pileup", 200, 0., 40.);  // ✓
 
-    ewecal = new TH1D("ewecal", "WECAL energy", 1000, 0., 200.);
-    ewprs = new TH1D("ewprs", "WECAL-PRS energy", 1000, 0., 20.);
-    ewecalmain = new TH1D("ewecalmain", "WECAL main energy", 1000, 0., 200.);
-    ecatcher = new TH1D("ecatcher", "W catcher energy", 200, 0., 10.);
-    ewecalecal = new TH1D("ewecal+ecal", "WECAL+ECAL energy", 200, 0., 200.);
-    eweplot = new TH2D("eweplot", "ECAL vs WCAL", 80, 0., 160., 80, 0., 160.);
-    eweplot1 = new TH2D("eweplot1", "ECAL+HCAL vs WCAL", 90, 0., 180., 90, 0., 180.);
-    eweplot2 = new TH1D("eweplot2", "WECAL energy wgt", 50, 0., 100.);
-    eweplot3 = new TH1D("eweplot3", "WECAL energy", 50, 0., 100.);
+    ewecal = new TH1D("ewecal", "WECAL energy", 1000, 0., 200.);// ✓
+    ewprs = new TH1D("ewprs", "WECAL-PRS energy", 1000, 0., 20.); // ✓
+    ewecalmain = new TH1D("ewecalmain", "WECAL main energy", 1000, 0., 200.);  // ✓
+    ecatcher = new TH1D("ecatcher", "W catcher energy", 200, 0., 10.); // ✓ 
+    ewecalecal = new TH1D("ewecal+ecal", "WECAL+ECAL energy", 200, 0., 200.);  // ✓ 
+    eweplot = new TH2D("eweplot", "ECAL vs WCAL", 80, 0., 160., 80, 0., 160.);  // ✓  
+    eweplot1 = new TH2D("eweplot1", "ECAL+HCAL vs WCAL", 90, 0., 180., 90, 0., 180.); // ✓  
+    eweplot2 = new TH1D("eweplot2", "WECAL energy wgt", 50, 0., 100.); // ✓  
+    eweplot3 = new TH1D("eweplot3", "WECAL energy", 50, 0., 100.); // ✓  
     //ewprsmain = new TH2D("ewprsmain", "WPRS vs WMAIN", 100, 0., 200., 40, 0., 40.);
-    evtwc = new TH1D("evtwc", "VTWC energy", 100, 0., 0.02);
-    evtec = new TH1D("evtec", "VTEC energy", 100, 0., 0.01);
-    es2 = new TH1D("es2", "S2 energy", 100, 0., 0.01);
-    ew2 = new TH1D("ew2", "wcal2 energy", 100, 0., 0.01);
-    ew22 = new TH1D("ew22", "wcal2 energy W<50", 100, 0., 0.01);
-    ew23 = new TH1D("ew23", "wcal2 energy WPRS>8", 100, 0., 0.01);
-    ew2all = new TH1D("ew2all", "wcal2 all events", 100, 0., 0.01);
-    ev2 = new TH1D("ev2", "V2 energy", 100, 0., 0.02);
-    es4 = new TH1D("es4", "S4 energy", 100, 0., 0.002);
-    edm = new TH1D("edm", "DM energy", 100, 0., 0.01);
-    ev2w2 = new TH2D("ev2w2", "WCAL[2] vs V2", 50, 0., 0.02, 50, 0., 0.01);
+    evtwc = new TH1D("evtwc", "VTWC energy", 100, 0., 0.02); // ✓  
+    evtec = new TH1D("evtec", "VTEC energy", 100, 0., 0.01);  // ✓  
+    es2 = new TH1D("es2", "S2 energy", 100, 0., 0.01);   // ✓  
+    ew2 = new TH1D("ew2", "wcal2 energy", 100, 0., 0.01); // ✓ 
+    ew22 = new TH1D("ew22", "wcal2 energy W<50", 100, 0., 0.01);  // ✓ 
+    ew23 = new TH1D("ew23", "wcal2 energy WPRS>8", 100, 0., 0.01);  // ✓ 
+    ew2all = new TH1D("ew2all", "wcal2 all events", 100, 0., 0.01); // empty 
+    ev2 = new TH1D("ev2", "V2 energy", 100, 0., 0.02); // ✓ 
+    es4 = new TH1D("es4", "S4 energy", 100, 0., 0.002); // ✓ 
+    edm = new TH1D("edm", "DM energy", 100, 0., 0.01);// ✓ 
+    ev2w2 = new TH2D("ev2w2", "WCAL[2] vs V2", 50, 0., 0.02, 50, 0., 0.01); // ✓ 
 
-    flow = new TH1D("flow", "cut flow", 20, -0.5, 19.5);
+    flow = new TH1D("flow", "cut flow", 20, -0.5, 19.5); // ✓ 
 
-    ts0 = new TH1D("ts0", "Time S0", 400, -100., 300.);
-    tsrd = new TH1D("tsrd", "Time SRD0", 400, -100., 300.);
-    tdiffsrd = new TH1D("tsrd-ts0", "Time diff SRD", 400, -200., 200.);
-    tecal = new TH1D("tecal", "Time ECAL cell", 400, -200., 200.);
-    tdiffecal = new TH1D("tecal-ts0", "Time diff ecal", 400, -200., 200.);
-    thcal = new TH1D("thcal", "Time HCAL cell", 400, -200., 200.);
-    tdiffhcal = new TH1D("thcal-ts0", "Time diff hcal", 400, -200., 200.);
-    tdet = new TH1D("tdet", "Time some det", 400, -100., 300.);
-    tdiffdet = new TH1D("tdet-ts0", "Time some det", 400, -200., 200.);
+    ts0 = new TH1D("ts0", "Time S0", 400, -100., 300.); //empty 
+    tsrd = new TH1D("tsrd", "Time SRD0", 400, -100., 300.); //empty 
+    tdiffsrd = new TH1D("tsrd-ts0", "Time diff SRD", 400, -200., 200.); //empty
+    tecal = new TH1D("tecal", "Time ECAL cell", 400, -200., 200.); // empty 
+    tdiffecal = new TH1D("tecal-ts0", "Time diff ecal", 400, -200., 200.); //empty 
+    thcal = new TH1D("thcal", "Time HCAL cell", 400, -200., 200.); //empty 
+    tdiffhcal = new TH1D("thcal-ts0", "Time diff hcal", 400, -200., 200.); //empty 
+    tdet = new TH1D("tdet", "Time some det", 400, -100., 300.); //empty 
+    tdiffdet = new TH1D("tdet-ts0", "Time some det", 400, -200., 200.); //empty 
 
-    ehcal = new TH1D("ehcal", "HCAL energy", 400, 0., 200.);
-    ehcal0 = new TH1D("ehcal0", "HCAL module 0 energy", 200, 0., 40.);
-    ehcal1 = new TH1D("ehcal1", "HCAL module 1 energy", 40, 0., 20.);
-    ehcal2 = new TH1D("ehcal2", "HCAL module 2 energy", 40, 0., 20.);
-    ehcal3 = new TH1D("ehcal3", "HCAL module 3 energy", 80, 0., 40.);
-    ehcalcatcher = new TH1D("ehcalcatcher", "HCAL + catcher energy", 400, 0., 200.);
-    ehcal0veto = new TH2D("ehcal0veto", "VETO vs ehcal0", 100, 0., 20., 20, 0., 40.);
-    Rhcal  = new TH1D("Rhcal", "HCAL R value", 50, 0., 1.);
-    Rhcal12 = new TH1D("Rhcal12", "HCAL 1-2 R value", 50, 0., 1.);
-    Rhcal1 = new TH1D("Rhcal1", "HCAL1 R value", 50, 0., 1.);
-    etot = new TH1D("etot", "Energy WCAL+ECAL+HCAL", 200, 0., 200.);
+    ehcal = new TH1D("ehcal", "HCAL energy", 400, 0., 200.);// ✓ 
+    ehcal0 = new TH1D("ehcal0", "HCAL module 0 energy", 200, 0., 40.); // ✓ 
+    ehcal1 = new TH1D("ehcal1", "HCAL module 1 energy", 40, 0., 20.);// ✓ 
+    ehcal2 = new TH1D("ehcal2", "HCAL module 2 energy", 40, 0., 20.);// ✓ 
+    ehcal3 = new TH1D("ehcal3", "HCAL module 3 energy", 80, 0., 40.);// ✓ 
+    ehcalcatcher = new TH1D("ehcalcatcher", "HCAL + catcher energy", 400, 0., 200.); // ✓  
+    ehcal0veto = new TH2D("ehcal0veto", "VETO vs ehcal0", 100, 0., 20., 20, 0., 40.);  // ✓  
+    Rhcal  = new TH1D("Rhcal", "HCAL R value", 50, 0., 1.); // ✓  
+    Rhcal12 = new TH1D("Rhcal12", "HCAL 1-2 R value", 50, 0., 1.);  // ✓  
+    Rhcal1 = new TH1D("Rhcal1", "HCAL1 R value", 50, 0., 1.);  // ✓   
+    etot = new TH1D("etot", "Energy WCAL+ECAL+HCAL", 200, 0., 200.);  // ✓   
 
-    ehcell0 = new TH1D("ehcell0", "HCAL1 cell 0 energy", 400, 0., 200.);
-    ehcell1 = new TH1D("ehcell1", "HCAL1 cell 1 energy", 400, 0., 200.);
-    ehcell2 = new TH1D("ehcell2", "HCAL1 cell 2 energy", 400, 0., 200.);
-    ehcell3 = new TH1D("ehcell3", "HCAL1 cell 3 energy", 400, 0., 200.);
-    ehcell4 = new TH1D("ehcell4", "HCAL1 cell 4 energy", 400, 0., 200.);
-    ehcell5 = new TH1D("ehcell5", "HCAL1 cell 5 energy", 400, 0., 200.);
-    ehcell6 = new TH1D("ehcell6", "HCAL1 cell 6 energy", 400, 0., 200.);
-    ehcell7 = new TH1D("ehcell7", "HCAL1 cell 7 energy", 400, 0., 200.);
-    ehcell8 = new TH1D("ehcell8", "HCAL1 cell 8 energy", 400, 0., 200.);
+    ehcell0 = new TH1D("ehcell0", "HCAL1 cell 0 energy", 400, 0., 200.); // ✓  
+    ehcell1 = new TH1D("ehcell1", "HCAL1 cell 1 energy", 400, 0., 200.);// ✓  
+    ehcell2 = new TH1D("ehcell2", "HCAL1 cell 2 energy", 400, 0., 200.);// ✓  
+    ehcell3 = new TH1D("ehcell3", "HCAL1 cell 3 energy", 400, 0., 200.);// ✓  
+    ehcell4 = new TH1D("ehcell4", "HCAL1 cell 4 energy", 400, 0., 200.);// ✓  
+    ehcell5 = new TH1D("ehcell5", "HCAL1 cell 5 energy", 400, 0., 200.);// ✓  
+    ehcell6 = new TH1D("ehcell6", "HCAL1 cell 6 energy", 400, 0., 200.);// ✓  
+    ehcell7 = new TH1D("ehcell7", "HCAL1 cell 7 energy", 400, 0., 200.);// ✓  
+    ehcell8 = new TH1D("ehcell8", "HCAL1 cell 8 energy", 400, 0., 200.);// ✓  
 
-    cm0 = new TH1F("cm0", "cm for coord 0 pm 0.5", 10, -10., 10.);
-    cm5 = new TH1F("cm5", "cm for coord 5 pm 0.5", 20, 0., 20.);
-    cm10 = new TH1F("cm10", "cm for coord 10 pm 0.5", 20, 5., 25.);
-    cm15 = new TH1F("cm15", "cm for coord 15 pm 0.5", 20, 10., 30.);
+    cm0 = new TH1F("cm0", "cm for coord 0 pm 0.5", 10, -10., 10.); // ✓  
+    cm5 = new TH1F("cm5", "cm for coord 5 pm 0.5", 20, 0., 20.);// ✓  
+    cm10 = new TH1F("cm10", "cm for coord 10 pm 0.5", 20, 5., 25.); // ✓  
+    cm15 = new TH1F("cm15", "cm for coord 15 pm 0.5", 20, 10., 30.);// ✓  
 
-    ebgo0 = new TH1D("ebgo0", "BGO cristal 0 energy", 100, 0., 200.);
-    ebgo3 = new TH1D("ebgo3", "BGO cristal 3 energy", 100, 0., 200.);
-    ebgo4 = new TH1D("ebgo4", "BGO cristal 4 energy", 100, 0., 200.);
-    ebgo7 = new TH1D("ebgo7", "BGO cristal 7 energy", 100, 0., 200.);
+    ebgo0 = new TH1D("ebgo0", "BGO cristal 0 energy", 100, 0., 200.);// ✓  
+    ebgo3 = new TH1D("ebgo3", "BGO cristal 3 energy", 100, 0., 200.);// ✓  
+    ebgo4 = new TH1D("ebgo4", "BGO cristal 4 energy", 100, 0., 200.);// ✓  
+    ebgo7 = new TH1D("ebgo7", "BGO cristal 7 energy", 100, 0., 200.);// ✓  
 	
     if (e0.mc) {
       NominalBeamEnergy = 100.;
@@ -554,8 +746,10 @@ int procev(RecoEvent &e0)
   if(ipass) {
     if(e0.mc) {
       flow->Fill(-1., e0.mc->Weight);
+      flowE = (-1., e0.mc->Weight); // mod by R.C
     } else {
       flow->Fill(-1.);
+      flowE = -1.; 
     }
   }
 
@@ -605,8 +799,10 @@ int procev(RecoEvent &e0)
   if(ipass) {
     if(e.mc) {
       flow->Fill((double)istep, e.mc->Weight);
+      flowE = ((double)istep, e.mc->Weight); //mod by R.C
     } else {
       flow->Fill((double)istep);
+      flowE = ((double)istep); //mod by R.C 
     }
   }
 
@@ -650,8 +846,10 @@ int procev(RecoEvent &e0)
   if(ipass) {
     if(e.mc) {
       flow->Fill((double)istep, e.mc->Weight);
+      flowE = ((double)istep, e.mc->Weight); // mod by R.C
     } else {
       flow->Fill((double)istep);
+      flowE = ((double)istep); //mod by R.C 
     }
   }
 
@@ -715,8 +913,10 @@ int procev(RecoEvent &e0)
   if(ipass) {
     if(e.mc) {
       flow->Fill((double)istep, e.mc->Weight);
+      flowE = ((double)istep, e.mc->Weight); //mod by R.C
     } else {
       flow->Fill((double)istep);
+      flowE = ((double)istep); //mod by R.C 
     }
   }
 
@@ -791,8 +991,10 @@ int procev(RecoEvent &e0)
   if(ipass) {
     if(e.mc) {
       flow->Fill((double)istep, e.mc->Weight);
+      flowE = ((double)istep, e.mc->Weight); //mod by R.C
     } else {
       flow->Fill((double)istep);
+      flowE = ((double)istep); //mod by R.C 
     }
   }
 
@@ -932,8 +1134,10 @@ int procev(RecoEvent &e0)
   if(ipass) {
     if(e.mc) {
       flow->Fill((double)istep, e.mc->Weight);
+      flowE = ((double)istep, e.mc->Weight); // mod by R.C
     } else {
       flow->Fill((double)istep);
+      flowE = ((double)istep); //mod by R.C 
     }
   }
 
@@ -1094,8 +1298,10 @@ int procev(RecoEvent &e0)
   if(ipass) {
     if(e.mc) {
       flow->Fill((double)istep, e.mc->Weight);
+      flowE = ((double)istep, e.mc->Weight); //mod by R.C
     } else {
       flow->Fill((double)istep);
+      flowE = ((double)istep); // mod by R.C 
     }
   }
 
@@ -1107,8 +1313,10 @@ int procev(RecoEvent &e0)
   if(ipass) {
     if(e.mc) {
       flow->Fill((double)istep, e.mc->Weight);
+      flowE = ((double)istep, e.mc->Weight); // mod by R.C
     } else {
       flow->Fill((double)istep);
+      flowE = ((double)istep); //mod by R.C 
     }
   }
 
@@ -1121,8 +1329,10 @@ int procev(RecoEvent &e0)
   if(ipass) {
     if(e.mc) {
       flow->Fill((double)istep, e.mc->Weight);
+      flowE = ((double)istep, e.mc->Weight); //mod by R.C
     } else {
       flow->Fill((double)istep);
+      flowE = ((double)istep); //mod by R.C
     }
   }
 
@@ -1137,8 +1347,10 @@ int procev(RecoEvent &e0)
   if(ipass) {
     if(e.mc) {
       flow->Fill((double)istep, e.mc->Weight);
+      flowE = ((double)istep, e.mc->Weight); //mod by R.C
     } else {
       flow->Fill((double)istep);
+      flowE = ((double)istep); //mod by R.C
     }
   }
 
@@ -1150,8 +1362,10 @@ int procev(RecoEvent &e0)
   if(ipass) {
     if(e.mc) {
       flow->Fill((double)istep, e.mc->Weight);
+      flowE = ((double)istep, e.mc->Weight); //mod by R.C
     } else {
       flow->Fill((double)istep);
+      flowE = ((double)istep); //mod by R.C 
     }
   }
 
@@ -1285,8 +1499,10 @@ int procev(RecoEvent &e0)
   if(ipass) {
     if(e.mc) {
       flow->Fill((double)istep, e.mc->Weight);
+      flowE = ((double)istep, e.mc->Weight); //mod by R.C 
     } else {
       flow->Fill((double)istep);
+      flowE = ((double)istep); // mod by R.C 
     }
   }
 
@@ -1328,8 +1544,10 @@ int procev(RecoEvent &e0)
   if(ipass) {
     if(e.mc) {
       flow->Fill((double)istep, e.mc->Weight);
+      flowE = ((double)istep, e.mc->Weight); // mod by R.C 
     } else {
       flow->Fill((double)istep);
+      flowE = ((double)istep); //mod by R.C 
     }
   }
 
@@ -1346,8 +1564,10 @@ int procev(RecoEvent &e0)
   if(ipass) {
     if(e.mc) {
       flow->Fill((double)istep, e.mc->Weight);
+      flowE = ((double)istep, e.mc->Weight); // mod by R.C
     } else {
-      flow->Fill((double)istep);
+      flow->Fill((double)istep);  
+      flowE = ((double)istep);   // mod by R.C 
     }
   }
 
@@ -1359,8 +1579,10 @@ int procev(RecoEvent &e0)
   if(ipass) {
     if(e.mc) {
       flow->Fill((double)istep, e.mc->Weight);
+      flowE = ((double)istep, e.mc->Weight); //mod by R.C
     } else {
       flow->Fill((double)istep);
+      flowE = ((double)istep); //mod by R.C 
     }
   }
 
@@ -1375,8 +1597,10 @@ int procev(RecoEvent &e0)
   if(ipass) {
     if(e.mc) {
       flow->Fill((double)istep, e.mc->Weight);
+      flowE = ((double)istep, e.mc->Weight); //mod by R.C
     } else {
       flow->Fill((double)istep);
+      flowE = ((double)istep); // mod by R.C
     }
   }
 
@@ -1397,6 +1621,7 @@ int procev(RecoEvent &e0)
 //  std::cout << "tail = " << ecaltailcentral << std::endl;
 
   eecalbad->Fill(ecalbad);
+  eecalbadE=ecalbad; //mod by R.C
 
   for (int y = 0; y < NCellsECALY; ++y) {
     for (int x = 0; x < NCellsECALX; ++x) {
@@ -1451,8 +1676,9 @@ int procev(RecoEvent &e0)
 
       if ((e.ECAL[0][x][y].energy + e.ECAL[1][x][y].energy) > 0.0) { // fill if energy > 0
 	cellEnergyHist->Fill(x, y, e.ECAL[0][x][y].energy + e.ECAL[1][x][y].energy); //cell 6x6 matrix
+	cellEnergyHistE = (x, y, e.ECAL[0][x][y].energy + e.ECAL[1][x][y].energy); //mod by R.C, a.f TBranch 
 	cellEnergyHistograms[x][y]->Fill(e.ECAL[0][x][y].energy + e.ECAL[1][x][y].energy);
-	ecalcellE[x][y] = e.ECAL[0][x][y].energy + e.ECAL[1][x][y].energy; // association for TBranch 
+	ecalcellE[x][y] = e.ECAL[0][x][y].energy + e.ECAL[1][x][y].energy; // mod by R.C, association for TBranch 
 	
       } 
     }
@@ -1462,7 +1688,9 @@ int procev(RecoEvent &e0)
 
   
   eveto->Fill(veto);
+  evetoE = veto; //mod by R.C 
   evhcal->Fill(vhcalsum);
+  evhcalE = vhcalsum; //mod by R.C 
 
   if(IPrint) {
     std::cout << " Subdet: "
@@ -1475,17 +1703,27 @@ int procev(RecoEvent &e0)
   }
   
   momentum->Fill(mymom);   //track.momentum
+  momentumE = mymom; //mod by R.C 
 
   ehplot->Fill(ecal, hcal);
+  ehplotE = (ecal,hcal); //mod by R.C
   srdplot->Fill(srd);
+  srdplotE = srd; //mod by R.C
   srdplot0->Fill(e.SRD[0].energy/MeV);
+  srdplot0E = (e.SRD[0].energy/MeV); //mod by R.C
   srdplot1->Fill(e.SRD[1].energy/MeV);
+  srdplot1E = (e.SRD[1].energy/MeV); //mod by R.C
   srdplot2->Fill(e.SRD[2].energy/MeV);
+  srdplot2E = (e.SRD[2].energy/MeV); //mod by R.C
 
   ebgo0->Fill(e.BGO[0].energy/MeV);
+  ebgo0E = (e.BGO[0].energy/MeV); //mod by R.C
   ebgo3->Fill(e.BGO[3].energy/MeV);
+  ebgo3E = (e.BGO[3].energy/MeV); //mod by R.C
   ebgo4->Fill(e.BGO[4].energy/MeV);
+  ebgo4E = (e.BGO[4].energy/MeV); //mod by R.C
   ebgo7->Fill(e.BGO[7].energy/MeV);
+  ebgo7E = (e.BGO[7].energy/MeV); //mod by R.C 
 
 //  double mychi2 = calcShowerChi2(e, 2, 2, 3, 3);
 
@@ -1510,150 +1748,265 @@ int procev(RecoEvent &e0)
 
   if(e.mc) {
     mcecalentries->Fill(e.mc->ECALEntryX);
+    mcecalentriesE=(e.mc->ECALEntryX); //mod by R.C 
     mcecaly->Fill(e.mc->ECALEntryY);
-
+    mcecalyE = (e.mc->ECALEntryY); //mod by R.C 
+    
     ecalratio->Fill( e.mc->ECALEntryY, (ecalup/ecaldown - 1.) );
+    ecalratioE = ( e.mc->ECALEntryY, (ecalup/ecaldown - 1.) ); //mod by R.C
 
     ecalcm->Fill( e.mc->ECALEntryY, ecalcmvaly );
+    ecalcmE = ( e.mc->ECALEntryY, ecalcmvaly ); //mod by R.C 
 
     if(ecal > 2.) {
       //if(fabs(e.mc->ECALEntryX) < 50. && fabs(e.mc->ECALEntryY) < 50.)ecalrad->Fill(ecalr);
       if(fabs(e.mc->ECALEntryX) < 50. && fabs(e.mc->ECALEntryY) < 50.)ecalrad1->Fill(ecalr1);
+      ecalR1 = ecalr1; //mod R.C. 
     }
   }
 
   eecal->Fill(ecal);
   ecalE=ecal; //mod r.Carrera
+  
   etotecal->Fill(ecaltot);
+  etotecalE=ecaltot; //mod by R.C
+
   epileup->Fill(epileupall);
-  epileup33->Fill(epileupcentral); //(ecaltailcentral);
+  epileupE=epileupall; // mod by R.C 
+
+  epileup33->Fill(epileupcentral);//(ecaltailcentral);
+  epileup33E=epileupcentral; //mod by R.C
+  
   eecalnoedge->Fill(ecalnoedge);
+  ecalnoedge = ecalnoedgeE; // mod by R.C
   eecalcentral->Fill(ecalcentral);
+  ecalcentralE = ecalcentral; // mod by R.C
   eecalcentraltot->Fill(ecalcentraltot);
+  ecalcentraltot = ecalcentraltotE; // mod by R.C
   
   
   etotwcal->Fill(wcaltot);
+  etotwcalE = wcaltot; //mod by R.C 
   wpileup->Fill(wpileupall);
+  wpileupE = wpileupall; //mod by R.C 
   wpileup0->Fill(wpileupall0);
+  wpileup0E = wpileupall0; // mod by R.C
   wpileup1->Fill(wpileupall1);
+  wpileup1E = wpileupall1; //mod by R.C
   wpileup2->Fill(wpileupall2);
+  wpileup2E = wpileupall2; // mod by R.C
 
   
   if(e.mc) {
     eecalweighted->Fill(ecal, e.mc->Weight);
   } else {
     eecalweighted->Fill(ecal);
+    ecalweightedE = ecal; //mod by R.C, CHECK THIS WITH ORLANDO 
   }
   eprs->Fill(prs);
+  eprsE = prs; //mod by R.C
+  
   prstoecal->Fill(prs/ecal);
+  prstoecalE=(prs/ecal); // mod by R.C 
 
   if(e.WCAL[0].energy+e.WCAL[1].energy + ecal+hcal0+hcal1 > 50.) {
     eweplot2->Fill((e.WCAL[0].energy+e.WCAL[1].energy), ecal+hcal0+hcal1);
+    eweplot2E = ((e.WCAL[0].energy+e.WCAL[1].energy), ecal+hcal0+hcal1); // mod by R.C
     eweplot3->Fill((e.WCAL[0].energy+e.WCAL[1].energy), 1.);
+    eweplot3E = ((e.WCAL[0].energy+e.WCAL[1].energy), 1.); //mod by R.C
   }
 
   if(e.mc) {
     ewecal->Fill((e.WCAL[0].energy+e.WCAL[1].energy), e.mc->Weight);
+    ewecalE = ((e.WCAL[0].energy+e.WCAL[1].energy), e.mc->Weight); //mod by R.C 
     ewprs->Fill(e.WCAL[0].energy, e.mc->Weight);
+    ewprsE=(e.WCAL[0].energy, e.mc->Weight); //mod by R.C
     ewecalmain->Fill(e.WCAL[1].energy, e.mc->Weight);
+    ewecalmainE=(e.WCAL[1].energy, e.mc->Weight); //mod by R.C
     //ecatcher->Fill(e.WCAL[2].energy, e.mc->Weight);
     ecatcher->Fill(e.WCAT.energy, e.mc->Weight);
+    ecatcherE = (e.WCAT.energy, e.mc->Weight); // mod by R.C 
     ewecalecal->Fill((e.WCAL[0].energy+e.WCAL[1].energy) + ecal, e.mc->Weight);
+    ewecalecalE = ((e.WCAL[0].energy+e.WCAL[1].energy) + ecal, e.mc->Weight); // mod by R.C
     eweplot->Fill((e.WCAL[0].energy+e.WCAL[1].energy), ecal, e.mc->Weight);
+    eweplotE = ((e.WCAL[0].energy+e.WCAL[1].energy), ecal, e.mc->Weight); //mod by R.C 
     eweplot1->Fill((e.WCAL[0].energy+e.WCAL[1].energy), ecal+hcal0+hcal1, e.mc->Weight);
+    eweplot1E = ((e.WCAL[0].energy+e.WCAL[1].energy), ecal+hcal0+hcal1, e.mc->Weight); // mod by R.C
     //ewprsmain->Fill(e.WCAL[1].energy, e.WCAL[0].energy, e.mc->Weight);
     evtwc->Fill(e.VTWC.energy, e.mc->Weight);
+    evtwcE = (e.VTWC.energy, e.mc->Weight); //mod by R.C
     evtec->Fill(e.VTEC.energy, e.mc->Weight);
+    evtecE = (e.VTEC.energy, e.mc->Weight); // mod by R.C
     es2->Fill(e.S2.energy, e.mc->Weight);
+    es2E = (e.S2.energy, e.mc->Weight); // mod by R.C 
 
     ew2->Fill(e.WCAL[2].energy, e.mc->Weight);
+    ew2E = (e.WCAL[2].energy, e.mc->Weight); // mod by R.C
 
-    if((e.WCAL[0].energy+e.WCAL[1].energy) < 50.) ew22->Fill(e.WCAL[2].energy, e.mc->Weight);
-    if(e.WCAL[0].energy > 8.) ew23->Fill(e.WCAL[2].energy, e.mc->Weight);
+    if((e.WCAL[0].energy+e.WCAL[1].energy) < 50.){
+      ew22->Fill(e.WCAL[2].energy, e.mc->Weight);
+      ew22E = (e.WCAL[2].energy, e.mc->Weight); // mod by R.C
+    }
+    if(e.WCAL[0].energy > 8.) {
+      ew23->Fill(e.WCAL[2].energy, e.mc->Weight);
+      ew23E = (e.WCAL[2].energy, e.mc->Weight);
+    }
     ev2->Fill(e.V2.energy, e.mc->Weight);
+    ev2E = (e.V2.energy, e.mc->Weight); // mod by R.C 
     es4->Fill(e.S4.energy, e.mc->Weight);
+    es4E = (e.S4.energy, e.mc->Weight); //mod by R.C 
     edm->Fill(e.DM[0].energy, e.mc->Weight);
+    edmE = (e.DM[0].energy, e.mc->Weight); // mod by R.C 
     ev2w2->Fill(e.V2.energy, e.WCAL[2].energy, e.mc->Weight);
+    ev2w2E = (e.V2.energy, e.WCAL[2].energy, e.mc->Weight); // mod by R.C 
   } else {
     ewecal->Fill((e.WCAL[0].energy+e.WCAL[1].energy));
     eweplot1->Fill((e.WCAL[0].energy+e.WCAL[1].energy), ecal+hcal0+hcal1);
+    eweplot1E = ((e.WCAL[0].energy+e.WCAL[1].energy), ecal+hcal0+hcal1); // mod by R.C
     ewprs->Fill(e.WCAL[0].energy);
     ewecalmain->Fill(+e.WCAL[1].energy);
+    ewecalmainE=(+e.WCAL[1].energy); 
     if(e.run >= 3466 && e.run <= 3560) { 
       ecatcher->Fill(e.WCAL[2].energy);
+      ecatcherE = (e.WCAL[2].energy); // mod by R.C
     }
     //if(e.run >= 4224 && e.run <= 4309) { 
     //  ecatcher->Fill(e.WCAT.energy);
     //}
     if(e.run >= 4224) {
       ecatcher->Fill(e.WCAT.energy);
+      ecatcherE = (e.WCAT.energy); //mod by R.C
     }
     ewecalecal->Fill((e.WCAL[0].energy+e.WCAL[1].energy) + ecal);
+    ewecalecalE = ((e.WCAL[0].energy+e.WCAL[1].energy) + ecal); // mod by R.C 
     eweplot->Fill((e.WCAL[0].energy+e.WCAL[1].energy), ecal);
+    eweplotE = ((e.WCAL[0].energy+e.WCAL[1].energy), ecal); // mod by R.C
     //ewprsmain->Fill(e.WCAL[1].energy, e.WCAL[0].energy);
     evtwc->Fill(e.VTWC.energy);
+    evtwcE = e.VTWC.energy; // mod by R.C
     evtec->Fill(e.VTEC.energy);
+    evtecE=e.VTEC.energy; // mod by R.C
     es2->Fill(e.S2.energy);
+    es2E = e.S2.energy; // mod by R.C 
     ew2->Fill(e.WCAL[2].energy);
-    if((e.WCAL[0].energy+e.WCAL[1].energy) < 50.) ew22->Fill(e.WCAL[2].energy);
-    if(e.WCAL[0].energy > 8.) ew23->Fill(e.WCAL[2].energy);
+    ew2E = (e.WCAL[2].energy); // mod by R.C 
+    if((e.WCAL[0].energy+e.WCAL[1].energy) < 50.) {
+      ew22->Fill(e.WCAL[2].energy);
+      ew22E = (e.WCAL[2].energy); // mod by R.C
+    }
+    if(e.WCAL[0].energy > 8.){
+      ew23->Fill(e.WCAL[2].energy);
+      ew23E=(e.WCAL[2].energy); // mod by R.C
+    }
     ev2->Fill(e.V2.energy);
+    ev2E = e.V2.energy; // mod by R.C
     es4->Fill(e.S4.energy);
+    es4E = e.S4.energy; // mod by R.C
     edm->Fill(e.DM[0].energy);
+    edmE = e.DM[0].energy; // mod by R.C 
     ev2w2->Fill(e.V2.energy, e.WCAL[2].energy);
+    ev2w2E = (e.V2.energy, e.WCAL[2].energy); // mod by R.C 
   }
 
   if(e.mc) {
     ehcal->Fill(hcal, e.mc->Weight);
+    ehcalE = (hcal, e.mc->Weight); //mod by R.C 
   } else {
     ehcal->Fill(hcal);
-    hcalE=hcal; //mod by R. Carrera
+    ehcalE=hcal;//mod by R. Carrera
   }
 
   ehcal0->Fill(hcal0);
+  ehcal0E = hcal0; //mod by R.C
   ehcal1->Fill(hcal1);
+  ehcal1E = hcal1; //mod by R.C
   ehcal2->Fill(hcal2);
+  ehcal2E = hcal2; //mod by R.C
   ehcal3->Fill(hcal3);
+  ehcal3E = hcal3; //mod by R.C 
 
   ehcalcatcher->Fill(hcal + e.WCAT.energy);
+  ehcalcatcherE = (hcal + e.WCAT.energy); //mod by R.C
 
   ehcal0veto->Fill(hcal0, veto*1000.);
+  ehcal0vetoE = (hcal0, veto*1000.); //mod by R.C 
 
   if(e.mc) {
-    if(ecal < 80.) Rhcal->Fill(Rhcalval, e.mc->Weight);
-    if(ecal < 80.) Rhcal12->Fill(Rhcal12val, e.mc->Weight);
-    if(ecal < 80.) Rhcal1->Fill(Rhcal1val, e.mc->Weight);
-//    if(ecal < 30.) Rhcal->Fill(Rhcalval, e.mc->Weight);
+    if(ecal < 80.) {
+      Rhcal->Fill(Rhcalval, e.mc->Weight);
+      RhcalE = (Rhcalval, e.mc->Weight); //mod by R.C
+    }
+  if(ecal < 80.){
+    Rhcal12->Fill(Rhcal12val, e.mc->Weight);
+    Rhcal12E = (Rhcal12val, e.mc->Weight); //mod by R.C
+  }
+  if(ecal < 80.){
+    Rhcal1->Fill(Rhcal1val, e.mc->Weight);
+    Rhcal1E = (Rhcal1val, e.mc->Weight); //mod by R.C 
+  }
+    //    if(ecal < 30.) Rhcal->Fill(Rhcalval, e.mc->Weight);
   } else {
-    if(ecal < 80.) Rhcal->Fill(Rhcalval);
-    if(ecal < 80.) Rhcal12->Fill(Rhcal12val);
-    if(ecal < 80.) Rhcal1->Fill(Rhcal1val);
+  if(ecal < 80.){
+    Rhcal->Fill(Rhcalval);
+    RhcalE = Rhcalval; //mod by R.C
+  }
+  if(ecal < 80.){
+    Rhcal12->Fill(Rhcal12val);
+    Rhcal12E = (Rhcal12val); //mod by R.C 
+  }
+  if(ecal < 80.){
+    Rhcal1->Fill(Rhcal1val);
+    Rhcal1E = Rhcal1val; //mod by R.C 
+  }
 //    if(ecal < 30.) Rhcal->Fill(Rhcalval);
   }
 
   if(e.mc) {
     etot->Fill(e.WCAL[0].energy + e.WCAL[1].energy + ecal + hcal0 + hcal1 + hcal2, e.mc->Weight);
+    etotE = (e.WCAL[0].energy + e.WCAL[1].energy + ecal + hcal0 + hcal1 + hcal2, e.mc->Weight); //mod by R.C
   } else {
     etot->Fill(e.WCAL[0].energy + e.WCAL[1].energy + ecal + hcal0 + hcal1 + hcal2);
+    etotE = (e.WCAL[0].energy + e.WCAL[1].energy + ecal + hcal0 + hcal1 + hcal2); //mod by R.C 
   }
 
-  int ix0 = 0;
-  if(NCellsHCALX == 6) ix0 = 1;
-  ehcell0->Fill(e.HCAL[0][ix0+0][0].energy);
-  ehcell1->Fill(e.HCAL[0][ix0+1][0].energy);
-  ehcell2->Fill(e.HCAL[0][ix0+2][0].energy);
-  ehcell3->Fill(e.HCAL[0][ix0+0][1].energy);
-  ehcell4->Fill(e.HCAL[0][ix0+1][1].energy);
-  ehcell5->Fill(e.HCAL[0][ix0+2][1].energy);
-  ehcell6->Fill(e.HCAL[0][ix0+0][2].energy);
-  ehcell7->Fill(e.HCAL[0][ix0+1][2].energy);
-  ehcell8->Fill(e.HCAL[0][ix0+2][2].energy);
-
-  if(e.mc) {
-    if(e.mc->ECALEntryY > -0.5 && e.mc->ECALEntryY < 0.5) cm0->Fill(ecalcmvaly);
-    if(e.mc->ECALEntryY > 4.5 && e.mc->ECALEntryY < 5.5) cm5->Fill(ecalcmvaly);
-    if(e.mc->ECALEntryY > 9.5 && e.mc->ECALEntryY < 10.5) cm10->Fill(ecalcmvaly);
-    if(e.mc->ECALEntryY > 14.5 && e.mc->ECALEntryY < 15.5) cm15->Fill(ecalcmvaly);
+int ix0 = 0;
+if(NCellsHCALX == 6) ix0 = 1;
+ ehcell0->Fill(e.HCAL[0][ix0+0][0].energy);
+ ehcell0E=e.HCAL[0][ix0+0][0].energy;  //mod by R.C
+ ehcell1->Fill(e.HCAL[0][ix0+1][0].energy);
+ ehcell1E = e.HCAL[0][ix0+1][0].energy; //mod by R.C
+ ehcell2->Fill(e.HCAL[0][ix0+2][0].energy);
+ ehcell2E = e.HCAL[0][ix0+2][0].energy; //mod by R.C
+ ehcell3->Fill(e.HCAL[0][ix0+0][1].energy);
+ ehcell3E = e.HCAL[0][ix0+0][1].energy; //mod by R.c
+ ehcell4->Fill(e.HCAL[0][ix0+1][1].energy);
+ ehcell4E = e.HCAL[0][ix0+1][1].energy; //mod by R.C
+ ehcell5->Fill(e.HCAL[0][ix0+2][1].energy);
+ ehcell5E = e.HCAL[0][ix0+2][1].energy; //mod by R.C
+ ehcell6->Fill(e.HCAL[0][ix0+0][2].energy);
+ ehcell6E = e.HCAL[0][ix0+0][2].energy; //mod by R.C
+ ehcell7->Fill(e.HCAL[0][ix0+1][2].energy);
+ ehcell7E = e.HCAL[0][ix0+1][2].energy; //mod by R.C
+ ehcell8->Fill(e.HCAL[0][ix0+2][2].energy);
+ ehcell8E = e.HCAL[0][ix0+2][2].energy; //mod by R.C 
+ 
+ if(e.mc) {
+    if(e.mc->ECALEntryY > -0.5 && e.mc->ECALEntryY < 0.5){
+      cm0->Fill(ecalcmvaly);
+      cm0E = ecalcmvaly; //mod by R.C
+    }
+    if(e.mc->ECALEntryY > 4.5 && e.mc->ECALEntryY < 5.5){
+      cm5->Fill(ecalcmvaly);
+      cm5E = ecalcmvaly; ///mod by R.C
+    }
+    if(e.mc->ECALEntryY > 9.5 && e.mc->ECALEntryY < 10.5) {
+      cm10->Fill(ecalcmvaly);
+      cm10E = ecalcmvaly; //mod by R.C
+    }
+    if(e.mc->ECALEntryY > 14.5 && e.mc->ECALEntryY < 15.5) {
+      cm15->Fill(ecalcmvaly);
+      cm15E = ecalcmvaly; //mod by R.C
+    }
   }
 
   data_tree->Fill();
