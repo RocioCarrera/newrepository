@@ -54,6 +54,8 @@ DaqEventsManager manager;
 ofstream* foutd;
 
 TH1D* momentum;
+TH1D* trackmcmatchx;
+TH1D* trackmcmatchy;
 
 TH2I* ehplot;
 TH1I* srdplot;
@@ -62,11 +64,6 @@ TH1I* srdplot1;
 TH1I* srdplot2;
 TH1I* mcecalentries;
 
-//new histos
-TH2F* cellEnergyHist; //2d array
-TH1D*** cellEnergyHistograms;
- 
-
 TH1D* ecalratio;
 TH1D* ecalcm;
 TH1D* mcecaly;
@@ -74,6 +71,7 @@ TH1D* mcecaly;
 TH1D* ecalrad;
 TH1D* ecalrad1;
 TH1D* chi2profile;
+TH1D* chi2profileError;
 
 TH1D* eecal;
 TH1D* eecalnoedge;
@@ -165,116 +163,117 @@ TH1D* hMC;
 TFile* myfile_data;
 TFile* myfile_MC;
 
-TTree* data_tree;
+TTree* dataTree;
 
-///////TREE VARIABLES
-double momentumE;
-int ehplotE;
-int srdplotE;
-int srdplot0E;
-int srdplot1E;
-int srdplot2E;
+///BRANCH DECLARATION///
 
-int mcecalentriesE;
-double ecalratioE;
-double ecalcmE;
-double mcecalyE;
+double momentumB;
+double trackmcmatchxB;
+double trackmcmatchyB;
 
-float cellEnergyHistE;
+int ehplotB;
+int srdplotB;
+int srdplot0B;
+int srdplot1B;
+int srdplot2B;
 
-double ecalR;
-double ecalR1;
-double ecalcellE[6][6]; //array of doubles
-double ecalE; //associate with eecal
-double ecalnoedgeE; //associate with eecalnoedge
-double ecalcentralE; //a.w. eecalcentral
-double ecalcentraltotE; //a.w. eecalcentraltot
-double ecalweightedE; 
+int ehcal0vetoB;
 
-double etotecalE;
-double epileupE;
-double epileup33E;
-double eprsE;
-double prstoecalE;
-double evetoE;
-double evhcalE;
-double eecalbadE;
+int mcecalentriesB;
 
-double etotwcalE;
-double wpileupE;
-double wpileup0E;
-double wpileup1E;
-double wpileup2E;
-
-double ewecalE;
-double ewprsE;
-double ewecalmainE;
-double ecatcherE;
-double ewecalecalE;
-double eweplotE;
-double eweplot1E;
-double eweplot2E;
-double eweplot3E;
-double evtwcE;
-double evtecE;
-double es2E;
-double ew2E;
-double ew22E;
-double ew23E;
-double ew2allE;
-double ev2E;
-double es4E;
-double edmE;
-double ev2w2E; 
-
-double flowE;
-double ts0E;
-double tsrdE;
-double tdiffsrdE;
-double tecalE;
-double tdiffecalE;
-double thcalE;
-double tdiffhcalE;
-double tdetE;
-double tdiffdetE;
-
-double ehcalE;
-double ehcal0E;
-double ehcal1E;
-double ehcal2E;
-double ehcal3E;
-double ehcalcatcherE;
-double ehcal0vetoE;
-double RhcalE;
-double Rhcal12E;
-double Rhcal1E;
-double etotE;
-
-double ehcell0E;
-double ehcell1E;
-double ehcell2E;
-double ehcell3E;
-double ehcell4E;
-double ehcell5E;
-double ehcell6E;
-double ehcell7E;
-double ehcell8E;
-
-float cm0E;
-float cm5E;
-float cm10E;
-float cm15E;
-
-double ebgo0E;
-double ebgo3E;
-double ebgo4E;
-double ebgo7E;
-
-////////
+double ecalratioB;
+double ecalcmB;
+double mcecalyB;
+double ecalradB;
+double ecalrad1B;
+double chi2profileB;
+double chi2profileErrorB;
 
 
+double eecalB;
+double eecalnoedgeB;
+double eecalcentralB;
+double eecalcentraltotB;
+double eecalweightedB;
+double etotecalB;
+double epileupB;
+double epileup33B;
+double eprsB;
+double prstoecalB;
+double evetoB;
+double evhcalB;
+double eecalbadB;
+double etotwcalB;
+double wpileupB;
+double wpileup0B;
+double wpileup1B;
+double wpileup2B;
+double ewecalB;
+double ewprsB;
+double ewecalmainB;
+double ecatcherB;
+double ewecalecalB;
+double eweplotB;
+double eweplot1B;
+double eweplot2B;
+double eweplot3B;
+double evtwcB;
+double evtecB;
+double es2B;
+double ew2B;
+double ew22B;
+double ew23B;
+double ew2allB;
+double ev2B;
+double es4B;
+double edmB;
+double ev2w2B;
+double flowB;
+
+double ts0B;
+double tsrdB;
+double tdiffsrdB;
+double tecalB;
+double tdiffecalB;
+double thcalB;
+double tdiffhcalB;
+double tdetB;
+double tdiffdetB;
+
+double ehcalB;
+double ehcal0B;
+double ehcal1B;
+double ehcal2B;
+double ehcal3B;
+double ehcalcatcherB;
+double RhcalB;
+double Rhcal12B;
+double Rhcal1B;
+double etotB;
+
+double ehcell0B;
+double ehcell1B;
+double ehcell2B;
+double ehcell3B;
+double ehcell4B;
+double ehcell5B;
+double ehcell6B;
+double ehcell7B;
+double ehcell8B;
+
+float cm0B;
+float cm5B;
+float cm10B;
+float cm15B;
+
+double ebgo0B;
+double ebgo3B;
+double ebgo4B;
+double ebgo7B;
 
 
+
+/////////////////////
 
 
 // time histos
@@ -288,122 +287,125 @@ int main(int argc, char *argv[])
   }
   
   int NevBadBursts = 0;
-
+  
   int NPassed = 0;
-
+  
   std::string inpfile(argv[1]);
   int inputtype = 0;
   if( inpfile.find(std::string(".d")) == inpfile.size()-2 ) inputtype = 1;
-
+  
   // ROOT calls
   TFile* hOutputFile = new TFile("hist.root", "RECREATE");
 
   if(inputtype == 0) { // Reading data file(s) ---------------------------
-
+    
     std::cout << "Reading data files, first is " << argv[1] << std::endl;
-
-//    DaqEventsManager manager;
+    
+    //    DaqEventsManager manager;
     manager.SetMapsDir("../maps");
     for (int i = 1; i < argc; ++i)
       manager.AddDataSource(argv[i]);
     manager.Print();
-
+    
     int maxev = 1000000;
     int nev = 0;
-
+    
     // DST file
     foutd = new std::ofstream("mydsti.d");
     if (!foutd) {
       cerr << "ERROR: failed to open DST file" << endl;
       return 1;
     }
-
+    
     // Output file
     ofstream fout("output.dat");
     if (!fout) {
       cerr << "ERROR: failed to open events output file" << endl;
       return 1;
     }
-
-
+    
+    
     //while (manager.ReadEvent() && nev < maxev) { // event loop, read event by event
     while (manager.ReadEvent()) { // event loop, read event by event
- 
+      
       nev++;
-
+      
       const int nevt = manager.GetEventsCounter();
-
+      
       // print progress
       if (nevt % 1000 == 1)
         cout << "===> Event #" << manager.GetEventsCounter() << "  N passed = " << NPassed << endl;
-
+      
       // decode event (prepare digis)
       const bool decoded = manager.DecodeEvent();
-
+      
       // skip events with decoding problems
       if (!decoded) {
         cout << "WARNING: fail to decode event #" << nevt << endl;
         continue;
       }
-
+      
       // run reconstruction
       RecoEvent e = RunP348Reco(manager);
-
+      
       // process only "physics" events (no random or calibration trigger)
       if (!e.isPhysics) continue;
-
+      
+      // get only beam trigger to perform calibration on physics runs, starting from 2023
+      //if (!e.isTriggerBeamOnly()) continue; 
+      
       // skip known "bad" spills
       if (IsBadBurst(e.run, e.spill)) {NevBadBursts++; continue;}
-
+      
       int ifproc = procev(e);
       NPassed += ifproc;
-
+      
       // Output file
-//      if(ifproc) fout.write((const char*) manager.GetEvent().GetBuffer(), manager.GetEvent().GetLength());
-
+      //      if(ifproc) fout.write((const char*) manager.GetEvent().GetBuffer(), manager.GetEvent().GetLength());
+      
     }
     std::cout << "Number of events in bad bursts = " << NevBadBursts << std::endl;
   }  // End of data file(s) reading -------------------------------------
-
+  
   if(inputtype == 1) { // Reading MC file -------------------------------
-
+    
     std::cout << "Reading MC file " << argv[1] << std::endl;
 
     std::ifstream inFile(argv[1]);
-
+    
     if (!inFile) {
       std::cerr << "ERROR: can't open file " << argv[2] << std::endl;
       return 1;
     }
-  
+    
     const int Nevents = 100000000;
     int NevMCRead = 0;
-
+    
     // event loop, read event by event
     for (int iev = 0; iev < Nevents; iev++) {
 
       RecoEvent e;
       //if(inputtype == 1) e = RunP348RecoMC(inFile); // same as in exampletrackingmc in master
       if(inputtype == 1) e = RunP348RecoMC(inFile, 1, 1); // (&inFile, bool doDigi = 1, bool doSmear = 0)
-
+      
       if (!e.mc) break;
-
+      
       NevMCRead++;
-
+      
       // print progress
       if (iev % 100 == 1)
         std::cout << "===> Event #" << iev << "  N passed = " << NPassed << std::endl;
-
+      
       int ifproc = procev(e);
       NPassed += ifproc;
-
+      
     }
     std::cout << std::endl;
     std::cout << "Number of MC events read in = " << NevMCRead << std::endl;
   } // End of MC file reading -------------------------------------------
-
+  
   endrun();
-
+  
   hOutputFile->Write();
 
   return 0;
@@ -415,249 +417,234 @@ int procev(RecoEvent &e0)
   ievproc++;
   if(ievproc == 0) { // initialization
 
-    ////////// Tree/////////////
-
-    data_tree = new TTree("data","data after di-muon cuts");
-    data_tree-> Branch("ecalE",&ecalE,"ecalE/D");
+    //////TTREE///////
     
-    data_tree->Branch("momentumE", &momentumE, "momentumE/D");
-    data_tree->Branch("ehplotE", &ehplotE, "ehplotE/I");
-    data_tree->Branch("srdplotE", &srdplotE, "srdplotE/I");
-    data_tree->Branch("srdplot0E", &srdplot0E, "srdplot0E/I");
-    data_tree->Branch("srdplot1E", &srdplot1E, "srdplot1E/I");
-    data_tree->Branch("srdplot2E", &srdplot2E, "srdplot2E/I");
-
-    data_tree->Branch("mcecalentriesE", &mcecalentriesE, "mcecalentriesE/I");
-    data_tree->Branch("ecalratioE", &ecalratioE, "ecalratioE/D");
-    data_tree->Branch("ecalcmE", &ecalcmE, "ecalcmE/D");
-    data_tree->Branch("mcecalyE", &mcecalyE, "mcecalyE/D");
-
-    data_tree->Branch("cellEnergyHistE", &cellEnergyHistE, "cellEnergyHistE/F");
-
-    // these branches dont follow same pattern of adding E at the end of name as others
-    data_tree-> Branch("ecalR",&ecalR,"ecalR/D");
-    data_tree-> Branch("ecalR1",&ecalR1,"ecalR1/D");
-    data_tree-> Branch("ecalnoedgeE",&ecalnoedgeE,"ecalnoedgeE/D");
-    data_tree-> Branch("ecalcentralE",&ecalcentralE,"ecalcentralE/D");
-    data_tree-> Branch("ecalcentraltotE",&ecalcentraltotE,"ecalcentraltotE/D");
-    data_tree-> Branch("ecalweightedE",&ecalweightedE,"ecalweightedE/D");
-    //
-
-    data_tree->Branch("etotecalE", &etotecalE, "etotecalE/D");
-    data_tree->Branch("epileupE", &epileupE, "epileupE/D");
-    data_tree->Branch("epileup33E", &epileup33E, "epileup33E/D");
-    data_tree->Branch("eprsE", &eprsE, "eprsE/D");
-    data_tree->Branch("prstoecalE", &prstoecalE, "prstoecalE/D");
-    data_tree->Branch("evetoE", &evetoE, "evetoE/D");
-    data_tree->Branch("evhcalE", &evhcalE, "evhcalE/D");
-    data_tree->Branch("eecalbadE", &eecalbadE, "eecalbadE/D");
-
-    data_tree->Branch("etotwcalE", &etotwcalE, "etotwcalE/D");
-    data_tree->Branch("wpileupE", &wpileupE, "wpileupE/D");
-    data_tree->Branch("wpileup0E", &wpileup0E, "wpileup0E/D");
-    data_tree->Branch("wpileup1E", &wpileup1E, "wpileup1E/D");
-    data_tree->Branch("wpileup2E", &wpileup2E, "wpileup2E/D");
-
-    data_tree->Branch("ewecalE", &ewecalE, "ewecalE/D");
-    data_tree->Branch("ewprsE", &ewprsE, "ewprsE/D");
-    data_tree->Branch("ewecalmainE", &ewecalmainE, "ewecalmainE/D");
-    data_tree->Branch("ecatcherE", &ecatcherE, "ecatcherE/D");
-    data_tree->Branch("ewecalecalE", &ewecalecalE, "ewecalecalE/D");
-    data_tree->Branch("eweplotE", &eweplotE, "eweplotE/D");
-    data_tree->Branch("eweplot1E", &eweplot1E, "eweplot1E/D");
-    data_tree->Branch("eweplot2E", &eweplot2E, "eweplot2E/D");
-    data_tree->Branch("eweplot3E", &eweplot3E, "eweplot3E/D");
-    data_tree->Branch("evtwcE", &evtwcE, "evtwcE/D");
-    data_tree->Branch("evtecE", &evtecE, "evtecE/D");
-    data_tree->Branch("es2E", &es2E, "es2E/D");
-    data_tree->Branch("ew2E", &ew2E, "ew2E/D");
-    data_tree->Branch("ew22E", &ew22E, "ew22E/D");
-    data_tree->Branch("ew23E", &ew23E, "ew23E/D");
-    data_tree->Branch("ew2allE", &ew2allE, "ew2allE/D");
-    data_tree->Branch("ev2E", &ev2E, "ev2E/D");
-    data_tree->Branch("es4E", &es4E, "es4E/D");
-    data_tree->Branch("edmE", &edmE, "edmE/D");
-    data_tree->Branch("ev2w2E", &ev2w2E, "ev2w2E/D");
-
-    data_tree->Branch("flowE", &flowE, "flowE/D");
-    data_tree->Branch("ts0E", &ts0E, "ts0E/D");
-    data_tree->Branch("tsrdE", &tsrdE, "tsrdE/D");
-    data_tree->Branch("tdiffsrdE", &tdiffsrdE, "tdiffsrdE/D");
-    data_tree->Branch("tecalE", &tecalE, "tecalE/D");
-    data_tree->Branch("tdiffecalE", &tdiffecalE, "tdiffecalE/D");
-    data_tree->Branch("thcalE", &thcalE, "thcalE/D");
-    data_tree->Branch("tdiffhcalE", &tdiffhcalE, "tdiffhcalE/D");
-    data_tree->Branch("tdetE", &tdetE, "tdetE/D");
-    data_tree->Branch("tdiffdetE", &tdiffdetE, "tdiffdetE/D");
-
-    data_tree->Branch("ehcalE", &ehcalE, "ehcalE/D");
-    data_tree->Branch("ehcal0E", &ehcal0E, "ehcal0E/D");
-    data_tree->Branch("ehcal1E", &ehcal1E, "ehcal1E/D");
-    data_tree->Branch("ehcal2E", &ehcal2E, "ehcal2E/D");
-    data_tree->Branch("ehcal3E", &ehcal3E, "ehcal3E/D");
-    data_tree->Branch("ehcalcatcherE", &ehcalcatcherE, "ehcalcatcherE/D");
-    data_tree->Branch("ehcal0vetoE", &ehcal0vetoE, "ehcal0vetoE/D");
-    data_tree->Branch("RhcalE", &RhcalE, "RhcalE/D");
-    data_tree->Branch("Rhcal12E", &Rhcal12E, "Rhcal12E/D");
-    data_tree->Branch("Rhcal1E", &Rhcal1E, "Rhcal1E/D");
-    data_tree->Branch("etotE", &etotE, "etotE/D");
-
-    data_tree->Branch("ehcell0E", &ehcell0E, "ehcell0E/D");
-    data_tree->Branch("ehcell1E", &ehcell1E, "ehcell1E/D");
-    data_tree->Branch("ehcell2E", &ehcell2E, "ehcell2E/D");
-    data_tree->Branch("ehcell3E", &ehcell3E, "ehcell3E/D");
-    data_tree->Branch("ehcell4E", &ehcell4E, "ehcell4E/D");
-    data_tree->Branch("ehcell5E", &ehcell5E, "ehcell5E/D");
-    data_tree->Branch("ehcell6E", &ehcell6E, "ehcell6E/D");
-    data_tree->Branch("ehcell7E", &ehcell7E, "ehcell7E/D");
-    data_tree->Branch("ehcell8E", &ehcell8E, "ehcell8E/D");
-
-    data_tree->Branch("cm0E", &cm0E, "cm0E/F");
-    data_tree->Branch("cm5E", &cm5E, "cm5E/F");
-    data_tree->Branch("cm10E", &cm10E, "cm10E/F");
-    data_tree->Branch("cm15E", &cm15E, "cm15E/F");
+    // Create the TTree
+    dataTree = new TTree("data", "Data Tree");
     
-    data_tree->Branch("ebgo0E", &ebgo0E, "ebgo0E/D");
-    data_tree->Branch("ebgo3E", &ebgo3E, "ebgo3E/D");
-    data_tree->Branch("ebgo4E", &ebgo4E, "ebgo4E/D");
-    data_tree->Branch("ebgo7E", &ebgo7E, "ebgo7E/D");
+    // Add branches to the TTree for each histogram
+    dataTree->Branch("momentumB", &momentumB, "momentumB/D");
+    
+    dataTree->Branch("trackmcmatchxB", &trackmcmatchxB, "trackmcmatchxB/D");
+    dataTree->Branch("trackmcmatchyB", &trackmcmatchyB, "trackmcmatchyB/D");
+    
+    dataTree->Branch("ehplotB", &ehplotB, "ehplotB/I");
+    dataTree->Branch("srdplotB", &srdplotB, "srdplotB/I");
+    dataTree->Branch("srdplot0B", &srdplot0B, "srdplot0B/I");
+    dataTree->Branch("srdplot1B", &srdplot1B, "srdplot1B/I");
+    dataTree->Branch("srdplot2B", &srdplot2B, "srdplot2B/I");
+    dataTree->Branch("mcecalentriesB", &mcecalentriesB, "mcecalentriesB/I");
+    
+    dataTree->Branch("ecalratioB", &ecalratioB, "ecalratioB/D");
+    dataTree->Branch("ecalcmB", &ecalcmB, "ecalcmB/D");
+    dataTree->Branch("mcecalyB", &mcecalyB, "mcecalyB/D");
+    
+    dataTree->Branch("ecalradB", &ecalradB, "ecalradB/D");
+    dataTree->Branch("ecalrad1B", &ecalrad1B, "ecalrad1B/D");
+    dataTree->Branch("chi2profileB", &chi2profileB, "chi2profileB/D");
+    dataTree->Branch("chi2profileErrorB", &chi2profileErrorB, "chi2profileErrorB/D");
+    
+    dataTree->Branch("eecalB", &eecalB, "eecalB/D");
+    dataTree->Branch("eecalnoedgeB", &eecalnoedgeB, "eecalnoedgeB/D");
+    dataTree->Branch("eecalcentralB", &eecalcentralB, "eecalcentralB/D");
+    dataTree->Branch("eecalcentraltotB", &eecalcentraltotB, "eecalcentraltotB/D");
+    dataTree->Branch("eecalweightedB", &eecalweightedB, "eecalweightedB/D");
+    dataTree->Branch("etotecalB", &etotecalB, "etotecalB/D");
+    dataTree->Branch("epileupB", &epileupB, "epileupB/D");
+    dataTree->Branch("epileup33B", &epileup33B, "epileup33B/D");
+    dataTree->Branch("eprsB", &eprsB, "eprsB/D");
+    dataTree->Branch("prstoecalB", &prstoecalB, "prstoecalB/D");
+    dataTree->Branch("evetoB", &evetoB, "evetoB/D");
+    dataTree->Branch("evhcalB", &evhcalB, "evhcalB/D");
+    dataTree->Branch("eecalbadB", &eecalbadB, "eecalbadB/D");
+    
+    dataTree->Branch("etotwcalB", &etotwcalB, "etotwcalB/D");
+    dataTree->Branch("wpileupB", &wpileupB,"wpileupB/D");
+    dataTree->Branch("wpileup0B", &wpileup0B, "wpileup0B/D");
+    dataTree->Branch("wpileup1B", &wpileup1B, "wpileup1B/D");
+    dataTree->Branch("wpileup2B", &wpileup2B, "wpileup2B/D");
+    dataTree->Branch("ewecalB", &ewecalB, "ewecalB/D");
+    dataTree->Branch("ewprsB", &ewprsB, "ewprsB/D");
+    dataTree->Branch("ewecalmainB", &ewecalmainB, "ewecalmainB/D");
+    dataTree->Branch("ecatcherB", &ecatcherB, "ecatcherB/D");
+    dataTree->Branch("ewecalecalB", &ewecalecalB, "ewecalecalB/D");
+    dataTree->Branch("eweplotB", &eweplotB, "eweplotB/D");
+    dataTree->Branch("eweplot1B", &eweplot1B, "eweplot1B/D");
+    dataTree->Branch("eweplot2B", &eweplot2B, "eweplot2B/D");
+    dataTree->Branch("eweplot3B", &eweplot3B, "eweplot3B/D");
+    // dataTree->Branch("ewprsmainB", &ewprsmainB); // Uncomment if needed
+    dataTree->Branch("evtwcB", &evtwcB, "evtwcB/D");
+    dataTree->Branch("evtecB", &evtecB, "evtecB/D");
+    dataTree->Branch("es2B", &es2B, "es2B/D");
+    dataTree->Branch("ew2B", &ew2B, "ew2B/D");
+    dataTree->Branch("ew22B", &ew22B, "ew22B/D");
+    dataTree->Branch("ew23B", &ew23B, "ew23B/D");
+    dataTree->Branch("ew2allB", &ew2allB, "ew2allB/D");
+    dataTree->Branch("ev2B", &ev2B, "ev2B/D");
+    dataTree->Branch("es4B", &es4B, "es4B/D");
+    dataTree->Branch("edmB", &edmB, "edmB/D");
+    dataTree->Branch("ev2w2B", &ev2w2B, "ev2w2B/D");
+    
+    dataTree->Branch("flowB", &flowB, "flowB/D");
+    
+    dataTree->Branch("ts0B", &ts0B, "ts0B/D");
+    dataTree->Branch("tsrdB", &tsrdB, "tsrdB/D");
+    dataTree->Branch("tdiffsrdB", &tdiffsrdB, "tdiffsrdB/D");
+    dataTree->Branch("tecalB", &tecalB, "tecalB/D");
+    dataTree->Branch("tdiffecalB", &tdiffecalB, "tdiffecalB/D");
+    dataTree->Branch("thcalB", &thcalB, "thcalB/D");
+    dataTree->Branch("tdiffhcalB", &tdiffhcalB, "tdiffhcalB/D");
+    dataTree->Branch("tdetB", &tdetB, "tdetB/D");
+    dataTree->Branch("tdiffdetB", &tdiffdetB, "tdiffdetB/D");
+    
+    dataTree->Branch("ehcalB", &ehcalB, "ehcalB/D");
+    dataTree->Branch("ehcal0B", &ehcal0B, "ehcal0B/D");
+    dataTree->Branch("ehcal1B", &ehcal1B, "ehcal1B/D");
+    dataTree->Branch("ehcal2B", &ehcal2B, "ehcal2B/D");
+    dataTree->Branch("ehcal3B", &ehcal3B, "ehcal3B/D");
+    dataTree->Branch("ehcalcatcherB", &ehcalcatcherB, "ehcalcatcherB/D");
+    dataTree->Branch("ehcal0vetoB", &ehcal0vetoB, "ehcal0vetoB/D");
+    dataTree->Branch("RhcalB", &RhcalB, "RhcalB/D");
+    dataTree->Branch("Rhcal12B", &Rhcal12B, "Rhcal12B/D");
+    dataTree->Branch("Rhcal1B", &Rhcal1B, "Rhcal1B/D");
+    dataTree->Branch("etotB", &etotB, "etotB/D");
+    dataTree->Branch("ehcell0B", &ehcell0B, "ehcell0B/D");
+    dataTree->Branch("ehcell1B", &ehcell1B, "ehcell1B/D");
+    dataTree->Branch("ehcell2B", &ehcell2B, "ehcell2B/D");
+    dataTree->Branch("ehcell3B", &ehcell3B, "ehcell3B/D");
+    dataTree->Branch("ehcell4B", &ehcell4B, "ehcell4B/D");
+    dataTree->Branch("ehcell5B", &ehcell5B, "ehcell5B/D");
+    dataTree->Branch("ehcell6B", &ehcell6B, "ehcell6B/D");
+    dataTree->Branch("ehcell7B", &ehcell7B, "ehcell7B/D");
+    dataTree->Branch("ehcell8B", &ehcell8B, "ehcell8B/D");
+    dataTree->Branch("cm0B", &cm0B, "cm0B/F");
+    dataTree->Branch("cm5B", &cm5B, "cm5B/F");
+    dataTree->Branch("cm10B", &cm10B, "cm10B/F");
+    dataTree->Branch("cm15B", &cm15B, "cm15B/F");
+    dataTree->Branch("ebgo0B", &ebgo0B, "ebgo0B/D");
+    dataTree->Branch("ebgo3B", &ebgo3B, "ebgo3B/D");
+    dataTree->Branch("ebgo4B", &ebgo4B, "ebgo4B/D");
+    dataTree->Branch("ebgo7B", &ebgo7B, "ebgo7B/D");
+    
+    /////////////////
     
 
-    // Create a separate branch for each element of the array
-    for (int x = 0; x < 6; ++x) {
-      for (int y = 0; y < 6; ++y) {
-	TString branchName = Form("ecalcellE_%d_%d", x, y);
-	data_tree->Branch(branchName, &ecalcellE[x][y], Form("ecalcellE[%d][%d]/D", x, y));
-      }
-    }
     
-   
-
-    //////////////////////////////////////////////
-
-
-    momentum = new TH1D("momentum", "momentum from MM", 400, 0., 200.); // ✓ 
-
-    ehplot = new TH2I("ehplot", "ECAL vs HCAL;ECAL, GeV;HCAL, GeV;#nevents", 120, 0, 120, 120, 0, 120); // ✓ 
-    srdplot = new TH1I("srdplot", "SRD;Energy, MeV;#nevents", 250, 0, 250);  // ✓ 
-    srdplot0 = new TH1I("srdplot0", "SRD;Energy, MeV;#nevents", 250, 0, 250);  // ✓  
-    srdplot1 = new TH1I("srdplot1", "SRD;Energy, MeV;#nevents", 250, 0, 250);  // ✓ 
-    srdplot2 = new TH1I("srdplot2", "SRD;Energy, MeV;#nevents", 250, 0, 250);  // ✓ 
-
-    mcecalentries = new TH1I("MC_ecalentries", "MC ECAL entry X coordinates in mm;X, mm;#nevents", 100, -200., 200.);  // ✓ 
-
-    ecalratio = new TH1D("ecalratio", "E1/E2-1 vs coord", 39, -19.5, 19.5);  // ✓ 
+    
+    momentum = new TH1D("momentum", "momentum from MM", 400, 0., 200.); //X 
+    trackmcmatchx = new TH1D("trackmcmatchx", "X mismatch on ECAL track - MC", 200, -10., 10.); //X
+    trackmcmatchy = new TH1D("trackmcmatchy", "Y mismatch on ECAL track - MC", 200, -10., 10.); //X 
+    
+    ehplot = new TH2I("ehplot", "ECAL vs HCAL;ECAL, GeV;HCAL, GeV;#nevents", 120, 0, 120, 120, 0, 120); //X
+    srdplot = new TH1I("srdplot", "SRD;Energy, MeV;#nevents", 250, 0, 250); // X 
+    srdplot0 = new TH1I("srdplot0", "SRD;Energy, MeV;#nevents", 250, 0, 250); // X
+    srdplot1 = new TH1I("srdplot1", "SRD;Energy, MeV;#nevents", 250, 0, 250); // X 
+    srdplot2 = new TH1I("srdplot2", "SRD;Energy, MeV;#nevents", 250, 0, 250); // X 
+    
+    mcecalentries = new TH1I("MC_ecalentries", "MC ECAL entry X coordinates in mm;X, mm;#nevents", 100, -200., 200.); //X 
+    
+    ecalratio = new TH1D("ecalratio", "E1/E2-1 vs coord", 39, -19.5, 19.5); //x 
     ecalratio->Sumw2();
-    ecalcm = new TH1D("ecalcm", "ECAL CM vs coord", 39, -19.5, 19.5); // ✓ 
+    ecalcm = new TH1D("ecalcm", "ECAL CM vs coord", 39, -19.5, 19.5); // x
     ecalcm->Sumw2();
-    mcecaly = new TH1D("MC_ecalY", "MC ECAL entry Y coordinates in mm;X, mm;#nevents", 39, -19.5, 19.5);  // ✓ 
+    mcecaly = new TH1D("MC_ecalY", "MC ECAL entry Y coordinates in mm;X, mm;#nevents", 39, -19.5, 19.5); //x 
     mcecaly->Sumw2();
+    
+    ecalrad = new TH1D("ecalrad", "Shower radius", 50, 0., 100.); // x 
+    ecalrad1 = new TH1D("ecalrad1", "Shower radius 1", 50, 0., 100.); // x 
+    chi2profile = new TH1D("chi2profile", "ECAL profile chi2", 200, 0, 20.); // x 
+    chi2profileError = new TH1D("chi2profileError", "ECAL profile chi2 Error Code", 10, 99990., 99999.999); //x 
 
-   //new histos
-    cellEnergyHist = new TH2F("cellEnergyHist", "Cell Energy Distribution", 7, -1, 7, 7, -1, 7); // ✓ 
+    eecal = new TH1D("eecal", "ECAL energy", 1000, 0., 200.); //x 
+    eecalnoedge = new TH1D("eecalnoedge", "ECAL 5*5 energy", 1000, 0., 200.); //x 
+    eecalcentral = new TH1D("eecalcentral", "ECAL 3*3 energy", 1000, 0., 200.); //x 
+    eecalcentraltot = new TH1D("eecalcentraltot", "ECAL 3*3 total energy", 1000, 0., 200.); // x 
+    eecalweighted = new TH1D("eecalweighted", "ECAL energy, weight used", 200, 0., 200.); // x 
+    etotecal = new TH1D("etotecal", "ECAL total energy", 1000, 0., 200.); //x
+    epileup = new TH1D("epileup", "ECAL energy pileup", 200, 0., 40.); //x 
+    epileup33 = new TH1D("epileupcentral", "ECAL energy pileup 3*3", 200, 0., 40.); //x 
+    eprs = new TH1D("eprs", "PRS energy", 800, 0., 20.); //x 
+    prstoecal = new TH1D("prstoecal", "PRS/ECAL", 100, 0., 0.5); // x 
+    eveto = new TH1D("eveto", "VETO energy", 100, 0., 0.1); //x 
+    evhcal = new TH1D("evhcal", "VHCAL energy", 100, 0., 10.); //x 
+    eecalbad = new TH1D("eecalbad", "ECAL bad energy", 100, 0., 100.); //x 
 
-    cellEnergyHistograms = new TH1D**[6]; // ✓  
+    etotwcal = new TH1D("etotwcal", "WCAL total energy", 1000, 0., 200.); //x 
+    wpileup = new TH1D("wpileup", "WCAL energy pileup", 200, 0., 40.); //x 
+    wpileup0 = new TH1D("wpileup0", "WCAL0 energy pileup", 200, 0., 40.); //x
+    wpileup1 = new TH1D("wpileup1", "WCAL1 energy pileup", 200, 0., 40.); // x 
+    wpileup2 = new TH1D("wpileup2", "WCAL2 energy pileup", 200, 0., 40.); //x 
 
-    for (int x = 0; x < 6; ++x) {
-      cellEnergyHistograms[x] = new TH1D*[6];
-
-      for (int y = 0; y < 6; ++y) {
-	std::string histName = "CellEnergyHisto_" + std::to_string(x) + "_" + std::to_string(y);
-	cellEnergyHistograms[x][y] = new TH1D(histName.c_str(), histName.c_str(), 100, 0, 100);
-      }
-    }
-
-
-    ecalrad = new TH1D("ecalrad", "Shower radius", 50, 0., 100.); // ✓ 
-    ecalrad1 = new TH1D("ecalrad1", "Shower radius 1", 50, 0., 100.); // ✓
-    chi2profile = new TH1D("chi2profile", "ECAL profile chi2", 100, 0, 10.);
-
-    eecal = new TH1D("eecal", "ECAL energy", 1000, 0., 200.); // ✓
-    eecalnoedge = new TH1D("eecalnoedge", "ECAL 5*5 energy", 1000, 0., 200.); // ✓ 
-    eecalcentral = new TH1D("eecalcentral", "ECAL 3*3 energy", 1000, 0., 200.); // ✓
-    eecalcentraltot = new TH1D("eecalcentraltot", "ECAL 3*3 total energy", 1000, 0., 200.); // ✓
-    eecalweighted = new TH1D("eecalweighted", "ECAL energy, weight used", 200, 0., 200.); // hacer sola
-    etotecal = new TH1D("etotecal", "ECAL total energy", 1000, 0., 200.); // ✓
-    epileup = new TH1D("epileup", "ECAL energy pileup", 200, 0., 40.); //✓
-    epileup33 = new TH1D("epileupcentral", "ECAL energy pileup 3*3", 200, 0., 40.);// ✓
-    eprs = new TH1D("eprs", "PRS energy", 800, 0., 20.); // ✓
-    prstoecal = new TH1D("prstoecal", "PRS/ECAL", 100, 0., 0.5); // ✓
-    eveto = new TH1D("eveto", "VETO energy", 100, 0., 0.1); // ✓
-    evhcal = new TH1D("evhcal", "VHCAL energy", 100, 0., 10.); // ✓
-    eecalbad = new TH1D("eecalbad", "ECAL bad energy", 100, 0., 100.); // ✓
-
-    etotwcal = new TH1D("etotwcal", "WCAL total energy", 1000, 0., 200.);  // ✓
-    wpileup = new TH1D("wpileup", "WCAL energy pileup", 200, 0., 40.);  // ✓  
-    wpileup0 = new TH1D("wpileup0", "WCAL0 energy pileup", 200, 0., 40.);  // ✓
-    wpileup1 = new TH1D("wpileup1", "WCAL1 energy pileup", 200, 0., 40.);  // ✓ 
-    wpileup2 = new TH1D("wpileup2", "WCAL2 energy pileup", 200, 0., 40.);  // ✓
-
-    ewecal = new TH1D("ewecal", "WECAL energy", 1000, 0., 200.);// ✓
-    ewprs = new TH1D("ewprs", "WECAL-PRS energy", 1000, 0., 20.); // ✓
-    ewecalmain = new TH1D("ewecalmain", "WECAL main energy", 1000, 0., 200.);  // ✓
-    ecatcher = new TH1D("ecatcher", "W catcher energy", 200, 0., 10.); // ✓ 
-    ewecalecal = new TH1D("ewecal+ecal", "WECAL+ECAL energy", 200, 0., 200.);  // ✓ 
-    eweplot = new TH2D("eweplot", "ECAL vs WCAL", 80, 0., 160., 80, 0., 160.);  // ✓  
-    eweplot1 = new TH2D("eweplot1", "ECAL+HCAL vs WCAL", 90, 0., 180., 90, 0., 180.); // ✓  
-    eweplot2 = new TH1D("eweplot2", "WECAL energy wgt", 50, 0., 100.); // ✓  
-    eweplot3 = new TH1D("eweplot3", "WECAL energy", 50, 0., 100.); // ✓  
+    ewecal = new TH1D("ewecal", "WECAL energy", 1000, 0., 200.); //x 
+    ewprs = new TH1D("ewprs", "WECAL-PRS energy", 1000, 0., 20.); // x 
+    ewecalmain = new TH1D("ewecalmain", "WECAL main energy", 1000, 0., 200.); //x 
+    ecatcher = new TH1D("ecatcher", "W catcher energy", 200, 0., 10.); //x 
+    ewecalecal = new TH1D("ewecal+ecal", "WECAL+ECAL energy", 200, 0., 200.); //x  
+    eweplot = new TH2D("eweplot", "ECAL vs WCAL", 80, 0., 160., 80, 0., 160.); // x 
+    eweplot1 = new TH2D("eweplot1", "ECAL+HCAL vs WCAL", 90, 0., 180., 90, 0., 180.); //x 
+    eweplot2 = new TH1D("eweplot2", "WECAL energy wgt", 50, 0., 100.); // x 
+    eweplot3 = new TH1D("eweplot3", "WECAL energy", 50, 0., 100.); //x 
     //ewprsmain = new TH2D("ewprsmain", "WPRS vs WMAIN", 100, 0., 200., 40, 0., 40.);
-    evtwc = new TH1D("evtwc", "VTWC energy", 100, 0., 0.02); // ✓  
-    evtec = new TH1D("evtec", "VTEC energy", 100, 0., 0.01);  // ✓  
-    es2 = new TH1D("es2", "S2 energy", 100, 0., 0.01);   // ✓  
-    ew2 = new TH1D("ew2", "wcal2 energy", 100, 0., 0.01); // ✓ 
-    ew22 = new TH1D("ew22", "wcal2 energy W<50", 100, 0., 0.01);  // ✓ 
-    ew23 = new TH1D("ew23", "wcal2 energy WPRS>8", 100, 0., 0.01);  // ✓ 
-    ew2all = new TH1D("ew2all", "wcal2 all events", 100, 0., 0.01); // empty 
-    ev2 = new TH1D("ev2", "V2 energy", 100, 0., 0.02); // ✓ 
-    es4 = new TH1D("es4", "S4 energy", 100, 0., 0.002); // ✓ 
-    edm = new TH1D("edm", "DM energy", 100, 0., 0.01);// ✓ 
-    ev2w2 = new TH2D("ev2w2", "WCAL[2] vs V2", 50, 0., 0.02, 50, 0., 0.01); // ✓ 
+    evtwc = new TH1D("evtwc", "VTWC energy", 100, 0., 0.02); // x 
+    evtec = new TH1D("evtec", "VTEC energy", 100, 0., 0.01); // x 
+    es2 = new TH1D("es2", "S2 energy", 100, 0., 0.01); //x 
+    ew2 = new TH1D("ew2", "wcal2 energy", 100, 0., 0.01); //x 
+    ew22 = new TH1D("ew22", "wcal2 energy W<50", 100, 0., 0.01); // x 
+    ew23 = new TH1D("ew23", "wcal2 energy WPRS>8", 100, 0., 0.01); // x 
+    ew2all = new TH1D("ew2all", "wcal2 all events", 100, 0., 0.01); // unused
+    ev2 = new TH1D("ev2", "V2 energy", 100, 0., 0.02); // x 
+    es4 = new TH1D("es4", "S4 energy", 100, 0., 0.002); //x 
+    edm = new TH1D("edm", "DM energy", 100, 0., 0.01); //x 
+    ev2w2 = new TH2D("ev2w2", "WCAL[2] vs V2", 50, 0., 0.02, 50, 0., 0.01); //x 
 
-    flow = new TH1D("flow", "cut flow", 20, -0.5, 19.5); // ✓ 
+    flow = new TH1D("flow", "cut flow", 20, -0.5, 19.5); //x
 
-    ts0 = new TH1D("ts0", "Time S0", 400, -100., 300.); //empty 
-    tsrd = new TH1D("tsrd", "Time SRD0", 400, -100., 300.); //empty 
-    tdiffsrd = new TH1D("tsrd-ts0", "Time diff SRD", 400, -200., 200.); //empty
-    tecal = new TH1D("tecal", "Time ECAL cell", 400, -200., 200.); // empty 
-    tdiffecal = new TH1D("tecal-ts0", "Time diff ecal", 400, -200., 200.); //empty 
-    thcal = new TH1D("thcal", "Time HCAL cell", 400, -200., 200.); //empty 
-    tdiffhcal = new TH1D("thcal-ts0", "Time diff hcal", 400, -200., 200.); //empty 
-    tdet = new TH1D("tdet", "Time some det", 400, -100., 300.); //empty 
-    tdiffdet = new TH1D("tdet-ts0", "Time some det", 400, -200., 200.); //empty 
+    ts0 = new TH1D("ts0", "Time S0", 400, -100., 300.); //x 
+    tsrd = new TH1D("tsrd", "Time SRD0", 400, -100., 300.); //unused
+    tdiffsrd = new TH1D("tsrd-ts0", "Time diff SRD", 400, -200., 200.); //unused 
+    tecal = new TH1D("tecal", "Time ECAL cell", 400, -200., 200.); //unused 
+    tdiffecal = new TH1D("tecal-ts0", "Time diff ecal", 400, -200., 200.); //u 
+    thcal = new TH1D("thcal", "Time HCAL cell", 400, -200., 200.); //u 
+    tdiffhcal = new TH1D("thcal-ts0", "Time diff hcal", 400, -200., 200.); //u
+    tdet = new TH1D("tdet", "Time some det", 400, -100., 300.); // u 
+    tdiffdet = new TH1D("tdet-ts0", "Time some det", 400, -200., 200.); // u 
 
-    ehcal = new TH1D("ehcal", "HCAL energy", 400, 0., 200.);// ✓ 
-    ehcal0 = new TH1D("ehcal0", "HCAL module 0 energy", 200, 0., 40.); // ✓ 
-    ehcal1 = new TH1D("ehcal1", "HCAL module 1 energy", 40, 0., 20.);// ✓ 
-    ehcal2 = new TH1D("ehcal2", "HCAL module 2 energy", 40, 0., 20.);// ✓ 
-    ehcal3 = new TH1D("ehcal3", "HCAL module 3 energy", 80, 0., 40.);// ✓ 
-    ehcalcatcher = new TH1D("ehcalcatcher", "HCAL + catcher energy", 400, 0., 200.); // ✓  
-    ehcal0veto = new TH2D("ehcal0veto", "VETO vs ehcal0", 100, 0., 20., 20, 0., 40.);  // ✓  
-    Rhcal  = new TH1D("Rhcal", "HCAL R value", 50, 0., 1.); // ✓  
-    Rhcal12 = new TH1D("Rhcal12", "HCAL 1-2 R value", 50, 0., 1.);  // ✓  
-    Rhcal1 = new TH1D("Rhcal1", "HCAL1 R value", 50, 0., 1.);  // ✓   
-    etot = new TH1D("etot", "Energy WCAL+ECAL+HCAL", 200, 0., 200.);  // ✓   
+    ehcal = new TH1D("ehcal", "HCAL energy", 400, 0., 200.); //x 
+    //ehcal0 = new TH1D("ehcal0", "HCAL module 0 energy", 200, 0., 40.); // This is for NA64h
+    ehcal0 = new TH1D("ehcal0", "HCAL module 0 energy", 40, 0., 20.); //x
+    ehcal1 = new TH1D("ehcal1", "HCAL module 1 energy", 40, 0., 20.); //x 
+    ehcal2 = new TH1D("ehcal2", "HCAL module 2 energy", 40, 0., 20.);//x 
+    ehcal3 = new TH1D("ehcal3", "HCAL module 3 energy", 80, 0., 40.);//x 
+    ehcalcatcher = new TH1D("ehcalcatcher", "HCAL + catcher energy", 400, 0., 200.); //x 
+    ehcal0veto = new TH2D("ehcal0veto", "VETO vs ehcal0", 100, 0., 20., 20, 0., 40.); //x
+    Rhcal  = new TH1D("Rhcal", "HCAL R value", 50, 0., 1.); //x 
+    Rhcal12 = new TH1D("Rhcal12", "HCAL 1-2 R value", 50, 0., 1.); //x 
+    Rhcal1 = new TH1D("Rhcal1", "HCAL1 R value", 50, 0., 1.); //x 
+    etot = new TH1D("etot", "Energy WCAL+ECAL+HCAL", 200, 0., 200.); //x
 
-    ehcell0 = new TH1D("ehcell0", "HCAL1 cell 0 energy", 400, 0., 200.); // ✓  
-    ehcell1 = new TH1D("ehcell1", "HCAL1 cell 1 energy", 400, 0., 200.);// ✓  
-    ehcell2 = new TH1D("ehcell2", "HCAL1 cell 2 energy", 400, 0., 200.);// ✓  
-    ehcell3 = new TH1D("ehcell3", "HCAL1 cell 3 energy", 400, 0., 200.);// ✓  
-    ehcell4 = new TH1D("ehcell4", "HCAL1 cell 4 energy", 400, 0., 200.);// ✓  
-    ehcell5 = new TH1D("ehcell5", "HCAL1 cell 5 energy", 400, 0., 200.);// ✓  
-    ehcell6 = new TH1D("ehcell6", "HCAL1 cell 6 energy", 400, 0., 200.);// ✓  
-    ehcell7 = new TH1D("ehcell7", "HCAL1 cell 7 energy", 400, 0., 200.);// ✓  
-    ehcell8 = new TH1D("ehcell8", "HCAL1 cell 8 energy", 400, 0., 200.);// ✓  
+    ehcell0 = new TH1D("ehcell0", "HCAL1 cell 0 energy", 400, 0., 200.); //x
 
-    cm0 = new TH1F("cm0", "cm for coord 0 pm 0.5", 10, -10., 10.); // ✓  
-    cm5 = new TH1F("cm5", "cm for coord 5 pm 0.5", 20, 0., 20.);// ✓  
-    cm10 = new TH1F("cm10", "cm for coord 10 pm 0.5", 20, 5., 25.); // ✓  
-    cm15 = new TH1F("cm15", "cm for coord 15 pm 0.5", 20, 10., 30.);// ✓  
+    ehcell1 = new TH1D("ehcell1", "HCAL1 cell 1 energy", 400, 0., 200.); //x
+    ehcell2 = new TH1D("ehcell2", "HCAL1 cell 2 energy", 400, 0., 200.); //x 
+    ehcell3 = new TH1D("ehcell3", "HCAL1 cell 3 energy", 400, 0., 200.);//x
+    ehcell4 = new TH1D("ehcell4", "HCAL1 cell 4 energy", 400, 0., 200.);//x
+    ehcell5 = new TH1D("ehcell5", "HCAL1 cell 5 energy", 400, 0., 200.);//x
+    ehcell6 = new TH1D("ehcell6", "HCAL1 cell 6 energy", 400, 0., 200.);//x
+    ehcell7 = new TH1D("ehcell7", "HCAL1 cell 7 energy", 400, 0., 200.);//x
+    ehcell8 = new TH1D("ehcell8", "HCAL1 cell 8 energy", 400, 0., 200.);//x
 
-    ebgo0 = new TH1D("ebgo0", "BGO cristal 0 energy", 100, 0., 200.);// ✓  
-    ebgo3 = new TH1D("ebgo3", "BGO cristal 3 energy", 100, 0., 200.);// ✓  
-    ebgo4 = new TH1D("ebgo4", "BGO cristal 4 energy", 100, 0., 200.);// ✓  
-    ebgo7 = new TH1D("ebgo7", "BGO cristal 7 energy", 100, 0., 200.);// ✓  
-	
+    cm0 = new TH1F("cm0", "cm for coord 0 pm 0.5", 10, -10., 10.); //x
+    cm5 = new TH1F("cm5", "cm for coord 5 pm 0.5", 20, 0., 20.); //x
+    cm10 = new TH1F("cm10", "cm for coord 10 pm 0.5", 20, 5., 25.); //x
+    cm15 = new TH1F("cm15", "cm for coord 15 pm 0.5", 20, 10., 30.); //x 
+
+    ebgo0 = new TH1D("ebgo0", "BGO cristal 0 energy", 100, 0., 200.); //x
+    ebgo3 = new TH1D("ebgo3", "BGO cristal 3 energy", 100, 0., 200.); //x
+    ebgo4 = new TH1D("ebgo4", "BGO cristal 4 energy", 100, 0., 200.);//x
+    ebgo7 = new TH1D("ebgo7", "BGO cristal 7 energy", 100, 0., 200.);//x 
+
+    
+
     if (e0.mc) {
       NominalBeamEnergy = 100.;
       ISetup = -1.;
@@ -667,94 +654,94 @@ int procev(RecoEvent &e0)
       if(ISetup > 27) // MC for the visible mode 2018 setup
         NominalBeamEnergy = 150.;
     }
-
+    
   }  // end of initialization
-
+  
   int NCellsHCALX = 0;
   if(e0.mc) {
     NCellsHCALX = mcrunoption<int>("HCAL:NCellsHCALX", 3);
   } else {
     NCellsHCALX = HCAL_pos.Nx;
   }
-
-#include "rcvars.inc"
-  //#include "mkvars.inc"
-
-//#include "mkcuts_hcontamination1.inc"
-//#include "mkcuts_hcontamination_control.inc"
-//#include "mkcuts2021_calib_e.inc"
-//#include "mkcuts2021_invis.inc"
-//#include "mkcuts_calib_e.inc"
-//#include "mkcuts_calib_e_sign.inc"
-//#include "mkcuts_calib_pi.inc"
-//#include "mkcuts_calib_pi_50.inc"
-//#include "mkcuts_calib_pi_2021mu.inc"
-//#include "mkcuts_tracking_2021mu.inc"
-//#include "mkcuts_calib_pi_hadrinvis50.inc"
-//#include "mkcuts_hadrinvis50.inc"
-//#include "mkcuts_calib_mu.inc"
-//#include "mkcuts_calib_mu_sign.inc"
-//#include "mkcuts_invis.inc"
-//#include "mkcuts_invis_nosrd.inc"
-//#include "mkcuts_invis_nuage.inc"
-//#include "mkcuts_invis_herm.inc"
-//#include "mkcuts_invis_loose.inc"
-//#include "mkcuts_invis_loose_srd.inc"
-//#include "mkcuts_invis_avis.inc"
-//#include "mkcuts_invis_avis_1.inc"
-//#include "mkcuts_dimu_100.inc"
-#include "rccuts_dimu_100_2022_ECAL23MIN.inc"
-//#include "mkcuts_dimu_100_2022.inc"
-//#include "mkcuts_dimu_100_sign.inc"
-//#include "mkcuts_dimu_100_singlemu.inc"
-//#include "mkcuts_W_2021.inc"
-//#include "mkcuts_W_100.inc"
-//#include "mkcuts_W_150.inc"
-//#include "mkcuts_W_150_new.inc"
-//#include "mkcuts_W_150_soft.inc"
-//#include "mkcuts_W_150_noW2.inc"
-//#include "mkcuts_W_pitest_150.inc"
-//#include "mkcuts_W_pitest_150_soft.inc"
-//#include "mkcuts_W_pitest_150_noW2_soft.inc"
-//#include "mkcuts_W0_100.inc"
-//#include "mkcuts_W0_150.inc"
-//#include "mkcuts_W0_pitest_150.inc"
-//#include "mkcuts_W0_pitest_150_hard.inc"
-//#include "mkcuts_W0_150_noW2.inc"
-//#include "mkcuts_W0_150_soft.inc"
-//#include "mkcuts_W_calib_mu.inc"
-//#include "mkcuts_W_calib_e.inc"
-//#include "mkcuts_W_calib_e_150.inc"
-//#include "mkcuts_W_calibecal_pi.inc"
-//#include "mkcuts_W_dimu.inc"
-//#include "mkcuts_W_dimu_150.inc"
-//#include "mkcuts_W_K0.inc"
-//#include "mkcuts_W_K0_150.inc"
-//#include "mkcuts_W_K0_150_noW2.inc"
-//#include "mkcuts_W0_K0.inc"
-//#include "mkcuts_W0_K0_150.inc"
-//#include "mkcuts_W0_K0_150_hard.inc"
-
-//  std::cout << "Event #" << ievproc;
+  
+#include "mkvars.inc"
+  //#include "rcvars.inc"
+  
+  //#include "mkcuts_hcontamination1.inc"
+  //#include "mkcuts_hcontamination_control.inc"
+  //#include "mkcuts2021_calib_e.inc"
+  //#include "mkcuts2021_invis.inc"
+  //#include "mkcuts_calib_e.inc"
+  //#include "mkcuts_calib_e_sign.inc"
+  //#include "mkcuts_profile_htest.inc"
+  //#include "mkcuts_calib_pi.inc"
+  //#include "mkcuts_calib_pi_50.inc"
+  //#include "mkcuts_calib_pi_2021mu.inc"
+  //#include "mkcuts_tracking_2021mu.inc"
+  //#include "mkcuts_calib_pi_hadrinvis50.inc"
+  //#include "mkcuts_hadrinvis50.inc"
+  //#include "mkcuts_calib_mu.inc"
+  //#include "mkcuts_calib_mu_sign.inc"
+  //#include "mkcuts_invis.inc"
+  //#include "mkcuts_invis_nosrd.inc"
+  //#include "mkcuts_invis_nuage.inc"
+  //#include "mkcuts_invis_herm.inc"
+  //#include "mkcuts_invis_loose.inc"
+  //#include "mkcuts_invis_loose_srd.inc"
+  //#include "mkcuts_invis_avis.inc"
+  //#include "mkcuts_invis_avis_1.inc"
+  //#include "mkcuts_dimu_100.inc"
+  #include "mkcuts_dimu_100_2022.inc"
+  //#include "mkcuts_dimu_100_sign.inc"
+  //#include "mkcuts_dimu_100_singlemu.inc"
+  //#include "mkcuts_W_2021.inc"
+  //#include "mkcuts_W_100.inc"
+  //#include "mkcuts_W_150.inc"
+  //#include "mkcuts_W_150_new.inc"
+  //#include "mkcuts_W_150_soft.inc"
+  //#include "mkcuts_W_150_noW2.inc"
+  //#include "mkcuts_W_pitest_150.inc"
+  //#include "mkcuts_W_pitest_150_soft.inc"
+  //#include "mkcuts_W_pitest_150_noW2_soft.inc"
+  //#include "mkcuts_W0_100.inc"
+  //#include "mkcuts_W0_150.inc"
+  //#include "mkcuts_W0_pitest_150.inc"
+  //#include "mkcuts_W0_pitest_150_hard.inc"
+  //#include "mkcuts_W0_150_noW2.inc"
+  //#include "mkcuts_W0_150_soft.inc"
+  //#include "mkcuts_W_calib_mu.inc"
+  //#include "mkcuts_W_calib_e.inc"
+  //#include "mkcuts_W_calib_e_150.inc"
+  //#include "mkcuts_W_calibecal_pi.inc"
+  //#include "mkcuts_W_dimu.inc"
+  //#include "mkcuts_W_dimu_150.inc"
+  //#include "mkcuts_W_K0.inc"
+  //#include "mkcuts_W_K0_150.inc"
+  //#include "mkcuts_W_K0_150_noW2.inc"
+  //#include "mkcuts_W0_K0.inc"
+  //#include "mkcuts_W0_K0_150.inc"
+  //#include "mkcuts_W0_K0_150_hard.inc"
+  
+  //  std::cout << "Event #" << ievproc;
 
   if(e0.mc) ifmc = 1;
-
-//  timehisto(e0);
-
+  
+  //  timehisto(e0);
+  
   int ipass = 1;
-
+  
   if(ipass) {
     if(e0.mc) {
       flow->Fill(-1., e0.mc->Weight);
-      flowE = (-1., e0.mc->Weight); // mod by R.C
+      flowB = (-1., e0.mc->Weight); //branch 
     } else {
       flow->Fill(-1.);
-      flowE = -1.; 
+      flowB = -1.; //branch 
     }
   }
-
+  
   int itimingok = 1;
-
+  
   // apply time cuts
   RecoEvent e = e0;
   double ecalbad = 0.;
@@ -769,13 +756,13 @@ int procev(RecoEvent &e0)
       if (ETot - EGood > 30.) itimingok = 0; // new BadEnergy cut
     }
     ecalbad = ETot - EGood;
-
+    
     double ETotH = e0.hcalTotalEnergy();
     double EGoodH = e.hcalTotalEnergy();
     if(e.run >= 5317 && e.run <= 5324) { // check bad HCAL energy in hadron runs of M2 run 2021
       if (ETotH - EGoodH > 5.) itimingok = 0;
     }
-
+    
     ETotH = 0.; EGoodH = 0.; // Check HCAL bad energy (only in modules along the bent beam)
     for (int d = 0; d < 3; ++d) {
       for (int x = 0; x < NCellsHCALX; ++x) {
@@ -787,9 +774,9 @@ int procev(RecoEvent &e0)
     }
     hcalbad  = ETotH - EGoodH;
     if(hcalbad > 50.) itimingok = 0;
-
+    
   }
-
+  
   if(ECALBadEnergyCut > 0.5) {
     if(!itimingok) ipass = 0;
   }
@@ -799,13 +786,13 @@ int procev(RecoEvent &e0)
   if(ipass) {
     if(e.mc) {
       flow->Fill((double)istep, e.mc->Weight);
-      flowE = ((double)istep, e.mc->Weight); //mod by R.C
+      flowB = ((double)istep, e.mc->Weight); //branch 
     } else {
       flow->Fill((double)istep);
-      flowE = ((double)istep); //mod by R.C 
+      flowB = ((double)istep); //branch 
     }
   }
-
+  
   // Straw cuts
   int mpStraw4X = 0; // Straw hits
   int mpStraw4Y = 0;
@@ -840,19 +827,19 @@ int procev(RecoEvent &e0)
     //mpStraw3Y = (e.mc->ST3Ytruth).size();
   }
   if(StrawCut > 0.5) {if(mpStraw3X < 1 || mpStraw3X > 5) ipass = 0; if(mpStraw3Y < 1 || mpStraw3Y > 5) ipass = 0;}
-
+  
   istep = 1;
   stepname[istep] = "straw3 ";  // -------------------------- step ------------------------------------
   if(ipass) {
     if(e.mc) {
       flow->Fill((double)istep, e.mc->Weight);
-      flowE = ((double)istep, e.mc->Weight); // mod by R.C
+      flowB = ((double)istep, e.mc->Weight); //branch 
     } else {
       flow->Fill((double)istep);
-      flowE = ((double)istep); //mod by R.C 
+      flowB = ((double)istep); //branch 
     }
   }
-
+  
   int NCellsECALX = 0;
   int NCellsECALY = 0;
   if(e.mc) {
@@ -864,8 +851,6 @@ int procev(RecoEvent &e0)
   }
   int imaxcellx=-1, imaxcelly=-1;
   double emaxcell=0.;
-
-  
   for (int x = 0; x < NCellsECALX; ++x) {
     for (int y = 0; y < 6; ++y) {
       if((e.ECAL[0][x][y].energy+e.ECAL[1][x][y].energy) > emaxcell) {
@@ -876,1143 +861,1183 @@ int procev(RecoEvent &e0)
     }
   }
 
-  //if (emaxcell<ECALMaxCellLowerCut){ ipass = 0;} //new cut for energy in cells see rcvars.inc
-  
-  
-  if(ECALMaxCell > -1) { // check max cell
-    if(e.mc || ECALMaxCell <= 29) { // set needed cell numbers from cuts
-      if(e.mc && ECALMaxCell > 29) {
-        std::cout << "Automatic guess of needed ecalmaxcell does not work for MC, exiting" << std::endl;
-        exit(1);
-      }
-      if(NCellsECALX == 6 && NCellsECALY == 6) {
-        if(imaxcellx != ECALMaxCell || imaxcelly != ECALMaxCell) ipass = 0;
-      } else {
-	if(NCellsECALY == 5) {
-          if(imaxcellx != ECALMaxCell || imaxcelly != 2) ipass = 0;
-        }
-	if(NCellsECALX == 5) {
-          if(imaxcellx != 2 || imaxcelly != 3) ipass = 0;
-        }
-      }
-    } else { // set needed cell numbers from run number
-      if(e.run <= 4309) {
-        if(imaxcellx != 3 || imaxcelly != 3) ipass = 0;
-      }
-      if(e.run >= 4310 && e.run <= 5261) {
-        if(imaxcellx != 2 || imaxcelly != 2) ipass = 0;
-      }
-      if(e.run >= 5262) {
-        if(imaxcellx != 2 || imaxcelly != 3) ipass = 0;
-      }
+  //  if (emaxcell<ECALMaxCellLowerCut){ ipass = 0;} //new cut for energy in cells see rcvars.inc
+
+  if (ECALMaxCell > -1) { // check max cell
+    if (ECALMaxCell > 29) { // get correct cell from constants
+      if(imaxcellx != ECAL0BEAMCELL.ix || imaxcelly != ECAL0BEAMCELL.iy) ipass = 0;
+    } else { // correct cell explicitly specified
+      if(imaxcellx != ECALMaxCell || imaxcelly != ECALMaxCell) ipass = 0; // only cells (2,2) or (3,3) for the moment
     }
   }
-
-  istep = 2;
-  stepname[istep] = "maxcell"; 	// -------------------------- step ------------------------------------
-  if(ipass) {
-    if(e.mc) {
-      flow->Fill((double)istep, e.mc->Weight);
-      flowE = ((double)istep, e.mc->Weight); //mod by R.C
-    } else {
-      flow->Fill((double)istep);
-      flowE = ((double)istep); //mod by R.C 
-    }
-  }
-
-
-  // SRD ---------------------------------------------------------------------------------------
-
-  // Find out configuration:
-  int NSRDModules = 3;
-  int ISRDDesignYear = 2016;
-  if(e.mc) { // MC
-    NSRDModules = mcrunoption<int>("SRD:NModules", 3);
-    ISRDDesignYear = mcrunoption<int>("SRD:DesignYear", 2016);
-    if(!mcrunoption<int>("SRD:NModules", 0)) { // old samples, there is no "SRD:NModules" in the run info
-      if(ISetup > 27) NSRDModules = 2; // visible mode 2018 setup, 150 GeV 2 SRD modules
-    }
-  }
-  if(!e.mc) { // data
-    if(e.run >= 4224 && e.run <= 4309) { // visible mode 2018 setup, 150 GeV 2 SRD modules
-      NSRDModules = 2;
-    }
-  }
-
-  // Rescale cuts for new design:
-  double ScaleSRDCutModule = 1.;
-  double ScaleSRDCut = 1.;
-  if(ISRDDesignYear == 2021) {
-    ScaleSRDCutModule = 0.886;
-    if(NSRDModules == 4) ScaleSRDCut = 0.662; // for 3 modules
-  }
-
-  // Sum calculation:
-  double srd=0.;
-  for(int i=0; i < NSRDModules; i++) { srd += (e.SRD[i].energy) / MeV; }
-
-  // One specific period of datataking
-  if(!e.mc && e.run >= 2484 && e.run < 2505) { // bad positioning of SRD, no shield
-    srd = (e.SRD[0].energy + e.SRD[1].energy) / MeV;
-    SRDLowerCut = 6.6;
-    SRDUpperCut = 100.;
-  }
-
-  // Cutting:
 #if 0
-  // Standard cuts
-  if(srd < SRDLowerCut * ScaleSRDCut || srd > SRDUpperCut * ScaleSRDCut) ipass = 0;
-  if(NSRDModules <= 3) for(int i=0; i < NSRDModules; i++) { if(e.SRD[i].energy/MeV < SRDEachLowerCut * ScaleSRDCutModule) ipass = 0; }
-  int NSRDHit = 0;
-  for(int i=0; i < NSRDModules; i++) { if(e.SRD[i].energy/MeV >= SRDEachLowerCut * ScaleSRDCutModule) NSRDHit++; }
-  if(NSRDModules == 4 && NSRDHit < 3) ipass = 0;
+} else { // set needed cell numbers from run number
+  if(e.run <= 4309) {
+    if(imaxcellx != 3 || imaxcelly != 3) ipass = 0;
+  }
+  if(e.run >= 4310 && e.run <= 5261) {
+    if(imaxcellx != 2 || imaxcelly != 2) ipass = 0;
+  }
+  if(e.run >= 5262) {
+    if(imaxcellx != 2 || imaxcelly != 3) ipass = 0;
+  }
+ }
 #endif
 
-  // Toropin cuts 2022
-  if(srd < SRDLowerCut * ScaleSRDCut || srd > SRDUpperCut * ScaleSRDCut) ipass = 0;
-  if(SRDEachLowerCut > -0.5) {
-    int isrdok[3] = {0,0,0};
-    int isrdok1[3] = {0,0,0};
-    double cutcorr[3] = {1.,1.,1.};
-    // if(e.mc) cutcorr[2] = 0.7; // srd[2] is overcalibrated in 2022 periods 0 and 1
-    for (int i=0; i < 3; i++) {
-      if(e.SRD[i].energy/MeV > cutcorr[i]*SRDEachLowerCut && e.SRD[i].energy/MeV < 80.) isrdok[i] = 1;
-      if(e.SRD[i].energy/MeV > cutcorr[i]*SRDEachLowerCut) isrdok1[i] = 1;
-    }
-    int ipass1 = 0;
-    if(isrdok[0] && isrdok[1] && isrdok1[2]) ipass1 = 1;
-    if(isrdok[1] && isrdok[2] && isrdok1[0]) ipass1 = 1;
-    if(isrdok[0] && isrdok[2] && isrdok1[1]) ipass1 = 1;
-    if(!ipass1) ipass = 0;
+istep = 2;
+stepname[istep] = "maxcell"; 	// -------------------------- step ------------------------------------
+if(ipass) {
+  if(e.mc) {
+    flow->Fill((double)istep, e.mc->Weight);
+    flowB = ((double)istep, e.mc->Weight); //branch 
+  } else {
+    flow->Fill((double)istep);
+    flowB = ((double)istep); //branch 
   }
+ }
 
-  istep = 3;
-  stepname[istep] = "SRD    "; 	// -------------------------- step ------------------------------------
-  if(ipass) {
-    if(e.mc) {
-      flow->Fill((double)istep, e.mc->Weight);
-      flowE = ((double)istep, e.mc->Weight); //mod by R.C
-    } else {
-      flow->Fill((double)istep);
-      flowE = ((double)istep); //mod by R.C 
-    }
+
+// SRD ---------------------------------------------------------------------------------------
+
+// Find out configuration:
+int NSRDModules = 3;
+int ISRDDesignYear = 2016;
+if(e.mc) { // MC
+  NSRDModules = mcrunoption<int>("SRD:NModules", 3);
+  ISRDDesignYear = mcrunoption<int>("SRD:DesignYear", 2016);
+  if(!mcrunoption<int>("SRD:NModules", 0)) { // old samples, there is no "SRD:NModules" in the run info
+    if(ISetup > 27) NSRDModules = 2; // visible mode 2018 setup, 150 GeV 2 SRD modules
   }
+ }
+if(!e.mc) { // data
+  if(e.run >= 4224 && e.run <= 4309) { // visible mode 2018 setup, 150 GeV 2 SRD modules
+    NSRDModules = 2;
+  }
+ }
+
+// Rescale cuts for new design:
+double ScaleSRDCutModule = 1.;
+double ScaleSRDCut = 1.;
+if(ISRDDesignYear == 2021) {
+  ScaleSRDCutModule = 0.886;
+  if(NSRDModules == 4) ScaleSRDCut = 0.662; // for 3 modules
+ }
+
+// Sum calculation:
+double srd=0.;
+for(int i=0; i < NSRDModules; i++) { srd += (e.SRD[i].energy) / MeV; }
+
+// One specific period of datataking
+if(!e.mc && e.run >= 2484 && e.run < 2505) { // bad positioning of SRD, no shield
+  srd = (e.SRD[0].energy + e.SRD[1].energy) / MeV;
+  SRDLowerCut = 6.6;
+  SRDUpperCut = 100.;
+ }
+
+// Cutting:
+double srdmin=10000.;
+#if 0
+// Standard cuts
+if(srd < SRDLowerCut * ScaleSRDCut || srd > SRDUpperCut * ScaleSRDCut) ipass = 0;
+if(NSRDModules <= 3) for(int i=0; i < NSRDModules; i++) { if(e.SRD[i].energy/MeV < SRDEachLowerCut * ScaleSRDCutModule) ipass = 0; }
+int NSRDHit = 0;
+for(int i=0; i < NSRDModules; i++) { if(e.SRD[i].energy/MeV >= SRDEachLowerCut * ScaleSRDCutModule) NSRDHit++; }
+if(NSRDModules == 4 && NSRDHit < 3) ipass = 0;
+#endif
+
+// Toropin cuts 2022
+if(srd < SRDLowerCut * ScaleSRDCut || srd > SRDUpperCut * ScaleSRDCut) ipass = 0;
+if(SRDEachLowerCut > -0.5) {
+  int isrdok[3] = {0,0,0};
+  int isrdok1[3] = {0,0,0};
+  double cutcorr[3] = {1.,1.,1.};
+  // if(e.mc) cutcorr[2] = 0.7; // srd[2] is overcalibrated in 2022 periods 0 and 1
+  for (int i=0; i < 3; i++) {
+    if(e.SRD[i].energy/MeV > cutcorr[i]*SRDEachLowerCut && e.SRD[i].energy/MeV < 80.) isrdok[i] = 1;
+    if(e.SRD[i].energy/MeV > cutcorr[i]*SRDEachLowerCut) isrdok1[i] = 1;
+    if(e.SRD[i].energy/MeV < srdmin) srdmin = e.SRD[i].energy/MeV;
+  }
+  int ipass1 = 0;
+  if(isrdok[0] && isrdok[1] && isrdok1[2]) ipass1 = 1;
+  if(isrdok[1] && isrdok[2] && isrdok1[0]) ipass1 = 1;
+  if(isrdok[0] && isrdok[2] && isrdok1[1]) ipass1 = 1;
+  if(!ipass1) ipass = 0;
+ }
+
+istep = 3;
+stepname[istep] = "SRD    "; 	// -------------------------- step ------------------------------------
+if(ipass) {
+  if(e.mc) {
+    flow->Fill((double)istep, e.mc->Weight);
+    flowB = ((double)istep, e.mc->Weight); //branch 
+  } else {
+    flow->Fill((double)istep);
+    flowB = ((double)istep); //branch 
+  }
+ }
 
 
 #ifndef TRACKINGTOOLS 
-   //preparing MM manager
-    MManager man;
+//preparing MM manager
+MManager man;
+
+//initialize magnet from the geometry of the run
+man.GenfitInit(conddbpath() + "NA64Geom2018.root");
+SimpleTrack track;
+double mymom = -0.5;
+if (!e.mc) { // data
   
-    //initialize magnet from the geometry of the run
-    man.GenfitInit(conddbpath() + "NA64Geom2018.root");
-    SimpleTrack track;
-    double mymom = -0.5;
-    if (!e.mc) { // data
-
-      //invisible mode 2018 and earlier
-      if(e.run >= 3855 && e.run <= 4223) {
-        man.AddEvent(e,NOCUT);
-        track = man.SimpleTrackingMM();	
-      }
-      //invisible mode 2021 electron run
-      if(e.run >= 5021 && e.run <= 5186) {
-        man.AddEvent(e,NOCUT);
-        track = man.SimpleTrackingMM();
-      }
-      //invisible mode 2022 electron run
-      if(e.run >= 6035) {
-        track = simple_tracking_4MM(e);
-      }
-
-      //visible mode
-      if(e.run >= 4224 && e.run <= 4309) {
-        // simple track reconstruction
-        man.AddMicromega(e.MM3,NOCUT);
-        man.AddMicromega(e.MM4,NOCUT);
-        man.AddMicromega(e.MM5,NOCUT);
-        man.AddMicromega(e.MM6,NOCUT);
-        track = man.PointDeflectionTracking(); //simple_tracking_4MM(e);
-      }
-
-      if (track) {
-        //cout << "mom = " << track.momentum << endl;
-        mymom = track.momentum;
-      }
-    } 
-    else {                             // MC:
-      if(MCFileFormatVersion >= 8) {
-        //if(ievproc == 0) {
-        //  Reset_Calib();                   // This block no more needed explicitly, it is done in RunP348RecoMC
-        //  Init_Calib_2022B_MM(1664928923);
-        //  LoadMCGeometryFromMetaData();
-        //}
-        //DoDigitization(e);
-        man.Reset();
-        man.AddMicromega(e.MM1);    
-        man.AddMicromega(e.MM2);    
-        man.AddMicromega(e.MM3);
-        man.AddMicromega(e.MM4);
+  //invisible mode 2018 and earlier
+  if(e.run >= 3855 && e.run <= 4223) {
+    man.AddEvent(e,NOCUT);
+    track = man.SimpleTrackingMM();	
+  }
+  //invisible mode 2021 electron run
+  if(e.run >= 5021 && e.run <= 5186) {
+    man.AddEvent(e,NOCUT);
+    track = man.SimpleTrackingMM();
+  }
+  //invisible mode 2022 electron run
+  if(e.run >= 6035) {
+    track = simple_tracking_4MM(e);
+  }
+  
+  //visible mode
+  if(e.run >= 4224 && e.run <= 4309) {
+    // simple track reconstruction
+    man.AddMicromega(e.MM3,NOCUT);
+    man.AddMicromega(e.MM4,NOCUT);
+    man.AddMicromega(e.MM5,NOCUT);
+    man.AddMicromega(e.MM6,NOCUT);
+    track = man.PointDeflectionTracking(); //simple_tracking_4MM(e);
+  }
+  
+  if (track) {
+    //cout << "mom = " << track.momentum << endl;
+    mymom = track.momentum;
+  }
+ } 
+ else {                             // MC:
+   if(MCFileFormatVersion >= 8) {
+     //if(ievproc == 0) {
+     //  Reset_Calib();                   // This block no more needed explicitly, it is done in RunP348RecoMC
+     //  Init_Calib_2022B_MM(1664928923);
+     //  LoadMCGeometryFromMetaData();
+     //}
+     //DoDigitization(e);
+     man.Reset();
+     man.AddMicromega(e.MM1);    
+     man.AddMicromega(e.MM2);    
+     man.AddMicromega(e.MM3);
+     man.AddMicromega(e.MM4);
      
-        track = simple_tracking_4MM_2016(e);
-        if(track) mymom = track.momentum;
-      }
-    }
+     track = simple_tracking_4MM_2016(e);
+     if(track) mymom = track.momentum;
+   }
+ }
 #endif
 #ifdef TRACKINGTOOLS
-    // track reconstruction with Tracking Tools
-    double mymom;
-    double mychisq;
-    if(!e.mc) {
-      mymom = -0.5;
-      mychisq = -0.5;
-      bool ifupstream = true;
-      // to be set to false for downstream momentum in the muon runs
-      if(MomentumLowerCut > -10.) {
-        const std::vector<Track_t> mytracks = GetReconstructedTracks(e, ifupstream);
-        for (unsigned int p = 0; p < mytracks.size(); p++) {
-          Track_t track = mytracks.at(p);
-          mymom = track.momentum;
-          mychisq = track.chisquare;        
-          if(mymom > 159.9999 && mymom < 160.0001) mychisq = 500.; // temporary
-          if(mymom > 99.9999 && mymom < 100.0001) mychisq = 500.; // temporary
-
-          //std::cout << "ECAL extrapolation: " << (track.getECALHit())[0] << " " << (track.getECALHit())[1] << std::endl;
-
-        }
-        if(mytracks.size() > 1) mychisq = 500.;
-        if(mytracks.size() > 1) std::cout << "More than 1 track, N = " << mytracks.size() << std::endl;
-      }
-
-      //detect bad values of chi squared and apply chi squared cut
-      if ( isnan((float)mychisq) || isinf((float)mychisq) ) { ipass = 0; }
-      else {
-        if(MomentumLowerCut > -0.5) {
-          if(mychisq < MomentumChiSqLowerCut) ipass = 0;
-          if(mychisq > MomentumChiSqUpperCut) ipass = 0;
-        }
+// track reconstruction with Tracking Tools
+double mymom = -0.5;
+double mychisq = -0.5;
+TVector3 _extrapECAL;
+_extrapECAL[0] = -9999.;
+TVector3 _extrapECAL1;
+_extrapECAL1[0] = -9999.;
+if(!e.mc) {                   // data
+  bool ifupstream = true;
+  // to be set to false for downstream momentum in the muon runs
+  if(MomentumLowerCut > -10.) {
+    const std::vector<Track_t> mytracks = GetReconstructedTracks(e, ifupstream);
+    for (unsigned int p = 0; p < mytracks.size(); p++) {
+      Track_t track = mytracks.at(p);
+      mymom = track.momentum;
+      mychisq = track.chisquare;        
+      if(mymom > 159.9999 && mymom < 160.0001) mychisq = 500.; // Temporary check
+      if(mymom > 99.9999 && mymom < 100.0001) mychisq = 500.; // Temporary check
+      if(track.chisquare > -1.) {
+	try {
+	  _extrapECAL = track.getECALHit();
+	  _extrapECAL1 = track.extrapolateToZ(TVector3(0., 0., mcrunoption<double>("ECAL:ECALStart", 0.)));
+	}
+	catch (const runtime_error &e) {}
       }
     }
+    if(mytracks.size() > 1) mychisq = 500.;
+    if(mytracks.size() > 1) std::cout << "More than 1 track, N = " << mytracks.size() << std::endl;
+  }
+ }
 
-    if(e.mc) {
-      mymom = -0.5;
-      mychisq = -0.5;
-      const bool debug = false;
-      std::vector<std::pair<TVector3, double> > hits;
-      FillAbsMMHits(e.MM1, hits);
-      FillAbsMMHits(e.MM2, hits);
-      FillAbsMMHits(e.MM3, hits);
-      FillAbsMMHits(e.MM4, hits);
-      if(debug)
-        for(auto hit : hits)
-          cout << "Reco point in MM: (" << hit.first.x() << ", " << hit.first.y() << ", " << hit.first.z() << ")" << endl;
-      if(MomentumLowerCut > -10.) {
-        const std::vector<Track_t> tracks = GetReconstructedTracksFromHits(hits);
-        if(!tracks.empty()) {
-          double _best_chi2(9999);
-          double _best_mom(9999);
-          // Look for the best track with the lowest chi2 value
-          for (auto elem : tracks) {
-            if (elem.chisquare < _best_chi2 && elem.chisquare > -1.) {
-              _best_chi2 = elem.chisquare;
-              _best_mom = elem.momentum;
-            }
-          }
-          mychisq = _best_chi2;
-          mymom = _best_mom;
-          if (debug) std::cout << "mymom = " << mymom <<std::endl;
-          if (debug) std::cout << "mychisq = " << mychisq <<std::endl;
-        }
+if(e.mc) {                     // MC
+  const bool debug = false;
+  std::vector<std::pair<TVector3, double> > hits;
+  FillAbsMMHits(e.MM1, hits);
+  FillAbsMMHits(e.MM2, hits);
+  FillAbsMMHits(e.MM3, hits);
+  FillAbsMMHits(e.MM4, hits);
+  if(debug)
+    for(auto hit : hits)
+      cout << "Reco point in MM: (" << hit.first.x() << ", " << hit.first.y() << ", " << hit.first.z() << ")" << endl;
+  if(MomentumLowerCut > -10.) {
+    const std::vector<Track_t> tracks = GetReconstructedTracksFromHits(hits);
+    if(!tracks.empty()) {
+      double _best_chi2(9999.);
+      double _best_mom(9999.);
+      // Look for the best track with the lowest chi2 value
+      for (const auto &elem : tracks) {
+	if (elem.chisquare < _best_chi2 && elem.chisquare > -1.) {
+	  _best_chi2 = elem.chisquare;
+	  _best_mom = elem.momentum;
+	  if(elem.chisquare > -1.) {
+	    try {
+	      _extrapECAL = elem.getECALHit();
+	      _extrapECAL1 = elem.extrapolateToZ(TVector3(0., 0., mcrunoption<double>("ECAL:ECALStart", 0.)));
+	    }
+	    catch (const runtime_error &e) {}
+	  }
+	}
       }
-    }
-#endif
-  
-  if(mymom < MomentumLowerCut) ipass = 0;
-  if(mymom > MomentumUpperCut) ipass = 0;
-
-  istep = 4;
-  stepname[istep] = "trkmom "; 	// -------------------------- step ------------------------------------
-  if(ipass) {
-    if(e.mc) {
-      flow->Fill((double)istep, e.mc->Weight);
-      flowE = ((double)istep, e.mc->Weight); // mod by R.C
-    } else {
-      flow->Fill((double)istep);
-      flowE = ((double)istep); //mod by R.C 
+      mychisq = _best_chi2;
+      mymom = _best_mom;
+      if(fabs(_extrapECAL[0]) < 0.0001) _extrapECAL[0] = -9999.;    // Temporary, before the Benjamin fix
+      if(fabs(_extrapECAL1[0]) < 0.0001) _extrapECAL1[0] = -9999.;
+      _extrapECAL[0] -= 0.188; // empirical correction :)
+      if(fabs(_extrapECAL[0]) < 0.0001) std::cout << "extrap X is zero!" << std::endl;  // Temporary check
+      if (debug) std::cout << "mymom = " << mymom <<std::endl;
+      if (debug) std::cout << "mychisq = " << mychisq <<std::endl;
     }
   }
+ }
 
-  double ecal = 0.;
-  double ecalcentraltot = 0.;
-  double ecaltot = 0.;
-  double epileupall = 0.;
-  double epileupcentral = 0.;  
-  double ecalnoedge = 0.;
-  double ecalcentral = 0.;
-  double ecaltailcentral = 0.;
-  double ecaltailnoedge = 0.;
-  double prs = 0.;
+//std::cout << "mom, chi2, extrapolation X to ECAL: " << mymom << " " << mychisq << " " << _extrapECAL[0] << " " << _extrapECAL1[0] << std::endl;
+if (fabs(mychisq+0.5) > 0.01 && fabs(mymom+0.5) > 0.01) { // track reco was used
+  if (mychisq > MomentumChiSqLowerCut && mychisq < MomentumChiSqUpperCut && mymom > MomentumLowerCut && mymom < MomentumUpperCut) {
+    if ( _extrapECAL[0] < -9000.) std::cout << "good track but extrap failed" << std::endl;
+  }
+ }
+
+if(MomentumLowerCut > -0.5) {  // check chi2
+  //detect bad values of chi squared and apply chi squared cut
+  if ( isnan((float)mychisq) || isinf((float)mychisq) ) { ipass = 0; }
+  else {
+    if(mychisq < MomentumChiSqLowerCut) ipass = 0;
+    if(mychisq > MomentumChiSqUpperCut) ipass = 0;
+  }
+ }
+#endif
+  
+if(mymom < MomentumLowerCut) ipass = 0;
+if(mymom > MomentumUpperCut) ipass = 0;
+
+istep = 4;
+stepname[istep] = "trkmom "; 	// -------------------------- step ------------------------------------
+if(ipass) {
+  if(e.mc) {
+    flow->Fill((double)istep, e.mc->Weight);
+    flowB = ((double)istep, e.mc->Weight); //branch 
+  } else {
+    flow->Fill((double)istep);
+    flowB = ((double)istep); //branch 
+  }
+ }
+
+double ecal = 0.;
+double ecalcentraltot = 0.;
+double ecaltot = 0.;
+double epileupall = 0.;
+double epileupcentral = 0.;  
+double ecalnoedge = 0.;
+double ecalcentral = 0.;
+double ecaltailcentral = 0.;
+double ecaltailnoedge = 0.;
+double prs = 0.;
+for (int d = 0; d < 2; ++d) {
+  for (int x = 0; x < NCellsECALX; ++x) {
+    for (int y = 0; y < 6; ++y) {
+      double totECal = e.ECAL[d][x][y].energy;
+      double tail = 0.;
+      ecaltot += totECal;
+      if(!e.mc) { // study tails from previous peaks in ECAL
+	tail = e.ECAL[d][x][y].pileup();
+	if(tail < totECal) e.ECAL[d][x][y].energy = e.ECAL[d][x][y].energy_nopileup();
+	if(tail >= totECal) e.ECAL[d][x][y].energy = 0.;
+	epileupall += tail;
+      }
+      if(abs(x-3) <= 1 && abs(y-3) <= 1 ) {
+	ecalcentraltot += totECal;
+	epileupcentral += tail; 
+	ecaltailcentral += tail;
+	ecalcentral += e.ECAL[d][x][y].energy;
+      }
+      ecal += e.ECAL[d][x][y].energy;
+      if(d == 0) prs += e.ECAL[d][x][y].energy;
+      if( x * y != 0 ) {
+	ecalnoedge += e.ECAL[d][x][y].energy;
+	ecaltailnoedge += tail;
+      }
+    }
+  }
+ }
+
+double wpileupall = 0.; 
+double wpileupall0 = 0.;
+double wpileupall1 = 0.;
+double wpileupall2 = 0.;
+double wcaltot = 0.;
+for (int d = 0; d < 3; ++d) {
+  double totWCal = e.WCAL[d].energy;
+  double tail = 0.;
+  if(!e.mc) { // study tails from previous peaks in WCAL
+    tail = e.WCAL[d].pileup();
+    wpileupall += tail;
+    if (d == 0) wpileupall0 += tail;
+    if (d == 1) wpileupall1 += tail;
+    if (d == 2) wpileupall2 += tail;
+    if(tail < totWCal) e.WCAL[d].energy = e.WCAL[d].energy_nopileup();
+    if(tail >= totWCal) e.WCAL[d].energy = 0.;
+  }
+  wcaltot += totWCal;
+ }
+
+if(e.mc) { // smear ECAL. Can be substituted by limiting smearing sigma in simu.h as sigma >= 0.04 and adding argument 0 (nsigma)
   for (int d = 0; d < 2; ++d) {
     for (int x = 0; x < NCellsECALX; ++x) {
       for (int y = 0; y < 6; ++y) {
-        double totECal = e.ECAL[d][x][y].energy;
-        double tail = 0.;
-        ecaltot += totECal;
-        if(!e.mc) { // study tails from previous peaks in ECAL
-          tail = e.ECAL[d][x][y].pileup();
-          if(tail < totECal) e.ECAL[d][x][y].energy = e.ECAL[d][x][y].energy_nopileup();
-       	  if(tail >= totECal) e.ECAL[d][x][y].energy = 0.;
-          epileupall += tail;
-        }
-        if(abs(x-3) <= 1 && abs(y-3) <= 1 ) {
-          ecalcentraltot += totECal;
-          epileupcentral += tail; 
-          ecaltailcentral += tail;
-          ecalcentral += e.ECAL[d][x][y].energy;
-        }
-        ecal += e.ECAL[d][x][y].energy;
-        if(d == 0) prs += e.ECAL[d][x][y].energy;
-        if( x * y != 0 ) {
-          ecalnoedge += e.ECAL[d][x][y].energy;
-          ecaltailnoedge += tail;
-        }
+	e.ECAL[d][x][y].energy *= 1. + gRandom->Gaus(0., 0.04);
       }
     }
   }
-
-  double wpileupall = 0.; 
-  double wpileupall0 = 0.;
-  double wpileupall1 = 0.;
-  double wpileupall2 = 0.;
-  double wcaltot = 0.;
-  for (int d = 0; d < 3; ++d) {
-    double totWCal = e.WCAL[d].energy;
-    double tail = 0.;
-    if(!e.mc) { // study tails from previous peaks in WCAL
-      tail = e.WCAL[d].pileup();
-      wpileupall += tail;
-      if (d == 0) wpileupall0 += tail;
-      if (d == 1) wpileupall1 += tail;
-      if (d == 2) wpileupall2 += tail;
-      if(tail < totWCal) e.WCAL[d].energy = e.WCAL[d].energy_nopileup();
-      if(tail >= totWCal) e.WCAL[d].energy = 0.;
-    }
-    wcaltot += totWCal;
-  }
-
-  if(e.mc) { // smear ECAL
-    for (int d = 0; d < 2; ++d) {
-      for (int x = 0; x < NCellsECALX; ++x) {
-        for (int y = 0; y < 6; ++y) {
-          e.ECAL[d][x][y].energy *= 1. + gRandom->Gaus(0., 0.04);
-        }
-      }
-    }
-    ecal = 0.;
-    prs = 0.;
-    for (int d = 0; d < 2; ++d) {
-      for (int x = 0; x < NCellsECALX; ++x) {
-        for (int y = 0; y < 6; ++y) {
-          ecal += e.ECAL[d][x][y].energy;
-          if(d == 0) prs += e.ECAL[d][x][y].energy;
-        }
+  ecal = 0.;
+  prs = 0.;
+  for (int d = 0; d < 2; ++d) {
+    for (int x = 0; x < NCellsECALX; ++x) {
+      for (int y = 0; y < 6; ++y) {
+	ecal += e.ECAL[d][x][y].energy;
+	if(d == 0) prs += e.ECAL[d][x][y].energy;
       }
     }
   }
-  if(e.mc) { // WCAL[2] inefficiency
-    if(e.WCAL[2].energy < 0.0009) {
-      double eff = pow(e.WCAL[2].energy/0.0009, 6.);
-      if(gRandom->Rndm() > eff) e.WCAL[2].energy = 0.;
+ }
+if(e.mc) { // WCAL[2] inefficiency
+  if(e.WCAL[2].energy < 0.0009) {
+    double eff = pow(e.WCAL[2].energy/0.0009, 6.);
+    if(gRandom->Rndm() > eff) e.WCAL[2].energy = 0.;
+  }
+ }
+if(e.mc) { // smear S4 and WCAL[2]
+  double adds4 = gRandom->Gaus(0., 0.000048);
+  if(e.S4.energy < 0.00024) adds4 *= e.S4.energy/0.00024;
+  e.S4.energy += adds4;
+
+  double phemip = 10.;
+  double oldval = e.WCAL[2].energy;
+  double newval = 0.001 * gRandom->Poisson(phemip*e.WCAL[2].energy/0.001) / phemip;
+  e.WCAL[2].energy = newval;
+  double addw2 = gRandom->Gaus(0., 0.00015);
+  addw2 = 0.;
+  if(e.WCAL[2].energy > 0.0001) addw2 = 0.0008*(e.WCAL[1].energy/100.) * fabs(gRandom->Gaus(0., 1.));
+  if(addw2 > e.WCAL[2].energy) e.WCAL[2].energy += addw2;
+  addw2 = gRandom->Gaus(0., 0.0001);
+  if(e.WCAL[2].energy > 0.0009) addw2 *= 1.5;
+  if(e.WCAL[2].energy > 0.0001) e.WCAL[2].energy += addw2;
+
+  if(e.WCAL[2].energy < 0.) e.WCAL[2].energy = 0.;
+
+  if(e.WCAL[2].energy < 0.00025 && gRandom->Rndm() < 0.5) e.WCAL[2].energy = 0.;
+  if(e.WCAL[2].energy < 0.0001 && gRandom->Rndm() < 0.5) e.WCAL[2].energy = 0.;
+ }
+
+if(e.mc) { // smear WCAL[0] and WCAL[1]
+  //    double addw0 = gRandom->Gaus(0., 0.05*e.WCAL[0].energy);
+  //    e.WCAL[0].energy += addw0;
+  //    double addw1 = gRandom->Gaus(0., 0.04*e.WCAL[1].energy);
+  //    e.WCAL[1].energy += addw1;
+ }
+
+//if(ecaltailcentral > 0.007) ipass = 0; // tail cut for muon calibration
+//if(ecaltailnoedge > 0.1) ipass = 0; // tail cut for hadron calibration
+
+//if(sumtailcentral > 0.015) ipass = 0; // sum tail cut for subtraction  muon calibration
+//if(sumtailnoedge > 0.2) ipass = 0; // sum tail cut for subtraction pion calibration
+
+//if(sumtailW > 0.05) ipass = 0;
+
+int narrowsh=0;
+if(imaxcellx && imaxcelly) {
+  if(e.ECAL[1][imaxcellx-1][imaxcelly-1].energy < 0.01*emaxcell &&
+     e.ECAL[1][imaxcellx][imaxcelly-1].energy < 0.01*emaxcell &&
+     e.ECAL[1][imaxcellx+1][imaxcelly-1].energy < 0.01*emaxcell &&
+     e.ECAL[1][imaxcellx-1][imaxcelly].energy < 0.01*emaxcell &&
+     e.ECAL[1][imaxcellx+1][imaxcelly].energy < 0.01*emaxcell &&
+     e.ECAL[1][imaxcellx-1][imaxcelly+1].energy < 0.01*emaxcell &&
+     e.ECAL[1][imaxcellx][imaxcelly+1].energy < 0.01*emaxcell &&
+     e.ECAL[1][imaxcellx+1][imaxcelly+1].energy < 0.01*emaxcell) narrowsh=1;
+ }
+
+if(e.WCAL[0].energy < WCAL0LowerCut) ipass = 0;
+if(e.WCAL[0].energy > WCAL0UpperCut) ipass = 0;        
+if(e.WCAL[1].energy < WCAL1LowerCut) ipass = 0;        
+if(e.WCAL[1].energy > WCAL1UpperCut) ipass = 0;        
+if((e.WCAL[0].energy + e.WCAL[1].energy) < WCALSumLowerCut) ipass = 0;        
+if((e.WCAL[0].energy + e.WCAL[1].energy) > WCALSumUpperCut) ipass = 0;
+
+if(!e.mc) {
+  if(e.run >= 3466 && e.run <= 3560) { // use catcher as a veto for the second part of visible mode 2017
+    if(e.WCAL[2].energy > WCATVetoUpperCut) ipass = 0;
+  }
+  if(e.run >= 4224 && e.run <= 4309) { // use catcher as a veto for the visible mode 2018
+    if(e.WCAT.energy > WCATVetoUpperCut) ipass = 0;
+  }
+ }
+
+if(e.WCAT.energy < WCATLowerCut) ipass = 0;
+if(e.WCAT.energy > WCATUpperCut) ipass = 0;
+
+istep = 5;
+stepname[istep] = "WCAT   ";  // -------------------------- step ------------------------------------
+if(ipass) {
+  if(e.mc) {
+    flow->Fill((double)istep, e.mc->Weight);
+    flowB = ((double)istep, e.mc->Weight); //branch 
+  } else {
+    flow->Fill((double)istep);
+    flowB = ((double)istep); //branch 
+  }
+ }
+
+if(prs < PRSLowerCut) ipass = 0;
+if(prs > PRSUpperCut) ipass = 0;
+
+istep = 6;
+stepname[istep] = "PRS    "; 	// -------------------------- step ------------------------------------
+if(ipass) {
+  if(e.mc) {
+    flow->Fill((double)istep, e.mc->Weight);
+    flowB = ((double)istep, e.mc->Weight); //branch 
+  } else {
+    flow->Fill((double)istep);
+    flowB = ((double)istep); //branch 
+  }
+ }
+
+if(ECALNarrowShower > 0 && narrowsh) ipass = 0;
+if(ecal < ECALLowerCut) ipass = 0;
+if(ecal > ECALUpperCut) ipass = 0;
+if(ecal-prs < ECAL1LowerCut) ipass = 0;
+
+istep = 7;
+stepname[istep] = "EECAL  ";  // -------------------------- step ------------------------------------
+if(ipass) {
+  if(e.mc) {
+    flow->Fill((double)istep, e.mc->Weight);
+    flowB = ((double)istep, e.mc->Weight); //branch 
+  } else {
+    flow->Fill((double)istep);
+    flowB = ((double)istep); //branch 
+  }
+ }
+
+if(e.WCAL[2].energy < WCAL2LowerCut) ipass = 0;
+if(e.WCAL[2].energy > WCAL2UpperCut) ipass = 0;
+if(e.V2.energy < V2LowerCut) ipass = 0;
+if(e.V2.energy > V2UpperCut) ipass = 0;
+//if(sumtailW2 > 0.0001) ipass = 0;
+
+istep = 8;
+stepname[istep] = "WCAL+V2";  // -------------------------- step ------------------------------------
+if(ipass) {
+  if(e.mc) {
+    flow->Fill((double)istep, e.mc->Weight);
+    flowB = ((double)istep, e.mc->Weight); //branch 
+  } else {
+    flow->Fill((double)istep);
+    flowB = ((double)istep); //branch 
+  }
+ }
+
+if(e.S4.energy < S4LowerCut) ipass = 0;
+if(e.S4.energy > S4UpperCut) ipass = 0;
+
+istep = 9;
+stepname[istep] = "S4     ";  // -------------------------- step ------------------------------------
+if(ipass) {
+  if(e.mc) {
+    flow->Fill((double)istep, e.mc->Weight);
+    flowB = ((double)istep, e.mc->Weight); //branch 
+  } else {
+    flow->Fill((double)istep);
+    flowB  = ((double)istep); //branch 
+  }
+ }
+
+double veto = 0.;
+double a1, a2, aveto;
+for (int iv = 0; iv < 3; ++iv) {
+  a1 = e.VETO[2*iv].energy;
+  a2 = e.VETO[2*iv+1].energy;
+  aveto = sqrt(a1*a2);
+  if(a1 < 0.3*a2) aveto = a2;
+  if(a2 < 0.3*a1) aveto = a1;
+  veto += aveto;
+ }
+
+double hcalraw=0, hcal0=0, hcal1=0, hcal2=0, hcal3=0, hcal=0, hcalcentral=0, hcal12raw=0, hcal1raw=0, hcal12=0, hcal12central=0, hcal1central=0;
+for (int d = 0; d < 4; ++d)
+  for (int x = 0; x < NCellsHCALX; ++x)
+    for (int y = 0; y < 3; ++y) {
+      if(d < 3) {
+	hcalraw += e.HCAL[d][x][y].energy;
+	if(x == 1 && y == 1) hcalcentral += e.HCAL[d][x][y].energy;
+      }
+      if(d == 1) {
+	hcal12raw += e.HCAL[d][x][y].energy;
+	hcal1raw += e.HCAL[d][x][y].energy;
+	if(x == 1 && y == 1) {
+	  hcal12central += e.HCAL[d][x][y].energy;
+	  hcal1central += e.HCAL[d][x][y].energy;
+	}
+      }
+      if(d == 2) {
+	hcal12raw += e.HCAL[d][x][y].energy;
+	if(!e.mc) { // DATA
+	  if(e.run <= 4309) {
+	    if((x == 1 && y == 1) || (x == 2 && y == 1)) hcal12central += e.HCAL[d][x][y].energy; // in 2018 HCAL2 was not properly centered
+	  } else {
+	    if((x == 1 && y == 1)) hcal12central += e.HCAL[d][x][y].energy;
+	  }
+	} else { // MC: FIXME : the code is now for >= 2021, check hcal2 X coordinate?
+	  if((x == 1 && y == 1)) hcal12central += e.HCAL[d][x][y].energy;
+	}
+      }
+      if(d == 0) hcal0 += e.HCAL[d][x][y].energy;
+      if(d == 1) hcal1 += e.HCAL[d][x][y].energy;
+      if(d == 2) hcal2 += e.HCAL[d][x][y].energy;
+      if(d == 3) hcal3 += e.HCAL[d][x][y].energy;
     }
-  }
-  if(e.mc) { // smear S4 and WCAL[2]
-    double adds4 = gRandom->Gaus(0., 0.000048);
-    if(e.S4.energy < 0.00024) adds4 *= e.S4.energy/0.00024;
-    e.S4.energy += adds4;
 
-    double phemip = 10.;
-    double oldval = e.WCAL[2].energy;
-    double newval = 0.001 * gRandom->Poisson(phemip*e.WCAL[2].energy/0.001) / phemip;
-    e.WCAL[2].energy = newval;
-    double addw2 = gRandom->Gaus(0., 0.00015);
-    addw2 = 0.;
-    if(e.WCAL[2].energy > 0.0001) addw2 = 0.0008*(e.WCAL[1].energy/100.) * fabs(gRandom->Gaus(0., 1.));
-    if(addw2 > e.WCAL[2].energy) e.WCAL[2].energy += addw2;
-    addw2 = gRandom->Gaus(0., 0.0001);
-    if(e.WCAL[2].energy > 0.0009) addw2 *= 1.5;
-    if(e.WCAL[2].energy > 0.0001) e.WCAL[2].energy += addw2;
-
-    if(e.WCAL[2].energy < 0.) e.WCAL[2].energy = 0.;
-
-    if(e.WCAL[2].energy < 0.00025 && gRandom->Rndm() < 0.5) e.WCAL[2].energy = 0.;
-    if(e.WCAL[2].energy < 0.0001 && gRandom->Rndm() < 0.5) e.WCAL[2].energy = 0.;
-  }
-
-  if(e.mc) { // smear WCAL[0] and WCAL[1]
-//    double addw0 = gRandom->Gaus(0., 0.05*e.WCAL[0].energy);
-//    e.WCAL[0].energy += addw0;
-//    double addw1 = gRandom->Gaus(0., 0.04*e.WCAL[1].energy);
-//    e.WCAL[1].energy += addw1;
-  }
-
-  //if(ecaltailcentral > 0.007) ipass = 0; // tail cut for muon calibration
-  //if(ecaltailnoedge > 0.1) ipass = 0; // tail cut for hadron calibration
-
-  //if(sumtailcentral > 0.015) ipass = 0; // sum tail cut for subtraction  muon calibration
-  //if(sumtailnoedge > 0.2) ipass = 0; // sum tail cut for subtraction pion calibration
-
-  //if(sumtailW > 0.05) ipass = 0;
-
-  int narrowsh=0;
-  if(imaxcellx && imaxcelly) {
-    if(e.ECAL[1][imaxcellx-1][imaxcelly-1].energy < 0.01*emaxcell &&
-       e.ECAL[1][imaxcellx][imaxcelly-1].energy < 0.01*emaxcell &&
-       e.ECAL[1][imaxcellx+1][imaxcelly-1].energy < 0.01*emaxcell &&
-       e.ECAL[1][imaxcellx-1][imaxcelly].energy < 0.01*emaxcell &&
-       e.ECAL[1][imaxcellx+1][imaxcelly].energy < 0.01*emaxcell &&
-       e.ECAL[1][imaxcellx-1][imaxcelly+1].energy < 0.01*emaxcell &&
-       e.ECAL[1][imaxcellx][imaxcelly+1].energy < 0.01*emaxcell &&
-       e.ECAL[1][imaxcellx+1][imaxcelly+1].energy < 0.01*emaxcell) narrowsh=1;
-  }
-
-  if(e.WCAL[0].energy < WCAL0LowerCut) ipass = 0;
-  if(e.WCAL[0].energy > WCAL0UpperCut) ipass = 0;        
-  if(e.WCAL[1].energy < WCAL1LowerCut) ipass = 0;        
-  if(e.WCAL[1].energy > WCAL1UpperCut) ipass = 0;        
-  if((e.WCAL[0].energy + e.WCAL[1].energy) < WCALSumLowerCut) ipass = 0;        
-  if((e.WCAL[0].energy + e.WCAL[1].energy) > WCALSumUpperCut) ipass = 0;
-
-  if(!e.mc) {
-    if(e.run >= 3466 && e.run <= 3560) { // use catcher as a veto for the second part of visible mode 2017
-      if(e.WCAL[2].energy > WCATVetoUpperCut) ipass = 0;
-    }
-    if(e.run >= 4224 && e.run <= 4309) { // use catcher as a veto for the visible mode 2018
-      if(e.WCAT.energy > WCATVetoUpperCut) ipass = 0;
-    }
-  }
-
-  if(e.WCAT.energy < WCATLowerCut) ipass = 0;
-  if(e.WCAT.energy > WCATUpperCut) ipass = 0;
-
-  istep = 5;
-  stepname[istep] = "WCAT   ";  // -------------------------- step ------------------------------------
-  if(ipass) {
-    if(e.mc) {
-      flow->Fill((double)istep, e.mc->Weight);
-      flowE = ((double)istep, e.mc->Weight); //mod by R.C
-    } else {
-      flow->Fill((double)istep);
-      flowE = ((double)istep); // mod by R.C 
-    }
-  }
-
-  if(prs < PRSLowerCut) ipass = 0;
-  if(prs > PRSUpperCut) ipass = 0;
-
-  istep = 6;
-  stepname[istep] = "PRS    "; 	// -------------------------- step ------------------------------------
-  if(ipass) {
-    if(e.mc) {
-      flow->Fill((double)istep, e.mc->Weight);
-      flowE = ((double)istep, e.mc->Weight); // mod by R.C
-    } else {
-      flow->Fill((double)istep);
-      flowE = ((double)istep); //mod by R.C 
-    }
-  }
-
-  if(ECALNarrowShower > 0 && narrowsh) ipass = 0;
-  if(ecal < ECALLowerCut) ipass = 0;
-  if(ecal > ECALUpperCut) ipass = 0;
-
-  istep = 7;
-  stepname[istep] = "EECAL  ";  // -------------------------- step ------------------------------------
-  if(ipass) {
-    if(e.mc) {
-      flow->Fill((double)istep, e.mc->Weight);
-      flowE = ((double)istep, e.mc->Weight); //mod by R.C
-    } else {
-      flow->Fill((double)istep);
-      flowE = ((double)istep); //mod by R.C
-    }
-  }
-
-  if(e.WCAL[2].energy < WCAL2LowerCut) ipass = 0;
-  if(e.WCAL[2].energy > WCAL2UpperCut) ipass = 0;
-  if(e.V2.energy < V2LowerCut) ipass = 0;
-  if(e.V2.energy > V2UpperCut) ipass = 0;
-  //if(sumtailW2 > 0.0001) ipass = 0;
-
-  istep = 8;
-  stepname[istep] = "WCAL+V2";  // -------------------------- step ------------------------------------
-  if(ipass) {
-    if(e.mc) {
-      flow->Fill((double)istep, e.mc->Weight);
-      flowE = ((double)istep, e.mc->Weight); //mod by R.C
-    } else {
-      flow->Fill((double)istep);
-      flowE = ((double)istep); //mod by R.C
-    }
-  }
-
-  if(e.S4.energy < S4LowerCut) ipass = 0;
-  if(e.S4.energy > S4UpperCut) ipass = 0;
-
-  istep = 9;
-  stepname[istep] = "S4     ";  // -------------------------- step ------------------------------------
-  if(ipass) {
-    if(e.mc) {
-      flow->Fill((double)istep, e.mc->Weight);
-      flowE = ((double)istep, e.mc->Weight); //mod by R.C
-    } else {
-      flow->Fill((double)istep);
-      flowE = ((double)istep); //mod by R.C 
-    }
-  }
-
-  double veto = 0.;
-  double a1, a2, aveto;
-  for (int iv = 0; iv < 3; ++iv) {
-    a1 = e.VETO[2*iv].energy;
-    a2 = e.VETO[2*iv+1].energy;
-    aveto = sqrt(a1*a2);
-    if(a1 < 0.3*a2) aveto = a2;
-    if(a2 < 0.3*a1) aveto = a1;
-    veto += aveto;
-  }
-
-  double hcalraw=0, hcal0=0, hcal1=0, hcal2=0, hcal3=0, hcal=0, hcalcentral=0, hcal12raw=0, hcal1raw=0, hcal12=0, hcal12central=0, hcal1central=0;
+double hcalrawforR = 0.;
+if(NCellsHCALX == 6) {
+  hcalcentral = 0.;
   for (int d = 0; d < 4; ++d)
     for (int x = 0; x < NCellsHCALX; ++x)
       for (int y = 0; y < 3; ++y) {
-        if(d < 3) {
-          hcalraw += e.HCAL[d][x][y].energy;
-          if(x == 1 && y == 1) hcalcentral += e.HCAL[d][x][y].energy;
-        }
-        if(d == 1) {
-          hcal12raw += e.HCAL[d][x][y].energy;
-          hcal1raw += e.HCAL[d][x][y].energy;
-          if(x == 1 && y == 1) {
-            hcal12central += e.HCAL[d][x][y].energy;
-            hcal1central += e.HCAL[d][x][y].energy;
-          }
-        }
-        if(d == 2) {
-          hcal12raw += e.HCAL[d][x][y].energy;
-          if(!e.mc) { // DATA
-            if(e.run <= 4309) {
-              if((x == 1 && y == 1) || (x == 2 && y == 1)) hcal12central += e.HCAL[d][x][y].energy; // in 2018 HCAL2 was not properly centered
-            } else {
-              if((x == 1 && y == 1)) hcal12central += e.HCAL[d][x][y].energy;
-            }
-          } else { // MC: FIXME : the code is now for >= 2021, check hcal2 X coordinate?
-            if((x == 1 && y == 1)) hcal12central += e.HCAL[d][x][y].energy;
-          }
-        }
-	if(d == 0) hcal0 += e.HCAL[d][x][y].energy;
-        if(d == 1) hcal1 += e.HCAL[d][x][y].energy;
-        if(d == 2) hcal2 += e.HCAL[d][x][y].energy;
-        if(d == 3) hcal3 += e.HCAL[d][x][y].energy;
+	hcalrawforR += e.HCAL[d][x][y].energy;
+	if((x == 2 && y == 1) || (x == 3 && y == 1)) hcalcentral += e.HCAL[d][x][y].energy;
       }
+ }
 
-  double hcalrawforR = 0.;
-  if(NCellsHCALX == 6) {
-    hcalcentral = 0.;
-    for (int d = 0; d < 4; ++d)
-      for (int x = 0; x < NCellsHCALX; ++x)
-        for (int y = 0; y < 3; ++y) {
-          hcalrawforR += e.HCAL[d][x][y].energy;
-          if((x == 2 && y == 1) || (x == 3 && y == 1)) hcalcentral += e.HCAL[d][x][y].energy;
-        }
-  }
-
-  if(e.mc) {
-    double addhcal0=0., addhcal1, addhcal2;
-    if(hcal0 < 7.) {
-      addhcal0 = gRandom->Gaus(0., 0.4*hcal0/4.5); // smearing for MC
-    } else {
-      addhcal0 = gRandom->Gaus(0., 0.505); // smearing for MC
-    }
-    hcal0 += addhcal0;
-    if(hcal1 < 7.) {
-      addhcal1 = gRandom->Gaus(0., 0.35*hcal1/4.5); // smearing for MC
-    } else {
-      addhcal1 = gRandom->Gaus(0., 0.505); // smearing for MC
-    }
-    hcal1 += addhcal1;
-    if(hcal2 < 7.) {
-      addhcal2 = gRandom->Gaus(0., 0.35*hcal2/4.5); // smearing for MC
-    } else {
-      addhcal2 = gRandom->Gaus(0., 0.505); // smearing for MC
-    }
-    hcal2 += addhcal2;
-    hcal = hcal0 + hcal1 + hcal2;
+if(e.mc) { // HCAL smearing. Disabled after tuning HCAL smearing in p348reco
+#if 0
+  double addhcal0=0., addhcal1, addhcal2;
+  if(hcal0 < 7.) {
+    addhcal0 = gRandom->Gaus(0., 0.4*hcal0/4.5); // smearing for MC
   } else {
-    hcal = hcalraw;
+    addhcal0 = gRandom->Gaus(0., 0.505); // smearing for MC
   }
-  double Rhcalval = (hcalraw-hcalcentral)/hcalraw;
-  double Rhcal12val = (hcal12raw-hcal12central)/hcal12raw;
-  double Rhcal1val = (hcal1raw-hcal1central)/hcal1raw;
-  if(NCellsHCALX == 6) {
-    Rhcalval = (hcalrawforR-hcalcentral)/hcalrawforR;
+  hcal0 += addhcal0;
+  if(hcal1 < 7.) {
+    addhcal1 = gRandom->Gaus(0., 0.35*hcal1/4.5); // smearing for MC
+  } else {
+    addhcal1 = gRandom->Gaus(0., 0.505); // smearing for MC
   }
+  hcal1 += addhcal1;
+  if(hcal2 < 7.) {
+    addhcal2 = gRandom->Gaus(0., 0.35*hcal2/4.5); // smearing for MC
+  } else {
+    addhcal2 = gRandom->Gaus(0., 0.505); // smearing for MC
+  }
+  hcal2 += addhcal2;
+#endif
+  hcal = hcal0 + hcal1 + hcal2;
+ } else {
+  hcal = hcalraw;
+ }
+double Rhcalval = (hcalraw-hcalcentral)/hcalraw;
+double Rhcal12val = (hcal12raw-hcal12central)/hcal12raw;
+double Rhcal1val = (hcal1raw-hcal1central)/hcal1raw;
+if(NCellsHCALX == 6) {
+  Rhcalval = (hcalrawforR-hcalcentral)/hcalrawforR;
+ }
 
 #if 0
-  if(!e.mc) {
-    if(ipass && veto < 0.03) {
-      *foutd << (e.WCAL[0].energy+e.WCAL[1].energy) << " " << e.WCAL[2].energy << " " << ecal << " "
-             << veto << " " << hcal0 << " " << imaxcellx << " " << imaxcelly << " " << e.run << std::endl;
-    }
+if(!e.mc) {
+  if(ipass && veto < 0.03) {
+    *foutd << (e.WCAL[0].energy+e.WCAL[1].energy) << " " << e.WCAL[2].energy << " " << ecal << " "
+	   << veto << " " << hcal0 << " " << imaxcellx << " " << imaxcelly << " " << e.run << std::endl;
   }
+ }
 #endif
 
-  double vhcalsum = 0.;
-  for (int y = 0; y < 4; ++y) {
-    for (int x = 0; x < 4; ++x) {
-      vhcalsum += e.VHCAL0[x][y].energy;
-    }
+double vhcalsum = 0.;
+for (int y = 0; y < 4; ++y) {
+  for (int x = 0; x < 4; ++x) {
+    //vhcalsum += e.VHCAL0[x][y].energy;
+    vhcalsum += e.VHCAL[0][x][y].energy;
   }
-  if(vhcalsum > VHCALUpperCut) ipass = 0;
+ }
+if(vhcalsum > VHCALUpperCut) ipass = 0;
 
-  if(veto < VETOLowerCut) ipass = 0;
-  if(veto > VETOUpperCut) ipass = 0; // Total energy cut
+if(veto < VETOLowerCut) ipass = 0;
+if(veto > VETOUpperCut) ipass = 0; // Total energy cut
 
-  for (int iv = 0; iv < 3; ++iv) { // Each cell cut
-    a1 = e.VETO[2*iv].energy;
-    a2 = e.VETO[2*iv+1].energy;
-    aveto = sqrt(a1*a2);
-    if(a1 < 0.3*a2) aveto = a2;
-    if(a2 < 0.3*a1) aveto = a1;
-    if(iv != 1) { // periphery
-      if(!e.mc) {if(aveto > VETOEachUpperCut) ipass = 0;}
-      if(e.mc) {if(aveto > 0.85*VETOEachUpperCut) ipass = 0;} // temporary because veto in MC is slightly under-noised (or in data overcalibrated)
-    } else { // central
-      if(!e.mc) {if(aveto > VETOCentralUpperCut) ipass = 0;}
-      if(e.mc) {if(aveto > 0.85*VETOCentralUpperCut) ipass = 0;} // temporary because veto in MC is slightly under-noised (or in data overcalibrated)
-    }
+for (int iv = 0; iv < 3; ++iv) { // Each cell cut
+  a1 = e.VETO[2*iv].energy;
+  a2 = e.VETO[2*iv+1].energy;
+  aveto = sqrt(a1*a2);
+  if(a1 < 0.3*a2) aveto = a2;
+  if(a2 < 0.3*a1) aveto = a1;
+  if(iv != 1) { // periphery
+    if(!e.mc) {if(aveto > VETOEachUpperCut) ipass = 0;}
+    if(e.mc) {if(aveto > 0.85*VETOEachUpperCut) ipass = 0;} // temporary because veto in MC is slightly under-noised (or in data overcalibrated)
+  } else { // central
+    if(!e.mc) {if(aveto > VETOCentralUpperCut) ipass = 0;}
+    if(e.mc) {if(aveto > 0.85*VETOCentralUpperCut) ipass = 0;} // temporary because veto in MC is slightly under-noised (or in data overcalibrated)
   }
+ }
 
 
-  if((e.ZDCAL[0].energy + e.ZDCAL[1].energy) > ZDCALUpperCut) ipass = 0;
+if((e.ZDCAL[0].energy + e.ZDCAL[1].energy) > ZDCALUpperCut) ipass = 0;
 
-  istep = 10;
-  stepname[istep] = "VETO+ZD";  // -------------------------- step ------------------------------------
-  if(ipass) {
-    if(e.mc) {
-      flow->Fill((double)istep, e.mc->Weight);
-      flowE = ((double)istep, e.mc->Weight); //mod by R.C 
-    } else {
-      flow->Fill((double)istep);
-      flowE = ((double)istep); // mod by R.C 
-    }
+istep = 10;
+stepname[istep] = "VETO+ZD";  // -------------------------- step ------------------------------------
+if(ipass) {
+  if(e.mc) {
+    flow->Fill((double)istep, e.mc->Weight);
+    flowB = ((double)istep, e.mc->Weight); //branch 
+  } else {
+    flow->Fill((double)istep);
+    flowB = ((double)istep); //branch 
   }
+ }
 
-  if(hcal0 < HCAL0LowerCut) ipass = 0;
-  if(hcal0 > HCAL0UpperCut) ipass = 0;
-  if(hcal1 < HCAL1LowerCut) ipass = 0;
-  if(hcal1 > HCAL1UpperCut) ipass = 0;
-  if(hcal2 < HCAL2LowerCut) ipass = 0;
-  if(hcal2 > HCAL2UpperCut) ipass = 0;
-  if(hcal3 < HCAL3LowerCut) ipass = 0;
-  if(hcal3 > HCAL3UpperCut) ipass = 0;
-  if(hcal < HCALSumLowerCut) ipass = 0;
-  if(hcal > HCALSumUpperCut) ipass = 0;
-  if(Rhcal12val > Rhcal12UpperCut) ipass = 0;
-  if(Rhcalval < RhcalLowerCut) ipass = 0;
-  if(Rhcal1to0UpperCut < 999.) {
-    if(hcal1/hcal0 > Rhcal1to0UpperCut) ipass = 0;
+if(hcal0 < HCAL0LowerCut) ipass = 0;
+if(hcal0 > HCAL0UpperCut) ipass = 0;
+if(hcal1 < HCAL1LowerCut) ipass = 0;
+if(hcal1 > HCAL1UpperCut) ipass = 0;
+if(hcal2 < HCAL2LowerCut) ipass = 0;
+if(hcal2 > HCAL2UpperCut) ipass = 0;
+if(hcal3 < HCAL3LowerCut) ipass = 0;
+if(hcal3 > HCAL3UpperCut) ipass = 0;
+if(hcal < HCALSumLowerCut) ipass = 0;
+if(hcal > HCALSumUpperCut) ipass = 0;
+if(Rhcal12val > Rhcal12UpperCut) ipass = 0;
+if(Rhcal12val < Rhcal12LowerCut) ipass = 0;
+if(Rhcal1to0UpperCut < 999.) {
+  if(hcal1/hcal0 > Rhcal1to0UpperCut) ipass = 0;
+ }
+int ifmuon = 0;
+if(hcal2 > 2.) ifmuon = 1.;
+if(e.HCAL[0][1][1].energy > 1.5 && e.HCAL[1][1][1].energy > 1.5 && hcal2 > 1.3) ifmuon = 1.;
+if(HCALMuonCut > 0.5 && ifmuon) ipass = 0;
+int ihctopo = 0;
+int nperiph = 0;
+double eperiph = 0.;
+for (int x = 0; x < NCellsHCALX; ++x) {
+  for (int y = 0; y < 3; ++y) {
+    if((x != 1 || y != 1) && e.HCAL[0][x][y].energy > 0.5) nperiph++;
+    if(x != 1 || y != 1) eperiph += e.HCAL[0][x][y].energy;
   }
-  int ifmuon = 0;
-  if(hcal2 > 2.) ifmuon = 1.;
-  if(e.HCAL[0][1][1].energy > 1.5 && e.HCAL[1][1][1].energy > 1.5 && hcal2 > 1.3) ifmuon = 1.;
-  if(HCALMuonCut > 0.5 && ifmuon) ipass = 0;
-  int ihctopo = 0;
-  int nperiph = 0;
-  double eperiph = 0.;
-  for (int x = 0; x < NCellsHCALX; ++x) {
-    for (int y = 0; y < 3; ++y) {
-      if((x != 1 || y != 1) && e.HCAL[0][x][y].energy > 0.5) nperiph++;
-      if(x != 1 || y != 1) eperiph += e.HCAL[0][x][y].energy;
-    }
+ }
+if(nperiph && eperiph > e.HCAL[0][1][1].energy) ihctopo = 1;
+if(HCALTopoCut && ihctopo) ipass = 0;
+
+if(e.WCAL[0].energy+e.WCAL[1].energy + ecal + hcal0 + hcal1 < ETotLowerCut) ipass = 0; // Total energy in calorimeters
+
+istep = 11;
+stepname[istep] = "HCAL   "; 	// -------------------------- step ------------------------------------
+if(ipass) {
+  if(e.mc) {
+    flow->Fill((double)istep, e.mc->Weight);
+    flowB = ((double)istep, e.mc->Weight); //branch 
+  } else {
+    flow->Fill((double)istep);
+    flowB = ((double)istep); //branch 
   }
-  if(nperiph && eperiph > e.HCAL[0][1][1].energy) ihctopo = 1;
-  if(HCALTopoCut && ihctopo) ipass = 0;
+ }
 
-  if(e.WCAL[0].energy+e.WCAL[1].energy + ecal + hcal0 + hcal1 < ETotLowerCut) ipass = 0; // Total energy in calorimeters
+double mychi2 = 0.;
+//mychi2 = calcShowerChi2(e, 2, 2, 3, 3); // very old call
+//methods to get entry coordinate: SP_MM34, SP_ECAL 
+//mychi2 = calcShowerChi2(e, imaxcellx, imaxcelly, 2, SP_ECAL, true, kCorrSigma);
+if(e.mc) {
+  //mychi2 = calcShowerChi2(e, imaxcellx, imaxcelly, 2, SP_MC, true, kCorrSigma);
+  // New function:
+  mychi2 = calcShowerChi2_55(e, imaxcellx, imaxcelly, 2, SP_TrackerAuto, true, kCorrSigma, _extrapECAL); // SP_TrackerAuto uses track fit extrap if available
+  //mychi2 = calcShowerChi2_55(e, imaxcellx, imaxcelly, 2, SP_MC, true, kCorrSigma, _extrapECAL);
+  //mychi2 = calcShowerChi2_55(e, imaxcellx, imaxcelly, 2, SP_ECAL, true, kCorrSigma, _extrapECAL);
+ } else {
+  //mychi2 = calcShowerChi2_sqrt(e); // short default call, uses SP_MM34
+  //mychi2 = calcShowerChi2(e, imaxcellx, imaxcelly, 2, SP_MM34, true, kCorrSigma, _extrapECAL);
+  // New function:
+  mychi2 = calcShowerChi2_55(e, imaxcellx, imaxcelly, 2, SP_TrackerAuto, true, kCorrSigma, _extrapECAL);
+ }
 
-  istep = 11;
-  stepname[istep] = "HCAL   "; 	// -------------------------- step ------------------------------------
-  if(ipass) {
-    if(e.mc) {
-      flow->Fill((double)istep, e.mc->Weight);
-      flowE = ((double)istep, e.mc->Weight); // mod by R.C 
-    } else {
-      flow->Fill((double)istep);
-      flowE = ((double)istep); //mod by R.C 
-    }
+//if(mychi2 > 99999.999) std::cout << "strange shower chi2 = " << mychi2 << std::endl;
+
+//mychi2 = calcShowerChi2(e, imaxcellx, imaxcelly, 2, SP_MC, true, kCorrSigma, _extrapECAL[0], _extrapECAL[1]);
+
+//mychi2 = calcShowerChi2_sqrt(e); // short default call
+
+if(ECALChi2UpperCut < 101. && mychi2 > ECALChi2UpperCut) ipass = 0;
+
+istep = 12;
+stepname[istep] = "chi2   "; 	// -------------------------- step ------------------------------------
+if(ipass) {
+  if(e.mc) {
+    flow->Fill((double)istep, e.mc->Weight);
+    flowB = ((double)istep, e.mc->Weight); //branch 
+  } else {
+    flow->Fill((double)istep);
+    flowB = ((double)istep); //branch 
   }
+ }
 
-  double mychi2 = 0.;
-  //mychi2 = calcShowerChi2(e, 2, 2, 3, 3); // very old call
-  //methods to get entry coordinate: SP_MM34, SP_ECAL 
-  mychi2 = calcShowerChi2(e, imaxcellx, imaxcelly, 2, SP_ECAL, true, kCorrSigma);
-  //mychi2 = calcShowerChi2_sqrt(e); // short default call
+if( (e.WCAL[0].energy+e.WCAL[1].energy+ecal) < WCALECALLowerCut) ipass = 0.;
+if( (e.WCAL[0].energy+e.WCAL[1].energy+ecal) > WCALECALUpperCut) ipass = 0.;
 
-  if(ECALChi2UpperCut < 101. && mychi2 > ECALChi2UpperCut) ipass = 0;
-
-  istep = 12;
-  stepname[istep] = "chi2   "; 	// -------------------------- step ------------------------------------
-  if(ipass) {
-    if(e.mc) {
-      flow->Fill((double)istep, e.mc->Weight);
-      flowE = ((double)istep, e.mc->Weight); // mod by R.C
-    } else {
-      flow->Fill((double)istep);  
-      flowE = ((double)istep);   // mod by R.C 
-    }
+istep = 13;
+stepname[istep] = "W+ECAL ";  // -------------------------- step ------------------------------------
+if(ipass) {
+  if(e.mc) {
+    flow->Fill((double)istep, e.mc->Weight);
+    flowB = ((double)istep, e.mc->Weight); //branch 
+  } else {
+    flow->Fill((double)istep);
+    flowB = ((double)istep); //branch 
   }
+ }
 
-  if( (e.WCAL[0].energy+e.WCAL[1].energy+ecal) < WCALECALLowerCut) ipass = 0.;
-  if( (e.WCAL[0].energy+e.WCAL[1].energy+ecal) > WCALECALUpperCut) ipass = 0.;
+if(e.mc && MM56Cut > 0.5) {
+  if((e.mc->GEM1truth).size() > 2) ipass = 0;
+  if((e.mc->GEM2truth).size() > 2) ipass = 0;
+ }
 
-  istep = 13;
-  stepname[istep] = "W+ECAL ";  // -------------------------- step ------------------------------------
-  if(ipass) {
-    if(e.mc) {
-      flow->Fill((double)istep, e.mc->Weight);
-      flowE = ((double)istep, e.mc->Weight); //mod by R.C
-    } else {
-      flow->Fill((double)istep);
-      flowE = ((double)istep); //mod by R.C 
-    }
+istep = 14;
+stepname[istep] = "MM56   ";  // -------------------------- step ------------------------------------
+maxstep = istep;
+if(ipass) {
+  if(e.mc) {
+    flow->Fill((double)istep, e.mc->Weight);
+    flowB = ((double)istep, e.mc->Weight); //branch 
+  } else {
+    flow->Fill((double)istep);
+    flowB = ((double)istep); //branch 
   }
+ }
 
-  if(e.mc && MM56Cut > 0.5) {
-    if((e.mc->GEM1truth).size() > 2) ipass = 0;
-    if((e.mc->GEM2truth).size() > 2) ipass = 0;
-  }
+if(ecal < ECALLowerCut2) ipass = 0;
 
-  istep = 14;
-  stepname[istep] = "MM56   ";  // -------------------------- step ------------------------------------
-  maxstep = istep;
-  if(ipass) {
-    if(e.mc) {
-      flow->Fill((double)istep, e.mc->Weight);
-      flowE = ((double)istep, e.mc->Weight); //mod by R.C
-    } else {
-      flow->Fill((double)istep);
-      flowE = ((double)istep); // mod by R.C
-    }
-  }
+if(!ipass) {
+  //    std::cout << std::endl;
+  return 0;
+ }
 
-  if(ecal < ECALLowerCut2) ipass = 0;
+// Event passed, analysing and histogramming ------------------------
 
-  if(!ipass) {
-//    std::cout << std::endl;
-    return 0;
-  }
-
-  // Event passed, analysing and histogramming ------------------------
-
-  timehisto(e0);
+timehisto(e0);
 
 
-  if(IPrint) std::cout << "event passed, id = " << e.id() << std::endl;
+if(IPrint) std::cout << "event passed, id = " << e.id() << std::endl;
 
 //  std::cout << "tail = " << ecaltailcentral << std::endl;
 
-  eecalbad->Fill(ecalbad);
-  eecalbadE=ecalbad; //mod by R.C
+eecalbad->Fill(ecalbad);
+eecalbadB = ecalbad; //branch 
 
-  for (int y = 0; y < NCellsECALY; ++y) {
-    for (int x = 0; x < NCellsECALX; ++x) {
-//      std::cout << e.ECAL[0][x][y].energy+e.ECAL[1][x][y].energy << " ";
-    }
-//    std::cout << std::endl;
-  }
-
-  double ecalup = 0., ecaldown = 0.;
-  double ecalcmvalx = 0., ecalcmvaly = 0.;
-  double eecalcut = 0.;
-  for (int d = 0; d < 2; ++d) {
-    for (int x = 1; x < NCellsECALX; ++x) {
-      for (int y = 1; y < 6; ++y) {
-        eecalcut += e.ECAL[d][x][y].energy;
-        if(y < 3) {ecaldown += e.ECAL[d][x][y].energy;}
-        else {ecalup += e.ECAL[d][x][y].energy;}
-        ecalcmvalx += e.ECAL[d][x][y].energy * 38.2 * ( (double)x - 3. );
-        ecalcmvaly += e.ECAL[d][x][y].energy * 38.2 * ( (double)y - 3. );
-      }
-    }
-  }
-  ecalcmvalx = ecalcmvalx / eecalcut;
-  ecalcmvaly = ecalcmvaly / eecalcut;
-  double ecalr = 0.;
-  double ecalr1 = 0.;
-  for (int d = 0; d < 2; ++d) {
-    for (int x = 1; x < NCellsECALX; ++x) {
-      for (int y = 1; y < 6; ++y) {
-        double xcoorddiff = 38.2 * ( (double)x - 3. ) - ecalcmvalx;
-        double ycoorddiff = 38.2 * ( (double)y - 3. ) - ecalcmvaly;
-        double rad = sqrt(xcoorddiff*xcoorddiff + ycoorddiff*ycoorddiff);
-        ecalr += e.ECAL[d][x][y].energy * rad;
-        if(e.mc) {
-          xcoorddiff = 38.2 * ( (double)x - 3. ) - e.mc->ECALEntryX;
-          ycoorddiff = 38.2 * ( (double)y - 3. ) - e.mc->ECALEntryY;
-          rad = sqrt(xcoorddiff*xcoorddiff + ycoorddiff*ycoorddiff);
-          ecalr1 += e.ECAL[d][x][y].energy * rad;
-        }
-      }
-    }
-  }
-
-  ecalr /= eecalcut;
-  ecalr1 /= eecalcut;
-
-  // FILLING NEW HISTOGRAMS RCCODE
-
+for (int y = 0; y < NCellsECALY; ++y) {
   for (int x = 0; x < NCellsECALX; ++x) {
-     
-    for (int y = 0; y < 6; ++y) {
+    //  cellEnergyHistograms[x][y]->Fill(e.ECAL[0][x][y].energy + e.ECAL[1][x][y].energy);
+    //      std::cout << e.ECAL[0][x][y].energy+e.ECAL[1][x][y].energy << " ";
+  }
+  //    std::cout << std::endl;
+ }
 
-      if ((e.ECAL[0][x][y].energy + e.ECAL[1][x][y].energy) > 0.0) { // fill if energy > 0
-	cellEnergyHist->Fill(x, y, e.ECAL[0][x][y].energy + e.ECAL[1][x][y].energy); //cell 6x6 matrix
-	cellEnergyHistE = (x, y, e.ECAL[0][x][y].energy + e.ECAL[1][x][y].energy); //mod by R.C, a.f TBranch 
-	cellEnergyHistograms[x][y]->Fill(e.ECAL[0][x][y].energy + e.ECAL[1][x][y].energy);
-	ecalcellE[x][y] = e.ECAL[0][x][y].energy + e.ECAL[1][x][y].energy; // mod by R.C, association for TBranch 
-	
-      } 
+double ecalup = 0., ecaldown = 0.;
+double ecalcmvalx = 0., ecalcmvaly = 0.;
+double eecalcut = 0.;
+for (int d = 0; d < 2; ++d) {
+  for (int x = 1; x < NCellsECALX; ++x) {
+    for (int y = 1; y < 6; ++y) {
+      eecalcut += e.ECAL[d][x][y].energy;
+      if(y < 3) {ecaldown += e.ECAL[d][x][y].energy;}
+      else {ecalup += e.ECAL[d][x][y].energy;}
+      ecalcmvalx += e.ECAL[d][x][y].energy * 38.2 * ( (double)x - 3. );
+      ecalcmvaly += e.ECAL[d][x][y].energy * 38.2 * ( (double)y - 3. );
     }
   }
-
-
-
-  
-  eveto->Fill(veto);
-  evetoE = veto; //mod by R.C 
-  evhcal->Fill(vhcalsum);
-  evhcalE = vhcalsum; //mod by R.C 
-
-  if(IPrint) {
-    std::cout << " Subdet: "
-              << " SRD = " << srd
-              << " ECAL = " << ecal
-              << " HCAL0-2 = " << hcal0+hcal1+hcal2
-              << " HCAL3 = " << hcal3
-              << " Veto = " << veto
-              << std::endl;
+ }
+ecalcmvalx = ecalcmvalx / eecalcut;
+ecalcmvaly = ecalcmvaly / eecalcut;
+double ecalr = 0.;
+double ecalr1 = 0.;
+for (int d = 0; d < 2; ++d) {
+  for (int x = 1; x < NCellsECALX; ++x) {
+    for (int y = 1; y < 6; ++y) {
+      double xcoorddiff = 38.2 * ( (double)x - 3. ) - ecalcmvalx;
+      double ycoorddiff = 38.2 * ( (double)y - 3. ) - ecalcmvaly;
+      double rad = sqrt(xcoorddiff*xcoorddiff + ycoorddiff*ycoorddiff);
+      ecalr += e.ECAL[d][x][y].energy * rad;
+      if(e.mc) {
+	xcoorddiff = 38.2 * ( (double)x - 3. ) - e.mc->ECALEntryX;
+	ycoorddiff = 38.2 * ( (double)y - 3. ) - e.mc->ECALEntryY;
+	rad = sqrt(xcoorddiff*xcoorddiff + ycoorddiff*ycoorddiff);
+	ecalr1 += e.ECAL[d][x][y].energy * rad;
+      }
+    }
   }
+ }
+ecalr /= eecalcut;
+ecalr1 /= eecalcut;
+
+
+eveto->Fill(veto);
+evetoB = veto; //branch  
+evhcal->Fill(vhcalsum);
+evhcalB = vhcalsum; //branch  
+
+if(IPrint) {
+  std::cout << " Subdet: "
+	    << " SRD = " << srd
+	    << " SRDmin = " << srdmin
+	    << " ECAL = " << ecal
+	    << " ECAL chi2 = " << mychi2
+	    << " HCAL0 = " << hcal0
+	    << " HCAL1+2 = " << hcal1+hcal2
+	    << " HCAL3 = " << hcal3
+	    << " Veto = " << veto
+	    << std::endl;
+
+  if(hcal0 < 0.2) std::cout << "hcal0 = " << hcal0 << std::endl;
+ }
   
-  momentum->Fill(mymom);   //track.momentum
-  momentumE = mymom; //mod by R.C 
+momentum->Fill(mymom);   //track.momentum
+momentumB=mymom; //branch 
 
-  ehplot->Fill(ecal, hcal);
-  ehplotE = (ecal,hcal); //mod by R.C
-  srdplot->Fill(srd);
-  srdplotE = srd; //mod by R.C
-  srdplot0->Fill(e.SRD[0].energy/MeV);
-  srdplot0E = (e.SRD[0].energy/MeV); //mod by R.C
-  srdplot1->Fill(e.SRD[1].energy/MeV);
-  srdplot1E = (e.SRD[1].energy/MeV); //mod by R.C
-  srdplot2->Fill(e.SRD[2].energy/MeV);
-  srdplot2E = (e.SRD[2].energy/MeV); //mod by R.C
+if(e.mc && mymom >= 0.) {
+  trackmcmatchx->Fill(_extrapECAL[0] - e.mc->ECALEntryX);
+  trackmcmatchxB =(_extrapECAL[0] - e.mc->ECALEntryX); //branch
+  trackmcmatchy->Fill(_extrapECAL[1] - e.mc->ECALEntryY);
+  trackmcmatchyB = (_extrapECAL[1] - e.mc->ECALEntryY); //branch 
+ }
 
-  ebgo0->Fill(e.BGO[0].energy/MeV);
-  ebgo0E = (e.BGO[0].energy/MeV); //mod by R.C
-  ebgo3->Fill(e.BGO[3].energy/MeV);
-  ebgo3E = (e.BGO[3].energy/MeV); //mod by R.C
-  ebgo4->Fill(e.BGO[4].energy/MeV);
-  ebgo4E = (e.BGO[4].energy/MeV); //mod by R.C
-  ebgo7->Fill(e.BGO[7].energy/MeV);
-  ebgo7E = (e.BGO[7].energy/MeV); //mod by R.C 
+ehplot->Fill(ecal, hcal);
+ehplotB =(ecal,hcal); // branch
+srdplot->Fill(srd);
+srdplotB = srd; //branch 
+srdplot0->Fill(e.SRD[0].energy/MeV);
+srdplot0B = (e.SRD[0].energy/MeV); //branch 
+srdplot1->Fill(e.SRD[1].energy/MeV);
+srdplot1B = (e.SRD[1].energy/MeV); //branch 
+srdplot2->Fill(e.SRD[2].energy/MeV);
+srdplot2B = (e.SRD[2].energy/MeV); //branch 
+
+ebgo0->Fill(e.BGO[0].energy/MeV);
+ebgo0B = (e.BGO[0].energy/MeV); //branch
+ebgo3->Fill(e.BGO[3].energy/MeV);
+ebgo3B = (e.BGO[3].energy/MeV); //branch 
+ebgo4->Fill(e.BGO[4].energy/MeV);
+ebgo4B = (e.BGO[4].energy/MeV); //branch 
+ebgo7->Fill(e.BGO[7].energy/MeV);
+ebgo7B = (e.BGO[7].energy/MeV); //branch
 
 //  double mychi2 = calcShowerChi2(e, 2, 2, 3, 3);
 
+if(ecal > 1.) {
+  if(e.mc) {
+    ecalrad->Fill(ecalr, e.mc->Weight);
+    ecalradB = (ecalr, e.mc->Weight); //branch 
+    chi2profile->Fill(mychi2, e.mc->Weight);
+    chi2profileB=(mychi2, e.mc->Weight); //branch 
+    chi2profileError->Fill(mychi2, e.mc->Weight);
+    chi2profileErrorB = (mychi2, e.mc->Weight); //branch 
+  } else {
+    ecalrad->Fill(ecalr);
+    ecalradB = ecalr; //branch 
+    chi2profile->Fill(mychi2);
+    chi2profileB = mychi2; //branch 
+    chi2profileError->Fill(mychi2);
+    chi2profileErrorB = mychi2; //branch 
+  }
+ }
+
+if(IPrint && Mode == 1) {
+  std::cout << " WCAL = " << e.WCAL[0].energy+e.WCAL[1].energy << "  WCAL[2] = " << e.WCAL[2].energy
+	    << " no timing WCAL[2] = " << e0.WCAL[2].energy << std::endl;
+  std::cout << " S4 = " << e.S4.energy << " no timing S4 = " << e0.S4.energy << std::endl;
+  std::cout << " HCAL0 = " << hcal0 << "  ECAL chi2 = " << mychi2 << std::endl;
+  std::cout << " V2 = " << e.V2.energy << " no timing V2 = " << e0.V2.energy << std::endl;
+ }
+
+if(e.mc) {
+  mcecalentries->Fill(e.mc->ECALEntryX);
+  mcecalentriesB = (e.mc->ECALEntryX); //branch 
+  mcecaly->Fill(e.mc->ECALEntryY);
+  mcecalyB = (e.mc->ECALEntryY); //branch
+
+  ecalratio->Fill( e.mc->ECALEntryY, (ecalup/ecaldown - 1.) );
+  ecalratioB = ( e.mc->ECALEntryY, (ecalup/ecaldown - 1.) ); //branch 
+
+  ecalcm->Fill( e.mc->ECALEntryY, ecalcmvaly );
+  ecalcmB = ( e.mc->ECALEntryY, ecalcmvaly ); //branch 
+
   if(ecal > 2.) {
-    if(e.mc) {
-      ecalrad->Fill(ecalr, e.mc->Weight);
-      chi2profile->Fill(mychi2, e.mc->Weight);
-    } else {
-      ecalrad->Fill(ecalr);
-      ecalR=ecalr; // mod r. carrera
-      chi2profile->Fill(mychi2);
+    //if(fabs(e.mc->ECALEntryX) < 50. && fabs(e.mc->ECALEntryY) < 50.)ecalrad->Fill(ecalr);
+    if(fabs(e.mc->ECALEntryX) < 50. && fabs(e.mc->ECALEntryY) < 50.){
+      ecalrad1->Fill(ecalr1);
+      ecalrad1B = ecalr1; //branch
     }
   }
+ }
 
-  if(IPrint && Mode == 1) {
-    std::cout << " WCAL = " << e.WCAL[0].energy+e.WCAL[1].energy << "  WCAL[2] = " << e.WCAL[2].energy
-              << " no timing WCAL[2] = " << e0.WCAL[2].energy << std::endl;
-    std::cout << " S4 = " << e.S4.energy << " no timing S4 = " << e0.S4.energy << std::endl;
-    std::cout << " HCAL0 = " << hcal0 << "  ECAL chi2 = " << mychi2 << std::endl;
-    std::cout << " V2 = " << e.V2.energy << " no timing V2 = " << e0.V2.energy << std::endl;
+eecal->Fill(ecal);
+eecalB = ecal; //branch  
+etotecal->Fill(ecaltot);
+etotecalB = ecaltot; //branch 
+epileup->Fill(epileupall);
+epileupB = epileupall; //branch 
+epileup33->Fill(epileupcentral); //(ecaltailcentral);
+epileup33B = epileupcentral; //branch  
+eecalnoedge->Fill(ecalnoedge);
+eecalnoedgeB = ecalnoedge; //branch
+eecalcentral->Fill(ecalcentral);
+eecalcentralB = ecalcentral; //branch
+eecalcentraltot->Fill(ecalcentraltot);
+eecalcentraltotB = ecalcentraltot; //branch 
+
+
+etotwcal->Fill(wcaltot);
+etotwcalB = wcaltot;//branch 
+wpileup->Fill(wpileupall);
+wpileupB = wpileupall; //branch
+wpileup0->Fill(wpileupall0);
+wpileup0B = wpileupall0; //branch
+wpileup1->Fill(wpileupall1);
+wpileup1B = wpileupall1; //branch 
+wpileup2->Fill(wpileupall2);
+wpileup2B = wpileupall2; //branch
+
+
+if(e.mc) {
+  eecalweighted->Fill(ecal, e.mc->Weight);
+  eecalweightedB = (ecal, e.mc->Weight); // branch 
+ } else {
+  eecalweighted->Fill(ecal);
+  eecalweightedB=ecal; //branch 
+ }
+eprs->Fill(prs);
+eprsB = prs; //branch  
+prstoecal->Fill(prs/ecal);
+prstoecalB =(prs/ecal); //branch 
+
+if(e.WCAL[0].energy+e.WCAL[1].energy + ecal+hcal0+hcal1 > 50.) {
+  eweplot2->Fill((e.WCAL[0].energy+e.WCAL[1].energy), ecal+hcal0+hcal1);
+  eweplot2B = ((e.WCAL[0].energy+e.WCAL[1].energy), ecal+hcal0+hcal1); //branch
+  eweplot3->Fill((e.WCAL[0].energy+e.WCAL[1].energy), 1.);
+  eweplot3B = ((e.WCAL[0].energy+e.WCAL[1].energy), 1.); //branch 
+ }
+
+if(e.mc) {
+  ewecal->Fill((e.WCAL[0].energy+e.WCAL[1].energy), e.mc->Weight);
+  ewecalB = ((e.WCAL[0].energy+e.WCAL[1].energy), e.mc->Weight); //branch 
+  ewprs->Fill(e.WCAL[0].energy, e.mc->Weight);
+  ewprsB = (e.WCAL[0].energy, e.mc->Weight); //branch 
+  ewecalmain->Fill(e.WCAL[1].energy, e.mc->Weight);
+  ewecalmainB = (e.WCAL[1].energy, e.mc->Weight); //branch 
+  //ecatcher->Fill(e.WCAL[2].energy, e.mc->Weight);
+  ecatcher->Fill(e.WCAT.energy, e.mc->Weight);
+  ecatcherB =(e.WCAT.energy, e.mc->Weight); //branch 
+  ewecalecal->Fill((e.WCAL[0].energy+e.WCAL[1].energy) + ecal, e.mc->Weight);
+  ewecalecalB = ((e.WCAL[0].energy+e.WCAL[1].energy) + ecal, e.mc->Weight); //branch 
+  eweplot->Fill((e.WCAL[0].energy+e.WCAL[1].energy), ecal, e.mc->Weight);
+  eweplotB = ((e.WCAL[0].energy+e.WCAL[1].energy), ecal, e.mc->Weight); //branch 
+  eweplot1->Fill((e.WCAL[0].energy+e.WCAL[1].energy), ecal+hcal0+hcal1, e.mc->Weight);
+  eweplot1B = ((e.WCAL[0].energy+e.WCAL[1].energy), ecal+hcal0+hcal1, e.mc->Weight); //branch 
+  //ewprsmain->Fill(e.WCAL[1].energy, e.WCAL[0].energy, e.mc->Weight);
+  evtwc->Fill(e.VTWC.energy, e.mc->Weight);
+  evtwcB = (e.VTWC.energy, e.mc->Weight); //branch 
+  evtec->Fill(e.VTEC.energy, e.mc->Weight);
+  evtecB= (e.VTEC.energy, e.mc->Weight); //branch 
+  es2->Fill(e.S2.energy, e.mc->Weight);
+  es2B = (e.S2.energy, e.mc->Weight); //branch 
+
+  ew2->Fill(e.WCAL[2].energy, e.mc->Weight);
+  ew2B = (e.WCAL[2].energy, e.mc->Weight); //branch 
+
+  if((e.WCAL[0].energy+e.WCAL[1].energy) < 50.){
+    ew22->Fill(e.WCAL[2].energy, e.mc->Weight);
+    ew22B = (e.WCAL[2].energy, e.mc->Weight); //branch 
   }
-
-  if(e.mc) {
-    mcecalentries->Fill(e.mc->ECALEntryX);
-    mcecalentriesE=(e.mc->ECALEntryX); //mod by R.C 
-    mcecaly->Fill(e.mc->ECALEntryY);
-    mcecalyE = (e.mc->ECALEntryY); //mod by R.C 
+  if(e.WCAL[0].energy > 8.){
+    ew23->Fill(e.WCAL[2].energy, e.mc->Weight);
+    ew23B = (e.WCAL[2].energy, e.mc->Weight); //branch 
+  }
+  ev2->Fill(e.V2.energy, e.mc->Weight);
+  ev2B = (e.V2.energy, e.mc->Weight); //branch
     
-    ecalratio->Fill( e.mc->ECALEntryY, (ecalup/ecaldown - 1.) );
-    ecalratioE = ( e.mc->ECALEntryY, (ecalup/ecaldown - 1.) ); //mod by R.C
-
-    ecalcm->Fill( e.mc->ECALEntryY, ecalcmvaly );
-    ecalcmE = ( e.mc->ECALEntryY, ecalcmvaly ); //mod by R.C 
-
-    if(ecal > 2.) {
-      //if(fabs(e.mc->ECALEntryX) < 50. && fabs(e.mc->ECALEntryY) < 50.)ecalrad->Fill(ecalr);
-      if(fabs(e.mc->ECALEntryX) < 50. && fabs(e.mc->ECALEntryY) < 50.)ecalrad1->Fill(ecalr1);
-      ecalR1 = ecalr1; //mod R.C. 
-    }
+  es4->Fill(e.S4.energy, e.mc->Weight);
+  es4B = (e.S4.energy, e.mc->Weight); //branch 
+  edm->Fill(e.DM[0].energy, e.mc->Weight);
+  edmB = (e.DM[0].energy, e.mc->Weight); //branch 
+  ev2w2->Fill(e.V2.energy, e.WCAL[2].energy, e.mc->Weight);
+  ev2w2B = (e.V2.energy, e.WCAL[2].energy, e.mc->Weight); //branch 
+ } else {
+  ewecal->Fill((e.WCAL[0].energy+e.WCAL[1].energy));
+  ewecalB = ((e.WCAL[0].energy+e.WCAL[1].energy)); //branch 
+  eweplot1->Fill((e.WCAL[0].energy+e.WCAL[1].energy), ecal+hcal0+hcal1);
+  eweplot1B = ((e.WCAL[0].energy+e.WCAL[1].energy), ecal+hcal0+hcal1); //branch 
+  ewprs->Fill(e.WCAL[0].energy);
+  ewprsB = (e.WCAL[0].energy); //branch 
+  ewecalmain->Fill(+e.WCAL[1].energy);
+  ewecalmainB =  (+e.WCAL[1].energy); //branch 
+  if(e.run >= 3466 && e.run <= 3560) { 
+    ecatcher->Fill(e.WCAL[2].energy);
+    ecatcherB = (e.WCAL[2].energy); //branch 
   }
-
-  eecal->Fill(ecal);
-  ecalE=ecal; //mod r.Carrera
-  
-  etotecal->Fill(ecaltot);
-  etotecalE=ecaltot; //mod by R.C
-
-  epileup->Fill(epileupall);
-  epileupE=epileupall; // mod by R.C 
-
-  epileup33->Fill(epileupcentral);//(ecaltailcentral);
-  epileup33E=epileupcentral; //mod by R.C
-  
-  eecalnoedge->Fill(ecalnoedge);
-  ecalnoedge = ecalnoedgeE; // mod by R.C
-  eecalcentral->Fill(ecalcentral);
-  ecalcentralE = ecalcentral; // mod by R.C
-  eecalcentraltot->Fill(ecalcentraltot);
-  ecalcentraltot = ecalcentraltotE; // mod by R.C
-  
-  
-  etotwcal->Fill(wcaltot);
-  etotwcalE = wcaltot; //mod by R.C 
-  wpileup->Fill(wpileupall);
-  wpileupE = wpileupall; //mod by R.C 
-  wpileup0->Fill(wpileupall0);
-  wpileup0E = wpileupall0; // mod by R.C
-  wpileup1->Fill(wpileupall1);
-  wpileup1E = wpileupall1; //mod by R.C
-  wpileup2->Fill(wpileupall2);
-  wpileup2E = wpileupall2; // mod by R.C
-
-  
-  if(e.mc) {
-    eecalweighted->Fill(ecal, e.mc->Weight);
-  } else {
-    eecalweighted->Fill(ecal);
-    ecalweightedE = ecal; //mod by R.C, CHECK THIS WITH ORLANDO 
+  //if(e.run >= 4224 && e.run <= 4309) { 
+  //  ecatcher->Fill(e.WCAT.energy);
+  //}
+  if(e.run >= 4224) {
+    ecatcher->Fill(e.WCAT.energy);
+    ecatcherB = (e.WCAT.energy); //branch 
   }
-  eprs->Fill(prs);
-  eprsE = prs; //mod by R.C
-  
-  prstoecal->Fill(prs/ecal);
-  prstoecalE=(prs/ecal); // mod by R.C 
-
-  if(e.WCAL[0].energy+e.WCAL[1].energy + ecal+hcal0+hcal1 > 50.) {
-    eweplot2->Fill((e.WCAL[0].energy+e.WCAL[1].energy), ecal+hcal0+hcal1);
-    eweplot2E = ((e.WCAL[0].energy+e.WCAL[1].energy), ecal+hcal0+hcal1); // mod by R.C
-    eweplot3->Fill((e.WCAL[0].energy+e.WCAL[1].energy), 1.);
-    eweplot3E = ((e.WCAL[0].energy+e.WCAL[1].energy), 1.); //mod by R.C
+  ewecalecal->Fill((e.WCAL[0].energy+e.WCAL[1].energy) + ecal);
+  ewecalecalB = ((e.WCAL[0].energy+e.WCAL[1].energy) + ecal); //branch 
+  eweplot->Fill((e.WCAL[0].energy+e.WCAL[1].energy), ecal);
+  eweplotB =  ((e.WCAL[0].energy+e.WCAL[1].energy), ecal); //branch 
+  //ewprsmain->Fill(e.WCAL[1].energy, e.WCAL[0].energy);
+  evtwc->Fill(e.VTWC.energy);
+  evtwcB = (e.VTWC.energy); //branch 
+  evtec->Fill(e.VTEC.energy);
+  evtecB = (e.VTEC.energy); //branch 
+  es2->Fill(e.S2.energy);
+  es2B = e.S2.energy; //branch 
+  ew2->Fill(e.WCAL[2].energy);
+  ew2B = (e.WCAL[2].energy); //branch 
+  if((e.WCAL[0].energy+e.WCAL[1].energy) < 50.){
+    ew22->Fill(e.WCAL[2].energy);
+    ew22B = (e.WCAL[2].energy); // branch
   }
-
-  if(e.mc) {
-    ewecal->Fill((e.WCAL[0].energy+e.WCAL[1].energy), e.mc->Weight);
-    ewecalE = ((e.WCAL[0].energy+e.WCAL[1].energy), e.mc->Weight); //mod by R.C 
-    ewprs->Fill(e.WCAL[0].energy, e.mc->Weight);
-    ewprsE=(e.WCAL[0].energy, e.mc->Weight); //mod by R.C
-    ewecalmain->Fill(e.WCAL[1].energy, e.mc->Weight);
-    ewecalmainE=(e.WCAL[1].energy, e.mc->Weight); //mod by R.C
-    //ecatcher->Fill(e.WCAL[2].energy, e.mc->Weight);
-    ecatcher->Fill(e.WCAT.energy, e.mc->Weight);
-    ecatcherE = (e.WCAT.energy, e.mc->Weight); // mod by R.C 
-    ewecalecal->Fill((e.WCAL[0].energy+e.WCAL[1].energy) + ecal, e.mc->Weight);
-    ewecalecalE = ((e.WCAL[0].energy+e.WCAL[1].energy) + ecal, e.mc->Weight); // mod by R.C
-    eweplot->Fill((e.WCAL[0].energy+e.WCAL[1].energy), ecal, e.mc->Weight);
-    eweplotE = ((e.WCAL[0].energy+e.WCAL[1].energy), ecal, e.mc->Weight); //mod by R.C 
-    eweplot1->Fill((e.WCAL[0].energy+e.WCAL[1].energy), ecal+hcal0+hcal1, e.mc->Weight);
-    eweplot1E = ((e.WCAL[0].energy+e.WCAL[1].energy), ecal+hcal0+hcal1, e.mc->Weight); // mod by R.C
-    //ewprsmain->Fill(e.WCAL[1].energy, e.WCAL[0].energy, e.mc->Weight);
-    evtwc->Fill(e.VTWC.energy, e.mc->Weight);
-    evtwcE = (e.VTWC.energy, e.mc->Weight); //mod by R.C
-    evtec->Fill(e.VTEC.energy, e.mc->Weight);
-    evtecE = (e.VTEC.energy, e.mc->Weight); // mod by R.C
-    es2->Fill(e.S2.energy, e.mc->Weight);
-    es2E = (e.S2.energy, e.mc->Weight); // mod by R.C 
-
-    ew2->Fill(e.WCAL[2].energy, e.mc->Weight);
-    ew2E = (e.WCAL[2].energy, e.mc->Weight); // mod by R.C
-
-    if((e.WCAL[0].energy+e.WCAL[1].energy) < 50.){
-      ew22->Fill(e.WCAL[2].energy, e.mc->Weight);
-      ew22E = (e.WCAL[2].energy, e.mc->Weight); // mod by R.C
-    }
-    if(e.WCAL[0].energy > 8.) {
-      ew23->Fill(e.WCAL[2].energy, e.mc->Weight);
-      ew23E = (e.WCAL[2].energy, e.mc->Weight);
-    }
-    ev2->Fill(e.V2.energy, e.mc->Weight);
-    ev2E = (e.V2.energy, e.mc->Weight); // mod by R.C 
-    es4->Fill(e.S4.energy, e.mc->Weight);
-    es4E = (e.S4.energy, e.mc->Weight); //mod by R.C 
-    edm->Fill(e.DM[0].energy, e.mc->Weight);
-    edmE = (e.DM[0].energy, e.mc->Weight); // mod by R.C 
-    ev2w2->Fill(e.V2.energy, e.WCAL[2].energy, e.mc->Weight);
-    ev2w2E = (e.V2.energy, e.WCAL[2].energy, e.mc->Weight); // mod by R.C 
-  } else {
-    ewecal->Fill((e.WCAL[0].energy+e.WCAL[1].energy));
-    eweplot1->Fill((e.WCAL[0].energy+e.WCAL[1].energy), ecal+hcal0+hcal1);
-    eweplot1E = ((e.WCAL[0].energy+e.WCAL[1].energy), ecal+hcal0+hcal1); // mod by R.C
-    ewprs->Fill(e.WCAL[0].energy);
-    ewecalmain->Fill(+e.WCAL[1].energy);
-    ewecalmainE=(+e.WCAL[1].energy); 
-    if(e.run >= 3466 && e.run <= 3560) { 
-      ecatcher->Fill(e.WCAL[2].energy);
-      ecatcherE = (e.WCAL[2].energy); // mod by R.C
-    }
-    //if(e.run >= 4224 && e.run <= 4309) { 
-    //  ecatcher->Fill(e.WCAT.energy);
-    //}
-    if(e.run >= 4224) {
-      ecatcher->Fill(e.WCAT.energy);
-      ecatcherE = (e.WCAT.energy); //mod by R.C
-    }
-    ewecalecal->Fill((e.WCAL[0].energy+e.WCAL[1].energy) + ecal);
-    ewecalecalE = ((e.WCAL[0].energy+e.WCAL[1].energy) + ecal); // mod by R.C 
-    eweplot->Fill((e.WCAL[0].energy+e.WCAL[1].energy), ecal);
-    eweplotE = ((e.WCAL[0].energy+e.WCAL[1].energy), ecal); // mod by R.C
-    //ewprsmain->Fill(e.WCAL[1].energy, e.WCAL[0].energy);
-    evtwc->Fill(e.VTWC.energy);
-    evtwcE = e.VTWC.energy; // mod by R.C
-    evtec->Fill(e.VTEC.energy);
-    evtecE=e.VTEC.energy; // mod by R.C
-    es2->Fill(e.S2.energy);
-    es2E = e.S2.energy; // mod by R.C 
-    ew2->Fill(e.WCAL[2].energy);
-    ew2E = (e.WCAL[2].energy); // mod by R.C 
-    if((e.WCAL[0].energy+e.WCAL[1].energy) < 50.) {
-      ew22->Fill(e.WCAL[2].energy);
-      ew22E = (e.WCAL[2].energy); // mod by R.C
-    }
-    if(e.WCAL[0].energy > 8.){
-      ew23->Fill(e.WCAL[2].energy);
-      ew23E=(e.WCAL[2].energy); // mod by R.C
-    }
-    ev2->Fill(e.V2.energy);
-    ev2E = e.V2.energy; // mod by R.C
-    es4->Fill(e.S4.energy);
-    es4E = e.S4.energy; // mod by R.C
-    edm->Fill(e.DM[0].energy);
-    edmE = e.DM[0].energy; // mod by R.C 
-    ev2w2->Fill(e.V2.energy, e.WCAL[2].energy);
-    ev2w2E = (e.V2.energy, e.WCAL[2].energy); // mod by R.C 
+  if(e.WCAL[0].energy > 8.) {
+    ew23->Fill(e.WCAL[2].energy);
+    ew23B =  e.WCAL[2].energy; //Branch
   }
+  ev2->Fill(e.V2.energy);
+  ev2B = (e.V2.energy); //branch
+  es4->Fill(e.S4.energy);
+  es4B = (e.S4.energy); //branch 
+  edm->Fill(e.DM[0].energy);
+  edmB = (e.DM[0].energy); //branch 
+  ev2w2->Fill(e.V2.energy, e.WCAL[2].energy);
+  ev2w2B = (e.S4.energy, e.mc->Weight); //branch 
+ }
 
-  if(e.mc) {
-    ehcal->Fill(hcal, e.mc->Weight);
-    ehcalE = (hcal, e.mc->Weight); //mod by R.C 
-  } else {
-    ehcal->Fill(hcal);
-    ehcalE=hcal;//mod by R. Carrera
+if(e.mc) {
+  ehcal->Fill(hcal, e.mc->Weight);
+  ehcalB = (hcal, e.mc->Weight); //branch 
+ } else {
+  ehcal->Fill(hcal);
+  ehcalB = hcal; //branch 
+ }
+
+ehcal0->Fill(hcal0);
+ehcal0B=hcal0; //branch 
+ehcal1->Fill(hcal1);
+ehcal1B = hcal1; //branch
+ehcal2->Fill(hcal2);
+ehcal2B = hcal2; //branch 
+ehcal3->Fill(hcal3);
+ehcal3B = hcal3; //branch 
+
+ehcalcatcher->Fill(hcal + e.WCAT.energy);
+ehcalcatcherB = (hcal + e.WCAT.energy); //branch 
+
+ehcal0veto->Fill(hcal0, veto*1000.);
+ehcal0vetoB = (hcal0, veto*1000.); //branch
+
+if(e.mc) {
+  if(ecal < 80.){
+    Rhcal->Fill(Rhcalval, e.mc->Weight);
+    RhcalB = (Rhcalval, e.mc->Weight); //branch
   }
-
-  ehcal0->Fill(hcal0);
-  ehcal0E = hcal0; //mod by R.C
-  ehcal1->Fill(hcal1);
-  ehcal1E = hcal1; //mod by R.C
-  ehcal2->Fill(hcal2);
-  ehcal2E = hcal2; //mod by R.C
-  ehcal3->Fill(hcal3);
-  ehcal3E = hcal3; //mod by R.C 
-
-  ehcalcatcher->Fill(hcal + e.WCAT.energy);
-  ehcalcatcherE = (hcal + e.WCAT.energy); //mod by R.C
-
-  ehcal0veto->Fill(hcal0, veto*1000.);
-  ehcal0vetoE = (hcal0, veto*1000.); //mod by R.C 
-
-  if(e.mc) {
-    if(ecal < 80.) {
-      Rhcal->Fill(Rhcalval, e.mc->Weight);
-      RhcalE = (Rhcalval, e.mc->Weight); //mod by R.C
-    }
   if(ecal < 80.){
     Rhcal12->Fill(Rhcal12val, e.mc->Weight);
-    Rhcal12E = (Rhcal12val, e.mc->Weight); //mod by R.C
+    Rhcal12B = (Rhcal12val, e.mc->Weight); //branch 
   }
   if(ecal < 80.){
     Rhcal1->Fill(Rhcal1val, e.mc->Weight);
-    Rhcal1E = (Rhcal1val, e.mc->Weight); //mod by R.C 
+    Rhcal1B = (Rhcal1val, e.mc->Weight); //branch 
   }
-    //    if(ecal < 30.) Rhcal->Fill(Rhcalval, e.mc->Weight);
-  } else {
+    
+  //    if(ecal < 30.) Rhcal->Fill(Rhcalval, e.mc->Weight);
+ } else {
   if(ecal < 80.){
     Rhcal->Fill(Rhcalval);
-    RhcalE = Rhcalval; //mod by R.C
+    RhcalB = (Rhcalval); //branch 
   }
   if(ecal < 80.){
     Rhcal12->Fill(Rhcal12val);
-    Rhcal12E = (Rhcal12val); //mod by R.C 
+    Rhcal12B = (Rhcal12val); //branch 
   }
   if(ecal < 80.){
     Rhcal1->Fill(Rhcal1val);
-    Rhcal1E = Rhcal1val; //mod by R.C 
+    Rhcal1B = (Rhcal1val); //branch 
   }
-//    if(ecal < 30.) Rhcal->Fill(Rhcalval);
-  }
+  //    if(ecal < 30.) Rhcal->Fill(Rhcalval);
+ }
 
-  if(e.mc) {
-    etot->Fill(e.WCAL[0].energy + e.WCAL[1].energy + ecal + hcal0 + hcal1 + hcal2, e.mc->Weight);
-    etotE = (e.WCAL[0].energy + e.WCAL[1].energy + ecal + hcal0 + hcal1 + hcal2, e.mc->Weight); //mod by R.C
-  } else {
-    etot->Fill(e.WCAL[0].energy + e.WCAL[1].energy + ecal + hcal0 + hcal1 + hcal2);
-    etotE = (e.WCAL[0].energy + e.WCAL[1].energy + ecal + hcal0 + hcal1 + hcal2); //mod by R.C 
-  }
+if(e.mc) {
+  etot->Fill(e.WCAL[0].energy + e.WCAL[1].energy + ecal + hcal0 + hcal1 + hcal2, e.mc->Weight);
+  etotB = (e.WCAL[0].energy + e.WCAL[1].energy + ecal + hcal0 + hcal1 + hcal2, e.mc->Weight); //branch
+ } else {
+  etot->Fill(e.WCAL[0].energy + e.WCAL[1].energy + ecal + hcal0 + hcal1 + hcal2);
+  etotB = (e.WCAL[0].energy + e.WCAL[1].energy + ecal + hcal0 + hcal1 + hcal2); //branch
+ }
 
 int ix0 = 0;
 if(NCellsHCALX == 6) ix0 = 1;
- ehcell0->Fill(e.HCAL[0][ix0+0][0].energy);
- ehcell0E=e.HCAL[0][ix0+0][0].energy;  //mod by R.C
- ehcell1->Fill(e.HCAL[0][ix0+1][0].energy);
- ehcell1E = e.HCAL[0][ix0+1][0].energy; //mod by R.C
- ehcell2->Fill(e.HCAL[0][ix0+2][0].energy);
- ehcell2E = e.HCAL[0][ix0+2][0].energy; //mod by R.C
- ehcell3->Fill(e.HCAL[0][ix0+0][1].energy);
- ehcell3E = e.HCAL[0][ix0+0][1].energy; //mod by R.c
- ehcell4->Fill(e.HCAL[0][ix0+1][1].energy);
- ehcell4E = e.HCAL[0][ix0+1][1].energy; //mod by R.C
- ehcell5->Fill(e.HCAL[0][ix0+2][1].energy);
- ehcell5E = e.HCAL[0][ix0+2][1].energy; //mod by R.C
- ehcell6->Fill(e.HCAL[0][ix0+0][2].energy);
- ehcell6E = e.HCAL[0][ix0+0][2].energy; //mod by R.C
- ehcell7->Fill(e.HCAL[0][ix0+1][2].energy);
- ehcell7E = e.HCAL[0][ix0+1][2].energy; //mod by R.C
- ehcell8->Fill(e.HCAL[0][ix0+2][2].energy);
- ehcell8E = e.HCAL[0][ix0+2][2].energy; //mod by R.C 
- 
- if(e.mc) {
-    if(e.mc->ECALEntryY > -0.5 && e.mc->ECALEntryY < 0.5){
-      cm0->Fill(ecalcmvaly);
-      cm0E = ecalcmvaly; //mod by R.C
-    }
-    if(e.mc->ECALEntryY > 4.5 && e.mc->ECALEntryY < 5.5){
-      cm5->Fill(ecalcmvaly);
-      cm5E = ecalcmvaly; ///mod by R.C
-    }
-    if(e.mc->ECALEntryY > 9.5 && e.mc->ECALEntryY < 10.5) {
-      cm10->Fill(ecalcmvaly);
-      cm10E = ecalcmvaly; //mod by R.C
-    }
-    if(e.mc->ECALEntryY > 14.5 && e.mc->ECALEntryY < 15.5) {
-      cm15->Fill(ecalcmvaly);
-      cm15E = ecalcmvaly; //mod by R.C
-    }
+ehcell0->Fill(e.HCAL[0][ix0+0][0].energy);
+ehcell0B =  (e.HCAL[0][ix0+0][0].energy); //branch 
+ehcell1->Fill(e.HCAL[0][ix0+1][0].energy);
+ehcell1B = (e.HCAL[0][ix0+1][0].energy); //branch 
+ehcell2->Fill(e.HCAL[0][ix0+2][0].energy);
+ehcell2B = (e.HCAL[0][ix0+2][0].energy); //branch 
+ehcell3->Fill(e.HCAL[0][ix0+0][1].energy);
+ehcell3B = (e.HCAL[0][ix0+0][1].energy); //branch 
+ehcell4->Fill(e.HCAL[0][ix0+1][1].energy);
+ehcell4B = (e.HCAL[0][ix0+1][1].energy); //branch
+ehcell5->Fill(e.HCAL[0][ix0+2][1].energy);
+ehcell5B = (e.HCAL[0][ix0+2][1].energy); //branch 
+ehcell6->Fill(e.HCAL[0][ix0+0][2].energy);
+ehcell6B =  (e.HCAL[0][ix0+0][2].energy); //branch 
+ehcell7->Fill(e.HCAL[0][ix0+1][2].energy);
+ehcell7B = (e.HCAL[0][ix0+1][2].energy); //branch 
+ehcell8->Fill(e.HCAL[0][ix0+2][2].energy);
+ehcell8B = (e.HCAL[0][ix0+2][2].energy); //branch
+
+if(e.mc) {
+  if(e.mc->ECALEntryY > -0.5 && e.mc->ECALEntryY < 0.5){
+    cm0->Fill(ecalcmvaly);
+    cm0B = (ecalcmvaly); //branch 
   }
+  if(e.mc->ECALEntryY > 4.5 && e.mc->ECALEntryY < 5.5){
+    cm5->Fill(ecalcmvaly);
+    cm5B = (ecalcmvaly); //branch
+  }
+  if(e.mc->ECALEntryY > 9.5 && e.mc->ECALEntryY < 10.5){
+    cm10->Fill(ecalcmvaly);
+    cm10B = (ecalcmvaly); //branch 
+  }
+  if(e.mc->ECALEntryY > 14.5 && e.mc->ECALEntryY < 15.5){
+    cm15->Fill(ecalcmvaly);
+    cm15B = (ecalcmvaly); //branch 
+  }
+ }
 
-  data_tree->Fill();
+dataTree->Fill();
 
-  return 1;
+return 1;
 }
+
 
 
 void endrun()
